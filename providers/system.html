@@ -1,0 +1,662 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>system - stratum</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Tiny declarative IaC tool, written from scratch in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-990bb639.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-1b75d191.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stratum</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum/edit/main/book/src/providers/system.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="system"><a class="header" href="#system">system</a></h1>
+<p>Ansible-shape system bootstrap: install packages, manage systemd units, drop files and directories, configure ufw. Operates against a remote host via the system <code>ssh</code> binary (<code>-o BatchMode=yes -o StrictHostKeyChecking=accept-new</code>). Targets Debian/Ubuntu — package management is apt-only.</p>
+<p>All apt invocations use <code>DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=--force-confold -o DPkg::Lock::Timeout=300</code>, so package installs never hang on prompts, keep existing config files on upgrade, and wait up to five minutes for another apt/dpkg process to release the lock instead of failing instantly — without the lock-wait, two apt steps with no <code>depends_on</code> edge between them race under parallel apply, and on a fresh cloud box unattended-upgrades holds the lock for minutes after boot.</p>
+<p>The provider takes no configuration block.</p>
+<h2 id="kinds"><a class="header" href="#kinds">Kinds</a></h2>
+<h3 id="system_package"><a class="header" href="#system_package"><code>system_package</code></a></h3>
+<p>An apt-managed package, <code>present</code> or <code>absent</code>.</p>
+<pre><code class="language-strat">resource "system_package" "docker" {
+  host  = host.primary.addr
+  name  = "docker.io"
+  state = "present"
+}
+
+# Install several packages in one resource.
+resource "system_package" "build-tools" {
+  host  = host.primary.addr
+  names = ["build-essential", "pkg-config", "git"]
+  state = "present"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target in <code>user@host</code> form.</td></tr>
+<tr><td><code>name</code></td><td>no*</td><td>string</td><td>resource label</td><td>apt package name. Falls back to the resource label if omitted.</td></tr>
+<tr><td><code>names</code></td><td>no*</td><td>list of string</td><td>—</td><td>A non-empty list of apt package names, installed/removed in one apt call. Mutually exclusive with <code>name</code>.</td></tr>
+<tr><td><code>state</code></td><td>no</td><td>string</td><td><code>present</code></td><td><code>present</code> or <code>absent</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>*Specify either <code>name</code> or <code>names</code>, not both — setting both is a hard error (<code>specify either name or names, not both</code>). When neither is set, <code>name</code> defaults to the resource label. Documenting <code>name</code> explicitly is the convention so the apt package name doesn’t depend on what you called the resource. An empty <code>names</code> list, or a non-string entry, is a hard error at apply time.</p>
+<p>On <code>present</code>, the provider runs <code>apt-get update</code> once per <code>(process, host)</code> before the first install, then <code>apt-get install &lt;packages&gt;</code>. On <code>absent</code>, it runs <code>apt-get remove &lt;packages&gt;</code>.</p>
+<p>Stored state mirrors the form you wrote: <code>{ host, name, state }</code> for the singular form, <code>{ host, names, state }</code> for the list form. <code>read</code> runs <code>dpkg-query</code> and returns <code>Present { state: present|absent }</code>. There is no version field in observed state — version drift is not surfaced.</p>
+<p>Delete is best-effort <code>apt-get remove</code> (errors swallowed so a missing package doesn’t fail the apply).</p>
+<h3 id="system_service"><a class="header" href="#system_service"><code>system_service</code></a></h3>
+<p>A systemd unit, <code>started</code>/<code>stopped</code> with <code>enabled</code>/<code>disabled</code> independently controlled.</p>
+<pre><code class="language-strat">resource "system_service" "docker" {
+  host    = host.primary.addr
+  name    = "docker"
+  enabled = true
+  state   = "started"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>name</code></td><td>yes*</td><td>string</td><td>resource label</td><td>systemd unit name. Falls back to the resource label.</td></tr>
+<tr><td><code>enabled</code></td><td>no</td><td>bool</td><td><code>false</code></td><td>If true, runs <code>systemctl enable &lt;name&gt;</code>.</td></tr>
+<tr><td><code>state</code></td><td>no</td><td>string</td><td><code>stopped</code></td><td><code>started</code> or <code>stopped</code>.</td></tr>
+<tr><td><code>unit</code></td><td>no</td><td>string</td><td>none</td><td>Inline unit-file text. Written to <code>/etc/systemd/system/&lt;name&gt;.service</code> (via <code>install -D</code>) and <code>systemctl daemon-reload</code>’d before enable/start, so one resource can install, define, and run a service. Change-tracked by sha256.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Order of operations:</p>
+<ul>
+<li><code>(enabled=true,  state=started)</code> → <code>enable</code>, then <code>restart</code>, then poll <code>is-active</code> for up to 10s.</li>
+<li><code>(enabled=true,  state=stopped)</code> → <code>enable</code>, then <code>stop</code>.</li>
+<li><code>(enabled=false, state=stopped)</code> → <code>stop</code> (best-effort), then <code>disable</code>.</li>
+<li><code>(enabled=false, state=started)</code> → <code>disable</code> (best-effort), then <code>restart</code>, then poll <code>is-active</code> for 10s.</li>
+</ul>
+<p><code>restart</code> (not <code>start</code>) is used deliberately: <code>service_apply</code> runs only when the plan is Create or Update — the unit, an <code>EnvironmentFile</code>, or a <code>depends_on</code> changed — so an already-running service must bounce to pick up the new definition. A NoOp plan never calls this path, so unchanged services are not needlessly restarted. If <code>unit</code> is set, the unit file is written and <code>daemon-reload</code>’d first.</p>
+<p>If the 10s <code>is-active</code> poll times out, the provider collects <code>systemctl status --no-pager -n 20</code> (and <code>journalctl -u &lt;svc&gt; --no-pager -n 50</code> if the status output is sparse) and includes both in the error message.</p>
+<p>Stored state: <code>{ host, name, enabled, state }</code>, plus <code>unit_sha256</code> (the sha256 of the inline <code>unit</code> text) when <code>unit</code> is set. <code>read</code> runs <code>systemctl is-enabled</code> + <code>systemctl is-active</code> in one round-trip and returns <code>Present { enabled, state }</code>; when state tracks a <code>unit_sha256</code>, it also sha256s the on-disk unit file so a hand-edited or removed unit surfaces as drift.</p>
+<p>Delete runs <code>systemctl disable --now &lt;name&gt;</code> best-effort. If an inline <code>unit</code> was installed (tracked by <code>unit_sha256</code>), the unit file is removed and <code>daemon-reload</code>’d too, so the resource is fully reversible.</p>
+<h3 id="system_file"><a class="header" href="#system_file"><code>system_file</code></a></h3>
+<p>Drops a file on the remote host. Auto-creates parent directories via <code>install -D</code>.</p>
+<pre><code class="language-strat">resource "system_file" "traefik-config" {
+  host         = host.primary.addr
+  path         = "/etc/traefik/traefik.yml"
+  content_file = "files/traefik.yml"
+  mode         = "0644"
+  owner        = "root"
+  group        = "root"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>path</code></td><td>yes</td><td>string</td><td>—</td><td>Absolute destination path. Parent dirs are created.</td></tr>
+<tr><td><code>content</code></td><td>yes*</td><td>string</td><td>—</td><td>File contents, written verbatim.</td></tr>
+<tr><td><code>content_file</code></td><td>yes*</td><td>string</td><td>—</td><td>Path to a local file, resolved relative to the <code>.strat</code> file’s directory. Inlined at config-load time into <code>content</code>.</td></tr>
+<tr><td><code>template</code></td><td>no</td><td>bool</td><td><code>false</code></td><td>Opt the file body into <code>${...}</code> interpolation. See <a href="#templated-file-bodies">Templated file bodies</a>.</td></tr>
+<tr><td><code>mode</code></td><td>no</td><td>string</td><td><code>0644</code></td><td>File mode, passed to <code>install -m</code>.</td></tr>
+<tr><td><code>owner</code></td><td>no</td><td>string</td><td><code>root</code></td><td>File owner, passed to <code>install -o</code>.</td></tr>
+<tr><td><code>group</code></td><td>no</td><td>string</td><td><code>root</code></td><td>File group, passed to <code>install -g</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>*Exactly one of <code>content</code> or <code>content_file</code> must be set. Both → <code>EvalError::ContentConflict</code> at config-load time. See <a href="../language/types.html#content_file-on-system_file"><code>content_file</code></a> for the full semantics.</p>
+<h4 id="templated-file-bodies"><a class="header" href="#templated-file-bodies">Templated file bodies</a></h4>
+<p>By default a <code>content_file</code> payload is copied <strong>byte-for-byte</strong> — a config file that happens to contain literal <code>${...}</code>-looking text is shipped untouched. Set <code>template = true</code> to render the file body through the same <code>${...}</code> <a href="../language/interpolation.html">string interpolation</a> stratum applies to attribute strings, so a value living <em>inside</em> a config file can be a template input, a <code>var</code>, a <code>secret</code>, a <code>host</code> field, or another resource’s output:</p>
+<pre><code class="language-strat">resource "system_file" "caddy" {
+  host         = host.box.addr
+  path         = "/etc/caddy/caddy.json"
+  content_file = "files/caddy.json"
+  template     = true
+}
+</code></pre>
+<pre><code class="language-jsonc">// files/caddy.json — rendered at config-load time
+{ "email": "${var.acme_email}", "host": "${host.box.addr}" }
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li><strong>Opt-in only.</strong> Without <code>template = true</code> the body is verbatim. This is deliberate: it keeps interpolation from mangling files that legitimately use <code>${...}</code> syntax.</li>
+<li><strong>Same grammar.</strong> <code>${ref}</code> uses the exact dotted-path grammar as strings (<code>host.x.y</code>, <code>secret.x.value</code>, <code>var.x</code>, <code>kind.name.attr</code>). A bare <code>${FOO}</code> (shell style) is a load-time error inside an opted-in file — escape it as <code>\${FOO}</code> to emit a literal <code>${FOO}</code>. <code>\${</code> is the only escape processed; every other byte (including lone backslashes and newlines) is preserved.</li>
+<li><strong>Inputs reach file bodies.</strong> Inside a <code>template { ... }</code>, <code>${input.x}</code> in a shipped file is folded from the module’s binding, so a template can parameterize the config files it ships — no <code>sed</code>, no hand-edit. <code>content_file</code> paths resolve relative to the <em>template’s</em> source file.</li>
+<li><strong>Secrets are allowed here.</strong> The <a href="../language/secrets.html#the-honesty-guard">honesty guard</a> that blocks <code>secret.x.value</code> in a verbatim <code>content</code> is relaxed for a templated <code>system_file</code>, because <code>system_file</code> keeps content out of state and plan (both store/diff a <code>sha256</code>, never the bytes — see below). The rendered secret is streamed to the host over SSH stdin and never lands on a leakable surface. It still registers in the <a href="../language/secrets.html#substring-redaction">substring redaction map</a>, so any echo of the value elsewhere is masked.</li>
+</ul>
+<p>The <code>template</code> marker is a config-loader directive: it is stripped before the provider runs and never appears in state.</p>
+<p>Upload uses <code>install -D -m &lt;mode&gt; -o &lt;owner&gt; -g &lt;group&gt; /dev/stdin &lt;path&gt;</code> with the content streamed via SSH stdin. The <code>-D</code> flag creates intermediate directories.</p>
+<p>The provider sha256-hashes the content; on update, if the new sha matches what’s in prior state, the upload is skipped and the resource logs <code>unchanged (sha256 match)</code>.</p>
+<p>Stored state: <code>{ host, path, content, mode, owner, group, sha256 }</code>. Persisting <code>content</code> means a re-plan with the same config is a no-op (no spurious updates from “content field appeared”).</p>
+<p><code>read</code> runs a single-roundtrip probe that prints either <code>MISSING</code> or <code>&lt;mode&gt;|&lt;owner&gt;|&lt;group&gt;|&lt;sha256&gt;</code>. Returns <code>Absent</code> for missing files, <code>Present { host, path, mode, owner, group, sha256 }</code> otherwise. Note that observed state does <strong>not</strong> include <code>content</code> — drift surfaces as a <code>sha256</code> mismatch.</p>
+<p>Delete runs <code>rm -f -- &lt;path&gt;</code>.</p>
+<h3 id="system_secret_file"><a class="header" href="#system_secret_file"><code>system_secret_file</code></a></h3>
+<p>Like <a href="#system_file"><code>system_file</code></a>, but the <code>content</code> is treated as a whole-file secret. The plaintext is streamed via SSH stdin (never argv) and <strong>never</strong> persists in state. State stores <code>sha256</code> plus the file permissions only — enough to detect drift, not enough to recover the value.</p>
+<pre><code class="language-strat">secret "firebase_sa" {
+  from_file = "~/.config/app/firebase-sa.json"
+}
+
+resource "system_secret_file" "firebase-sa" {
+  host    = host.primary.addr
+  path    = "/etc/app/firebase-sa.json"
+  content = secret.firebase_sa.value
+  mode    = "0400"
+  owner   = "root"
+  group   = "root"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>path</code></td><td>yes</td><td>string</td><td>—</td><td>Absolute destination path. Parent dirs are created via <code>install -D</code>.</td></tr>
+<tr><td><code>content</code></td><td>yes</td><td>string</td><td>—</td><td>File contents. Typically <code>secret.&lt;name&gt;.value</code> — see <a href="../language/secrets.html">Secrets</a>. Unlike <code>system_file</code>, there is no <code>content_file</code> attribute; whole-file secrets are sourced through a <code>secret { from_file = ... }</code> block.</td></tr>
+<tr><td><code>mode</code></td><td>no</td><td>string</td><td><code>0400</code></td><td>File mode, passed to <code>install -m</code>. Default is stricter than <code>system_file</code> (<code>0400</code> vs <code>0644</code>) — secret files default to owner-only read.</td></tr>
+<tr><td><code>owner</code></td><td>no</td><td>string</td><td><code>root</code></td><td>File owner, passed to <code>install -o</code>.</td></tr>
+<tr><td><code>group</code></td><td>no</td><td>string</td><td><code>root</code></td><td>File group, passed to <code>install -g</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Upload uses <code>install -D -m &lt;mode&gt; -o &lt;owner&gt; -g &lt;group&gt; /dev/stdin &lt;path&gt;</code> with the content streamed via SSH stdin. The provider hashes the content before sending; on update, if the new sha matches the prior state’s sha <strong>and</strong> all permissions match, the upload is skipped and the resource logs <code>unchanged (sha256 + perms match)</code>.</p>
+<p><strong>State shape:</strong> <code>{ host, path, mode, owner, group, sha256 }</code>. The <code>content</code> field is omitted — recovering the plaintext from state is impossible by design. Plan diff is sha-to-sha: the <code>build_plan</code> normalizer (<code>SECRET_CONTENT_TO_SHA</code>) drops <code>content</code> from desired and substitutes <code>sha256: hash(content)</code> before diffing, so plans never echo plaintext into a <code>content: null -&gt; "&lt;plaintext&gt;"</code> change. See <a href="../architecture.html#secret-content-normalization-on-plan">Architecture: secret-content normalization</a>.</p>
+<p><strong>Apply log:</strong> byte length only — never the content, never the sha.</p>
+<pre><code>[system] SECRET_FILE `firebase-sa` -&gt; root@192.0.2.10:/etc/app/firebase-sa.json (1842 bytes, mode=0400 root:root)
+[system] SECRET_FILE `firebase-sa` -&gt; root@192.0.2.10:/etc/app/firebase-sa.json unchanged (sha256 + perms match)
+</code></pre>
+<p><strong>Drift detection:</strong> <code>read</code> runs the same probe shape as <code>system_file</code> (<code>&lt;mode&gt;|&lt;owner&gt;|&lt;group&gt;|&lt;sha256&gt;</code> or <code>MISSING</code>). Returns <code>Present { host, path, mode, owner, group, sha256 }</code> with <strong>no</strong> content field. Drift surfaces as <code>sha256</code> / <code>mode</code> / <code>owner</code> / <code>group</code> mismatch.</p>
+<p><strong>Delete</strong> runs <code>rm -f -- &lt;path&gt;</code> best-effort.</p>
+<h3 id="system_env_file"><a class="header" href="#system_env_file"><code>system_env_file</code></a></h3>
+<p>Renders an <code>env</code> map to a <code>KEY=VALUE</code> file on the host — the format consumed by a systemd <code>EnvironmentFile=</code> directive or a docker <code>--env-file</code>. Each map entry becomes one <code>KEY=value</code> line; keys are sorted alphabetically for deterministic output. The secret-grade counterpart of an env map: the values may be <code>secret.&lt;name&gt;.value</code> refs, they are streamed via SSH stdin (never argv), and <strong>only</strong> the rendered file’s <code>sha256</code> reaches state.</p>
+<p>This is the safe way to land secrets in a config file that a container or service reads by path, instead of duplicating the value into <code>docker_container.env</code>. Pair it with <a href="docker.html#env_file-host-env-files"><code>docker_container.env_file</code></a>: the secret is declared once here, and the container references the path.</p>
+<pre><code class="language-strat">secret "pg_password" {
+  from_env = "PG_PASSWORD"
+}
+
+resource "system_env_file" "db-env" {
+  host = host.primary.addr
+  path = "/etc/app/db.env"
+  mode = "0600"
+  env = {
+    POSTGRES_PASSWORD = secret.pg_password.value
+    POSTGRES_USER     = "postgres"
+    POSTGRES_DB       = "app"
+  }
+}
+
+resource "docker_container" "db" {
+  host       = host.primary.addr
+  name       = "db"
+  image      = "postgres:16-alpine"
+  env_file   = "/etc/app/db.env"
+  depends_on = ["system_env_file.db-env"]
+}
+</code></pre>
+<p>This renders <code>/etc/app/db.env</code> as (keys sorted):</p>
+<pre><code>POSTGRES_DB=app
+POSTGRES_PASSWORD=&lt;plaintext&gt;
+POSTGRES_USER=postgres
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>path</code></td><td>yes</td><td>string</td><td>—</td><td>Absolute destination path. Parent dirs are created via <code>install -D</code>.</td></tr>
+<tr><td><code>env</code></td><td>yes</td><td>map</td><td>—</td><td>Map of <code>KEY = value</code>. Each entry becomes one <code>KEY=value</code> line; keys sorted alphabetically. Values are typically <code>secret.&lt;name&gt;.value</code> — see <a href="../language/secrets.html">Secrets</a>. A non-string value renders as an empty string.</td></tr>
+<tr><td><code>mode</code></td><td>no</td><td>string</td><td><code>0600</code></td><td>File mode, passed to <code>install -m</code>. Defaults to owner-only read/write (secret-grade).</td></tr>
+<tr><td><code>owner</code></td><td>no</td><td>string</td><td><code>root</code></td><td>File owner, passed to <code>install -o</code>.</td></tr>
+<tr><td><code>group</code></td><td>no</td><td>string</td><td><code>root</code></td><td>File group, passed to <code>install -g</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Upload uses <code>install -D -m &lt;mode&gt; -o &lt;owner&gt; -g &lt;group&gt; /dev/stdin &lt;path&gt;</code> with the rendered content streamed via SSH stdin. The provider hashes the content before sending; on update, if the new sha matches prior state’s sha <strong>and</strong> all permissions match, the upload is skipped and the resource logs <code>unchanged (sha256 + perms match)</code>.</p>
+<p><strong>State shape:</strong> <code>{ host, path, mode, owner, group, sha256 }</code>. The <code>env</code> map is <strong>omitted</strong> — recovering the values from state is impossible by design. Plan diff is sha-to-sha: the <code>build_plan</code> normalizer replaces the desired <code>env</code> map with the sha of its rendered <code>KEY=VALUE</code> form before diffing, so plans never echo a value into a <code>env.KEY: null -&gt; "&lt;plaintext&gt;"</code> change. See <a href="../architecture.html#secret-content-normalization-on-plan">Architecture: secret-content normalization</a>.</p>
+<p><strong>Apply log:</strong> key <strong>count</strong> only — never the keys’ values.</p>
+<pre><code>[system] ENV_FILE `db-env` -&gt; root@192.0.2.10:/etc/app/db.env (3 keys, mode=0600 root:root)
+[system] ENV_FILE `db-env` -&gt; root@192.0.2.10:/etc/app/db.env unchanged (sha256 + perms match)
+</code></pre>
+<p><strong>Drift detection:</strong> <code>read</code> runs the same probe shape as <a href="#system_secret_file"><code>system_secret_file</code></a> (<code>&lt;mode&gt;|&lt;owner&gt;|&lt;group&gt;|&lt;sha256&gt;</code> or <code>MISSING</code>). Returns <code>Present { host, path, mode, owner, group, sha256 }</code> with <strong>no</strong> <code>env</code> field. Drift surfaces as a <code>sha256</code> / <code>mode</code> / <code>owner</code> / <code>group</code> mismatch — rotating a secret changes the rendered sha and triggers a re-upload.</p>
+<p><strong>Delete</strong> runs <code>rm -f -- &lt;path&gt;</code> best-effort.</p>
+<h3 id="system_dir"><a class="header" href="#system_dir"><code>system_dir</code></a></h3>
+<p>Manages a directory on the remote host. Two modes, selected by whether <code>source_dir</code> is set:</p>
+<ul>
+<li><strong>Upload mode</strong> (<code>source_dir</code> set) — tars + gzips a local tree in memory, streams it over one SSH connection, extracts on the host, applies <code>chown -R</code> + recursive <code>chmod</code>. Used to ship static assets (an <code>mdbook build</code> output, a static-site bundle) to a host where another container will serve them.</li>
+<li><strong>Empty-dir mode</strong> (<code>source_dir</code> omitted) — just <code>mkdir -p</code> + <code>chown</code> + <code>chmod</code> on the host. No upload. Used to pre-create directories a daemon expects but won’t create itself (e.g. <code>/srv/repos</code>, <code>/var/lib/&lt;daemon&gt;</code>).</li>
+</ul>
+<pre><code class="language-strat">resource "system_dir" "book" {
+  host         = host.primary.addr
+  source_dir   = "../book/book"
+  path         = "/srv/stratum-book"
+  mode         = "0644"
+  dir_mode     = "0755"
+  owner        = "root"
+  group        = "root"
+  delete_extra = true
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>path</code></td><td>yes</td><td>string</td><td>—</td><td>Absolute remote destination. Created with <code>mkdir -p</code>.</td></tr>
+<tr><td><code>source_dir</code></td><td>no</td><td>string</td><td>—</td><td>If set, local directory whose contents are tarred + uploaded. Resolved relative to the <code>.strat</code> file’s directory and canonicalized at config-load time. Must exist and be a directory. If omitted, the resource is in <a href="#empty-dir-mode-no-source_dir">empty-dir mode</a>.</td></tr>
+<tr><td><code>mode</code></td><td>no</td><td>string</td><td><code>0644</code></td><td>Mode applied to every regular file under <code>path</code> (via <code>find -type f -exec chmod</code>). Has no effect in empty-dir mode.</td></tr>
+<tr><td><code>dir_mode</code></td><td>no</td><td>string</td><td><code>0755</code></td><td>Mode applied to every directory under <code>path</code> (via <code>find -type d -exec chmod</code>). In empty-dir mode, applied once to <code>path</code> itself.</td></tr>
+<tr><td><code>owner</code></td><td>no</td><td>string</td><td><code>root</code></td><td>Recursive owner, applied with <code>chown -R &lt;owner&gt;:&lt;group&gt;</code>. In empty-dir mode, applied once to <code>path</code>.</td></tr>
+<tr><td><code>group</code></td><td>no</td><td>string</td><td><code>root</code></td><td>Recursive group.</td></tr>
+<tr><td><code>delete_extra</code></td><td>no</td><td>bool</td><td><code>false</code></td><td>If true, files in prior state’s manifest but absent from the new manifest are <code>rm -f</code>’d on the host after the upload. Keeps the remote tree in sync as local files are removed. No effect in empty-dir mode (the manifest is always empty).</td></tr>
+<tr><td><code>exclude</code></td><td>no</td><td>list of string</td><td>—</td><td>Gitignore-style globs pruned from the upload. Entries are applied when building the manifest, so an excluded file never lands in the manifest, the tar, or the drift <code>manifest_sha256</code>. No effect in empty-dir mode.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The provider walks <code>source_dir</code> with <a href="https://docs.rs/walkdir"><code>walkdir</code></a>, applies the <code>exclude</code> globs, sha256-hashes every remaining regular file, and stores the result as <code>{ relpath -&gt; sha256 }</code> (POSIX <code>/</code> separators even on Windows). The manifest is digested into a single <code>manifest_sha256</code>; on update, if both the manifest digest and every permission attr match prior state, the upload is skipped and the resource logs <code>unchanged (... manifest match)</code>.</p>
+<p><code>source_dir</code> is resolved at config-load time: the value the provider sees is the canonicalized absolute path of <code>&lt;dir-of-.strat-file&gt;/&lt;source_dir&gt;</code>. Using <code>system_dir</code> with <code>source_dir</code> via <code>stratum_config::load_str</code> (no base dir) errors with <code>EvalError::SourceDirNoBaseDir</code>. A missing or non-directory path errors with <code>EvalError::SourceDirMissing</code>.</p>
+<p>Stored state: <code>{ host, source_dir, path, mode, dir_mode, owner, group, delete_extra, exclude, file_count, manifest_sha256, manifest }</code>. The <code>manifest</code> map is persisted in full so <code>delete_extra</code> can diff prior keys against the new manifest.</p>
+<p><code>read</code> runs <code>find . -type f -print0 | sort -z | xargs -0 sha256sum</code> on the remote tree, returns <code>Absent</code> if the directory is missing, otherwise <code>Present { host, path, file_count, manifest_sha256, manifest }</code>. Drift surfaces as a <code>manifest_sha256</code> mismatch (or, with <code>delete_extra</code> off, extra keys observed on the host that aren’t in state).</p>
+<p><strong>File-count cap.</strong> If state’s <code>file_count</code> exceeds 200, <code>read</code> returns <code>Observed::Unknown("system_dir read skipped: file_count N &gt; cap 200")</code> instead of doing the remote sha256 sweep. Drift detection on large trees needs a smarter strategy; today they show up as <code>unreadable</code> in <code>--refresh</code> output. Apply itself is not capped — uploads of any size work.</p>
+<p>Delete runs <code>rm -rf -- &lt;path&gt;</code> best-effort.</p>
+<h4 id="empty-dir-mode-no-source_dir"><a class="header" href="#empty-dir-mode-no-source_dir">Empty-dir mode (no <code>source_dir</code>)</a></h4>
+<p>Omit <code>source_dir</code> to skip the upload entirely. The provider runs only:</p>
+<pre><code class="language-sh">mkdir -p &lt;path&gt;; chown &lt;owner&gt;:&lt;group&gt; &lt;path&gt;; chmod &lt;dir_mode&gt; &lt;path&gt;
+</code></pre>
+<p>The stored state’s <code>file_count</code> is <code>0</code>, the <code>manifest</code> is <code>{}</code>, and <code>manifest_sha256</code> is the digest of the empty manifest. <code>delete_extra</code> is recorded but has no effect — there are no manifest entries to diff. <code>read</code> returns <code>Absent</code> if the directory is missing on the host, otherwise <code>Present</code> with <code>file_count: 0</code> (the host’s tree is also expected to be empty as far as stratum is concerned; any files placed there by other processes don’t drift the manifest).</p>
+<pre><code class="language-strat"># Pre-create directories the daemon expects.
+resource "system_dir" "etc-app" {
+  host = host.primary.addr
+  path = "/etc/app"
+}
+
+resource "system_dir" "srv-repos" {
+  host = host.primary.addr
+  path = "/srv/repos"
+}
+</code></pre>
+<p>Use this in place of an <code>ssh_exec "mkdir -p ..."</code> chain when a daemon needs the directories to exist before it starts: empty-dir mode is idempotent, drift-detectable (the daemon won’t recreate the dir if <code>path</code> is missing on the host), and the owner/group/mode become declarative.</p>
+<h3 id="system_ufw_rule"><a class="header" href="#system_ufw_rule"><code>system_ufw_rule</code></a></h3>
+<p>A single ufw allow/deny rule. Idempotent via ufw itself — adding the same rule twice is harmless.</p>
+<pre><code class="language-strat">resource "system_ufw_rule" "allow-ssh" {
+  host = host.primary.addr
+  port = "22/tcp"
+  rule = "allow"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>port</code></td><td>yes</td><td>string</td><td>—</td><td>Port specifier, e.g. <code>22/tcp</code>, <code>443/tcp</code>, <code>8080</code>. Passed verbatim to ufw.</td></tr>
+<tr><td><code>rule</code></td><td>yes</td><td>string</td><td>—</td><td><code>allow</code> or <code>deny</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Runs <code>ufw &lt;rule&gt; &lt;port&gt;</code> on create/update. Delete runs <code>ufw delete &lt;rule&gt; &lt;port&gt;</code> best-effort.</p>
+<p>Stored state: <code>{ host, port, rule }</code>. <code>read</code> returns <code>Observed::Unknown("system_ufw_rule read not implemented (ufw status parsing punted)")</code> — ufw rules always show up as <code>unreadable</code> in drift summaries. This is intentional for v1.</p>
+<p><strong>Lockout warning:</strong> <code>systemctl start ufw</code> does NOT activate the firewall ruleset. The ruleset becomes active only when the firewall is enabled — use the <a href="#system_ufw"><code>system_ufw</code></a> kind for that. Enabling the firewall on a host with no <code>allow</code> rule for its SSH control port would lock you out; stratum refuses that at plan time (see below).</p>
+<h3 id="system_ufw"><a class="header" href="#system_ufw"><code>system_ufw</code></a></h3>
+<p>The firewall’s enable state — one per host. Replaces the old raw <code>ssh_exec "ufw --force enable"</code> escape hatch with a first-class, lockout-checked kind.</p>
+<pre><code class="language-strat">resource "system_ufw" "firewall" {
+  host    = host.primary.addr
+  enabled = true
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>enabled</code></td><td>no</td><td>bool</td><td><code>true</code></td><td><code>true</code> runs <code>ufw --force enable</code>; <code>false</code> runs <code>ufw --force disable</code>.</td></tr>
+<tr><td><code>deadman_secs</code></td><td>no</td><td>int</td><td><code>120</code></td><td>Dead-man’s-switch window guarding the enable (see below). <code>0</code> opts out.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Apply runs <code>ufw --force enable</code> (or <code>--force disable</code>); both are idempotent, so an unchanged plan NoOps and a re-apply is harmless. Delete runs <code>ufw --force disable</code> (the safe direction — it can never lock anyone out). <code>read</code> returns <code>Observed::Unknown</code> — like <code>system_ufw_rule</code>, ufw status parsing is punted for v1, so it shows as <code>unreadable</code> in drift summaries.</p>
+<p>Stored state: <code>{ host, enabled }</code> (plus <code>deadman_secs</code> when declared, so it doesn’t show as drift).</p>
+<p><strong>Plan-time lockout guard.</strong> Enabling the firewall over the same SSH connection stratum works through has two lockout paths: (1) enabling default-deny with no <code>allow &lt;ssh-port&gt;</code> rule, and (2) deleting the allow-<code>&lt;ssh-port&gt;</code> rule from config while <code>system_ufw</code> stays enabled. Both are refused at plan time by a cross-resource check (in <code>stratum_core::Registry::validate_desired</code>): any host where the desired config enables ufw MUST also declare a <code>system_ufw_rule</code> allowing that host’s SSH control port (from the <code>host</code> block’s <code>port</code>, default <code>22</code>), and must not <code>deny</code> it. The error names the exact rule to add.</p>
+<p><strong>Dead-man’s switch around enable (self-healing).</strong> The plan-time guard makes a <em>permanent</em> lockout impossible to express, but <code>ufw --force enable</code> still FLUSHES connection tracking — which can kill the very SSH session stratum is enabling the firewall through (observed live as a “contaminated box” stratum could no longer reach). To make the enable itself survivable, the <code>system_ufw</code> apply wraps it in a targeted dead-man’s switch:</p>
+<ol>
+<li><strong>Arm</strong> — immediately before enabling, arm a transient systemd timer on the host: <code>systemd-run --collect --on-active=&lt;deadman_secs&gt;s --unit=stratum-deadman ufw --force disable</code>. The revert fires <em>only if not cancelled</em> (i.e. only on failure), so its direction (disable) is always lockout-safe.</li>
+<li><strong>Enable</strong> — run <code>ufw --force enable</code>. A dropped transport here (ssh exit 255) is the <em>expected</em> symptom of the conntrack flush, not a failure.</li>
+<li><strong>Verify</strong> — reconnect on a <strong>brand-new</strong> ssh connection (never the possibly-dead multiplexed master; the probe forces <code>ControlMaster=no</code>/<code>ControlPath=none</code>) and confirm reachability with a trivial <code>true</code>.</li>
+<li><strong>Cancel or let-fire</strong> — reconnected → stop the timer (the revert never runs) and the step succeeds. Not reconnected within the window → the timer fires <code>ufw --force disable</code>, access is restored, and the step is marked FAILED (checkpointed state records progress; fix the rule and re-apply).</li>
+</ol>
+<p>Set <code>deadman_secs = 0</code> to opt out (bare <code>ufw --force enable</code>, no guard). <strong>Honest scope:</strong> this guarantees no lockout and lets stratum survive losing <em>its own</em> connection during enable. It does NOT by itself protect a <em>concurrent, unrelated</em> in-flight ssh step from the same flush — for that, keep the <code>depends_on</code> edges that order the enable strictly after every other ssh-heavy step; see the <a href="../tutorials/bootstrap-droplet.html">bootstrap tutorial</a>.</p>
+<h3 id="system_swap"><a class="header" href="#system_swap"><code>system_swap</code></a></h3>
+<p>A declarative swapfile. Reversible — unlike a raw <code>ssh_exec</code> that runs <code>fallocate</code>/<code>mkswap</code>, deleting this resource turns swap off, removes the file, and strips the <code>/etc/fstab</code> line.</p>
+<pre><code class="language-strat">resource "system_swap" "main" {
+  host = host.primary.addr
+  size = "2G"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>size</code></td><td>yes</td><td>string</td><td>—</td><td>Swap size token: <code>2G</code>, <code>512M</code>, <code>1024</code> (bytes). Units are 1024-based, matching <code>fallocate -l</code>. An unparseable value is a hard error.</td></tr>
+<tr><td><code>path</code></td><td>no</td><td>string</td><td><code>/swapfile</code></td><td>Swapfile path on the host.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Apply is idempotent: if the file already exists at the requested byte-size it is just <code>swapon</code>’d; otherwise it is recreated (<code>fallocate</code>, falling back to <code>dd</code>), <code>chmod 600</code>, <code>mkswap</code>, <code>swapon</code>, and an <code>fstab</code> line is added for persistence.</p>
+<p>Stored state: <code>{ host, path, size }</code>. <code>read</code> checks whether <code>path</code> exists and returns <code>Absent</code> (missing) or <code>Present</code> echoing the recorded size — a size change is driven by the desired-vs-state token diff at plan time, not by reversing bytes back to a token.</p>
+<p>Delete runs <code>swapoff</code> + <code>rm -f</code> and removes the fstab line, best-effort.</p>
+<h3 id="system_user"><a class="header" href="#system_user"><code>system_user</code></a></h3>
+<p>A declarative user account. Reversible — delete runs <code>userdel -r</code>.</p>
+<pre><code class="language-strat">resource "system_user" "deploy" {
+  host  = host.primary.addr
+  name  = "deploy"
+  home  = "/home/deploy"
+  shell = "/bin/bash"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>name</code></td><td>no*</td><td>string</td><td>resource label</td><td>Username. Falls back to the resource label.</td></tr>
+<tr><td><code>home</code></td><td>no</td><td>string</td><td><code>/home/&lt;name&gt;</code></td><td>Home directory, passed to <code>useradd -d</code>.</td></tr>
+<tr><td><code>shell</code></td><td>no</td><td>string</td><td><code>/usr/sbin/nologin</code></td><td>Login shell, passed to <code>useradd -s</code>.</td></tr>
+<tr><td><code>system</code></td><td>no</td><td>bool</td><td><code>false</code></td><td>If true, creates a system account (<code>useradd -r</code>).</td></tr>
+<tr><td><code>create_home</code></td><td>no</td><td>bool</td><td><code>true</code></td><td><code>true</code> → <code>useradd -m</code>; <code>false</code> → <code>useradd -M</code> (no home created).</td></tr>
+</tbody>
+</table>
+</div>
+<p>*<code>name</code> defaults to the resource label when omitted.</p>
+<p>Apply is idempotent: the user is created only if <code>id -u &lt;name&gt;</code> reports it absent. An existing user is left as-is — <code>home</code>/<code>shell</code>/<code>system</code>/<code>create_home</code> apply only at creation.</p>
+<p>Stored state: <code>{ host, name, home, shell, system, create_home }</code> — the creation flags are echoed so the plan diff stays clean (they aren’t re-observable). <code>read</code> runs <code>getent passwd &lt;name&gt;</code> and returns <code>Absent</code> (missing) or <code>Present { host, name, home, shell }</code> parsed from the passwd line.</p>
+<p>Delete kills the user’s processes, then runs <code>userdel -r</code> (falling back to <code>userdel</code>), best-effort.</p>
+<h3 id="caddy_route"><a class="header" href="#caddy_route"><code>caddy_route</code></a></h3>
+<p>A declarative reverse-proxy route, managed through Caddy’s admin API (default <code>http://localhost:2019</code>) over SSH. One <code>caddy_route</code> is one host-matched route: a <code>reverse_proxy</code> to an upstream, with optional HTTP basic-auth. TLS is automatic — Caddy auto-provisions a certificate for any host in the route matcher, so there is no <code>tls</code> attribute.</p>
+<pre><code class="language-strat">resource "caddy_route" "web" {
+  host     = host.primary.addr
+  domain   = "app.example.com"
+  upstream = "web:3000"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>domain</code></td><td>yes</td><td>string</td><td>—</td><td>HTTP host to match for this route.</td></tr>
+<tr><td><code>upstream</code></td><td>yes</td><td>string</td><td>—</td><td>Dial address for <code>reverse_proxy</code>, e.g. <code>web:3000</code>.</td></tr>
+<tr><td><code>server</code></td><td>no</td><td>string</td><td><code>main</code></td><td>Caddy server name the route is appended to.</td></tr>
+<tr><td><code>admin</code></td><td>no</td><td>string</td><td><code>http://localhost:2019</code></td><td>Caddy admin endpoint.</td></tr>
+<tr><td><code>route_id</code></td><td>no</td><td>string</td><td>resource label</td><td>Caddy <code>@id</code> for the route — the addressable key for upsert/delete.</td></tr>
+<tr><td><code>basic_auth</code></td><td>no</td><td>map</td><td>none</td><td><code>{ user, password_hash }</code>. Both fields required if present — a partial block is a hard error (fail-closed, no unguarded route). <code>password_hash</code> may be a <code>secret.&lt;name&gt;.value</code> ref.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Apply is idempotent and gated on Caddy readiness: it polls the admin endpoint (~30s budget) so a route op on a fresh box doesn’t race a just-started Caddy container, then DELETEs any route with this <code>@id</code> (404 ignored) and POSTs the fresh route — no duplicate accumulation. The basic-auth bcrypt hash is sent on the POST body over stdin (never argv), and state stores only a sha256 signature, never the hash.</p>
+<p>Stored state: <code>{ host, route_id, server, admin, domain, upstream, basic_auth_user, sig_sha256 }</code>. <code>read</code> GETs the route by <code>@id</code> and returns <code>Absent</code> (missing) or <code>Present</code> with a recomputed <code>sig_sha256</code>, so a hand-edited route surfaces as a signature mismatch.</p>
+<p>Delete runs <code>curl -X DELETE &lt;admin&gt;/id/&lt;route_id&gt;</code> (404 is a no-op success).</p>
+<h2 id="apply-trace"><a class="header" href="#apply-trace">Apply trace</a></h2>
+<p>Each resource logs one line to stderr:</p>
+<pre><code>[system] PACKAGE `docker.io` present on root@192.0.2.10
+[system] SERVICE `docker` enabled=true state=started on root@192.0.2.10
+[system] FILE `traefik-config` -&gt; root@192.0.2.10:/etc/traefik/traefik.yml (188 bytes, mode=0644 root:root)
+[system] FILE `traefik-config` -&gt; root@192.0.2.10:/etc/traefik/traefik.yml unchanged (sha256 match)
+[system] SECRET_FILE `firebase-sa` -&gt; root@192.0.2.10:/etc/app/firebase-sa.json (1842 bytes, mode=0400 root:root)
+[system] DIR `site` -&gt; root@192.0.2.10:/srv/site (42 files, mode=0644 dir_mode=0755 root:root)
+[system] DIR `site` -&gt; root@192.0.2.10:/srv/site unchanged (42 files, manifest match)
+[system] UFW allow 22/tcp on root@192.0.2.10
+</code></pre>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<ul>
+<li><code>apt-get update</code> is memoized once per <code>(process, host)</code>. A separate <code>stratum</code> invocation re-runs it.</li>
+<li>All shell quoting is internal (<code>shell_quote</code> helper) — package names with spaces are correctly quoted, but in practice apt names don’t contain them.</li>
+<li>For declarative user accounts use <a href="#system_user"><code>system_user</code></a> rather than an <code>ssh_exec</code> running <code>useradd</code> — the resource is idempotent and reversible.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../providers/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../providers/ssh.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../providers/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../providers/ssh.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Changelog - stratum</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Tiny declarative IaC tool, written from scratch in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-990bb639.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-1b75d191.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stratum</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum/edit/main/book/src/changelog.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
+<h2 id="2026-07-16--docker_container--docker_network-adopt-on-create"><a class="header" href="#2026-07-16--docker_container--docker_network-adopt-on-create">2026-07-16 — <code>docker_container</code> / <code>docker_network</code> adopt on create</a></h2>
+<ul>
+<li>The docker provider’s <strong>create</strong> path now <strong>adopts</strong> a container or network of the same name that already exists on the host (one that predates stratum management) instead of colliding on the name or recreating it. On create, stratum <code>docker inspect</code>s first: <strong>not found</strong> → create as before; <strong>found and every declared attr matches the live object</strong> → <strong>ADOPT</strong> (mutate nothing, record the live id into state, next plan is a no-op — <code>[docker] ADOPT existing container &lt;name&gt; ... — no change</code>); <strong>found but a declared attr conflicts</strong> → <strong>hard error</strong> listing each differing attr (declared vs live) and the options (edit the <code>.strat</code>, remove the live object by hand, or <code>apply -r</code>). Stratum never <code>rm -f</code>s on the adopt path — that recreate would be the outage this avoids. Only <em>declared</em> attrs are checked, each as a subset/equality, so undeclared live details (image-baked env, the default <code>bridge</code> network, daemon labels, extra ports) don’t block adoption. Gated attrs: container <code>image</code> / <code>restart</code> / <code>networks</code> / <code>labels</code> / <code>env</code> / <code>ports</code> / <code>volumes</code> (rules in <code>providers/docker.md</code>), network <code>driver</code>. <code>pull</code> / <code>env_file</code> / <code>memory</code> / <code>memory_swap</code> / <code>command</code> / <code>healthcheck</code> aren’t observable-or-comparable reliably from inspect and are adopted on trust (documented). <strong>Update behavior is unchanged (recreate).</strong> Mirrors the <code>cloudflare_dns_record</code> create-is-upsert idempotency. Lets a live box with a hand-run Caddy + a pre-existing <code>stratum-edge</code> network be brought under management with no downtime.</li>
+</ul>
+<h2 id="2026-07-15--system_ufw-declarative-firewall--forward-compatible-state-guard-138-139-140"><a class="header" href="#2026-07-15--system_ufw-declarative-firewall--forward-compatible-state-guard-138-139-140">2026-07-15 — <code>system_ufw</code> declarative firewall + forward-compatible state guard (#138, #139, #140)</a></h2>
+<ul>
+<li>New <strong><code>system_ufw</code></strong> kind (system provider) owns a host’s firewall enable state declaratively (<code>system_ufw { enabled = true }</code>; apply = <code>ufw --force enable</code>, delete = <code>ufw --force disable</code>, both idempotent), replacing the raw <code>ssh_exec "ufw --force enable"</code> escape hatch. It ships with a <strong>two-layer anti-lockout guard</strong>. <strong>Layer 1</strong> (#139): <code>Registry::validate_desired</code> makes control-plane lockout impossible to <em>express</em> — any host that enables ufw must also declare a <code>system_ufw_rule</code> allowing that host’s SSH control port (from the injected <code>_ssh_port</code> meta attr, default 22) and must not deny it, catching both lockout paths (default-deny with no allow rule, or deleting the allow rule) at plan time. <strong>Layer 2</strong> (#140): the enable is wrapped in a <strong>dead-man’s switch</strong> — arm a transient <code>stratum-deadman</code> systemd timer (<code>systemd-run --on-active=&lt;deadman_secs&gt;s … ufw --force disable</code>), enable, verify reachability on a brand-new SSH connection (<code>ControlMaster=no</code>/<code>ControlPath=none</code> so it never joins the possibly-dead master), then cancel on reconnect, or let the timer fire and auto-restore access, marking the step FAILED. New <code>deadman_secs</code> attr (default 120; 0 opts out), echoed into state so the one-sided diff doesn’t flag perpetual drift.</li>
+<li><strong>Forward-compatible state guard</strong> (#138): <code>State::load</code> now hard-errors when a <code>state.json</code>’s <code>version</code> exceeds <code>STATE_VERSION</code> (the highest schema version this build understands), instead of silently misreading — and corrupting on save — a file written by a newer stratum. Covers both split files via <code>load_merged</code>.</li>
+</ul>
+<h2 id="2026-07-15--cloudflare_dns_record-is-idempotent-137"><a class="header" href="#2026-07-15--cloudflare_dns_record-is-idempotent-137">2026-07-15 — <code>cloudflare_dns_record</code> is idempotent (#137)</a></h2>
+<ul>
+<li><code>cloudflare_dns_record</code> create is now an <strong>upsert</strong> instead of a blind POST. It first looks up existing records (<code>GET /zones/&lt;id&gt;/dns_records?type=&amp;name=</code>) and: <strong>adopts</strong> an identical existing record (same content/ttl/proxied) by recording its Cloudflare <code>id</code> into state and writing nothing — fixing <code>HTTP 400 "An identical record already exists" (81058)</code>; <strong>converges</strong> a sole record of the same type+name that differs, in place via <code>PUT</code>; and only <strong>creates</strong> (POST) when the name is genuinely free (or several round-robin records exist and none matches). Lets ingress deploys manage a record already present in Cloudflare (threshold’s <code>memory.kbach.dev</code>) as a no-op. Mirrors the <code>caddy_route</code> adopt-by-id idempotency.</li>
+</ul>
+<h2 id="2026-07-14--host-addr-can-reference-a-var-109"><a class="header" href="#2026-07-14--host-addr-can-reference-a-var-109">2026-07-14 — host <code>addr</code> can reference a <code>var</code> (#109)</a></h2>
+<ul>
+<li>A <code>host</code> body may now reference <code>var.&lt;name&gt;</code> (bare or <code>"${var.&lt;name&gt;}"</code>), so a host address can come from the environment: <code>var "box_host" { from_env = "CLAUDE_BOX_HOST" }</code> then <code>host "box" { addr = var.box_host }</code>. Implemented by collecting <code>var</code> blocks <strong>before</strong> hosts (new pass 0.5) instead of after — vars are literal-only leaves, so they have no dependency on hosts/secrets and reordering is safe. Host bodies are evaluated against a vars-only scope: <code>var.x</code> resolves while <code>secret.x</code>, another host, a resource ref, or <code>input.x</code> inside a host block still hard-fail as <code>references not allowed inside </code>host<code> blocks</code> (hosts gain no access to secrets or other hosts). Part of the app-deploy steward RFC (#131). Documented in <code>language/hosts.md</code> (Literal-only, except <code>var</code>), <code>language/references.md</code>, and <code>language/overview.md</code> (evaluation order now vars → hosts → secrets → namespaces → resources).</li>
+</ul>
+<h2 id="2026-07-01--ssh_keypair-74"><a class="header" href="#2026-07-01--ssh_keypair-74">2026-07-01 — <code>ssh_keypair</code> (#74)</a></h2>
+<ul>
+<li>New <code>ssh_keypair</code> kind in the SSH provider: generates a <strong>local</strong> ed25519 keypair (no <code>host</code>, a <code>HOSTLESS_KIND</code>). Only attr is <code>path</code> (optional, <code>force_new</code>; default <code>~/.stratum/keys/&lt;name&gt;</code>, stored unexpanded for portability). The private half is written mode-0600 (unix; ACL-scoped under the user profile on Windows) plus a <code>.pub</code> sidecar; state carries only <code>{ path, public_key, fingerprint, sha256 }</code> — the private key material never persists (the <code>system_secret_file</code> secret-in-state contract, reversed). Re-apply reuses an existing valid key (never clobbers a public key already authorized on live boxes); <code>plan --refresh</code> flags a missing/swapped key as drift; delete removes the local private key + sidecar, leaving the deployed public half. Powers the ephemeral per-box deploy-key flow: public key → <code>do_droplet.user_data</code> cloud-init <code>ssh_authorized_keys</code> (pending-ref defers the droplet), private key → the host’s <code>identity_file</code>. Documented in <code>providers/ssh.md</code> (kind section + deploy-key example + trace lines), <code>providers/index.md</code> (read table); regenerated <code>generated/provider-kinds.md</code> (now 20 kinds).</li>
+</ul>
+<h2 id="2026-07-01--stratum-ssh-73"><a class="header" href="#2026-07-01--stratum-ssh-73">2026-07-01 — <code>stratum ssh</code> (#73)</a></h2>
+<ul>
+<li>New <code>stratum ssh &lt;host&gt; [-- cmd...]</code>: open an interactive shell (or run a one-off command) on a managed host, reusing the connection settings stratum already knows — the <code>host</code> block’s addr (resolved from <strong>state</strong> for <code>from_resource</code> hosts), its <code>identity_file</code>/<code>port</code>/<code>jump_host</code>, and any pinned <code>host_key</code> (verified with <code>StrictHostKeyChecking=yes</code>). Unlike the automation path it drops <code>BatchMode</code> (a human may need to answer a prompt), allocates a TTY for the shell case, and <code>exec</code>s ssh so it exits with ssh’s code (scriptable). A <code>&lt;HOST&gt;</code> matching no declared block is treated as a raw <code>user@addr</code>. Refactored <code>ssh_args</code>: <code>host_key_flags(host)</code> (the pin decision) and <code>SshTarget::conn_flags()</code> (<code>-i</code>/<code>-p</code>/<code>-J</code>) are now shared between <code>base_flags</code> and the interactive path. Live-verified against a real sshd (pinned host connects; a wrong pin → “Host key verification failed”). Documented in <code>cli.md</code> § <code>ssh</code>.</li>
+</ul>
+<h2 id="2026-07-01--do_droplet-cloud-init-user_data-70"><a class="header" href="#2026-07-01--do_droplet-cloud-init-user_data-70">2026-07-01 — <code>do_droplet</code> cloud-init <code>user_data</code> (#70)</a></h2>
+<ul>
+<li><code>do_droplet</code> gains <code>user_data</code> (cloud-init config run at first boot) and <code>user_data_file</code> (a local file path inlined into <code>user_data</code> at config load — preferred, since <code>.strat</code> strings can’t hold raw newlines). <code>user_data</code> is <code>force_new</code> (cloud-init runs once, so a change recreates the box) and echoed into state so an unchanged config re-plans as a no-op; the DO API never returns it, so it isn’t drift-observed. <code>user_data</code>/<code>user_data_file</code> are mutually exclusive (<code>UserDataConflict</code>). Unblocks ephemeral per-box deploy keys and cloud-init host-key injection (the zero-friction end of <a href="#2026-07-01-host-key-pinning-67">host-key pinning</a>). Documented in <code>providers/digitalocean.md</code> (attr table + cloud-init section); regenerated <code>generated/provider-kinds.md</code>.</li>
+</ul>
+<h2 id="2026-07-01--do_ssh_key-69"><a class="header" href="#2026-07-01--do_ssh_key-69">2026-07-01 — <code>do_ssh_key</code> (#69)</a></h2>
+<ul>
+<li>New <code>do_ssh_key</code> kind (DigitalOcean provider): imports an SSH public key into the DO account via <code>POST /v2/account/keys</code>, so <code>do_droplet.ssh_keys</code> can reference <code>do_ssh_key.&lt;n&gt;.fingerprint</code> instead of requiring a key pre-imported by hand. Removes the last manual pre-step for a from-scratch DO deploy. <code>public_key</code> is <code>force_new</code> (rotation = delete + re-import, cascades to referencing droplets); <code>key_name</code> (defaults to resource name) is rename-only. <code>read</code> → <code>Present { token, public_key, key_name, id, fingerprint }</code> / <code>Absent</code> / <code>Unknown</code> (redacted token). Hostless (API, never SSH). Documented in <code>providers/digitalocean.md</code> § <code>do_ssh_key</code> + <code>providers/index.md</code> read table; regenerated <code>generated/provider-kinds.md</code> (19 kinds).</li>
+</ul>
+<h2 id="2026-07-01--host-key-pinning-67"><a class="header" href="#2026-07-01--host-key-pinning-67">2026-07-01 — host-key pinning (#67)</a></h2>
+<ul>
+<li>
+<p><code>host</code> block gains a <code>host_key</code> field: pin the box’s SSH host key and stratum uses <code>StrictHostKeyChecking=yes</code> against a stratum-managed <code>~/.stratum/known_hosts</code>, <em>verifying</em> the key instead of the default trust-on-first-use (<code>accept-new</code>). Closes the MITM window on first contact with a fresh box. Unset → prior <code>accept-new</code> behavior, unchanged (purely additive). Accepts raw key material or a full <code>ssh-keyscan</code> line. <strong>Fail-closed:</strong> an unwritable/missing known_hosts makes ssh refuse rather than trust. Wired through a process-global pin registry so both <code>SshTarget::pre_args</code> and the <code>base_args</code> call sites (docker/git) verify a pinned host. Documented in <code>language/hosts.md</code> § <code>host_key</code>. Live-verified against a real sshd (correct pin authenticates through; wrong pin → “Host key verification failed”).</p>
+</li>
+<li>
+<p>New <code>cloudflare</code> provider (<code>crates/providers/cloudflare</code>) with one kind, <code>cloudflare_dns_record</code>: <code>A</code>/<code>AAAA</code>/<code>CNAME</code> records in a Cloudflare-managed zone via the Cloudflare API v4 (no SDK, same reqwest/<code>429</code>-backoff style as <code>do_droplet</code>). So a deploy can end at a real HTTPS domain — pair it with a <code>do_droplet</code> for the box and a web server for auto-TLS. Verified end-to-end live: droplet → <code>cloudflare_dns_record</code> → Caddy served <code>https://&lt;domain&gt;</code> with a real Let’s Encrypt cert, then a clean <code>destroy</code> removed the record and the box.</p>
+</li>
+<li>
+<p>Attrs: <code>token</code> (secret, <code>Zone.DNS:Edit</code>, redacted in state), <code>zone</code> (name, resolved to id) <strong>or</strong> <code>zone_id</code> (both <code>force_new</code>), <code>type</code>, <code>name</code> (relative → FQDN; <code>@</code>/empty = apex), <code>value</code>, <code>ttl</code> (default <code>1</code> = auto), <code>proxied</code> (default <code>false</code> / DNS-only so origin ACME works). <code>read</code> reports <code>Present { type, value, ttl, proxied, record_id, fqdn }</code> or <code>Absent</code>; <code>value</code>/<code>ttl</code>/<code>proxied</code> are read live for drift, identity carried from state. New <code>providers/cloudflare.md</code>, added to <code>providers/index.md</code> (kind + <code>read</code> tables) and <code>SUMMARY.md</code>. <code>cloudflare_dns_record</code> is a <code>HOSTLESS_KIND</code> (API, never SSH).</p>
+</li>
+<li>
+<p><code>state rm</code>: drop resource(s) from a state file without touching any host — a recovery tool for out-of-band deletions and wedged teardowns. Positional <code>&lt;addr&gt;</code> for one resource, <code>--host &lt;addr&gt;</code> to forget every resource on a gone host, <code>-p/--path</code>, <code>-y/--yes</code> (preview without it). Documented in <code>cli.md</code> § <code>state rm</code> and added to the command summary.</p>
+</li>
+<li>
+<p><code>destroy --skip-unreachable</code>: pre-probe each SSH host and drop the deletes for any that don’t answer (they die with the host), so a doomed host’s ssh timeouts don’t strand the <code>do_droplet</code> delete. Skipped resources are removed from state. Documented in <code>cli.md</code> destroy flag table.</p>
+</li>
+<li>
+<p><code>-t/--target</code> on <code>plan</code> and <code>apply</code>: restrict the run to <code>&lt;kind&gt;.&lt;name&gt;</code> plus its <code>depends_on</code> closure, dropping everything else (including unrelated Deletes; the destroy guard still applies). Mirrors Terraform <code>-target</code>.</p>
+</li>
+<li>
+<p><code>-r/--replace</code> on <code>plan</code> and <code>apply</code>: force a recreate of a resource whose attrs match state; cascades through <code>depends_on</code>. Also the opt-in for an in-place change to a create-time-immutable (<code>force_new</code>) field.</p>
+</li>
+<li>
+<p><code>--check-after</code> on <code>apply</code>: the post-apply self-check is now <strong>opt-in</strong>, not automatic. Off by default — it costs one ssh round-trip per resource. Updated <code>cli.md</code>, <code>architecture.md</code> (flow step 12), <code>introduction.md</code>, and the <code>bootstrap-droplet</code> / <code>book-serve</code> tutorials, which previously showed self-check output from a plain apply.</p>
+</li>
+<li>
+<p>Parallel apply / <code>--max-parallel</code> (default 4): independent steps run concurrently; chained steps serialize, capped under sshd <code>MaxStartups</code>. <code>bootstrap-droplet.md</code> now ships <code>depends_on</code> edges so the apt/ufw chain stays safe under the parallel default, and its “depends-on graph is not implemented” claim is removed (topo sort is implemented).</p>
+</li>
+<li>
+<p><code>Action::Replace</code> (symbol <code> ±</code>) + <code>PlanSummary.replace</code>: documented in <code>architecture.md</code> and the <code>cli.md</code> plan symbol/summary tables.</p>
+</li>
+</ul>
+<h2 id="2026-06-28--documentation-drift-sweep"><a class="header" href="#2026-06-28--documentation-drift-sweep">2026-06-28 — documentation drift sweep</a></h2>
+<ul>
+<li><code>providers/ssh.md</code> + <code>providers/docker.md</code>: corrected the <code>env</code> / <code>build_args</code> lowering — values stream over ssh stdin and are sourced (<code>set -a; . /dev/stdin; set +a; &lt;cmd&gt;</code>) so secrets stay out of the remote argv; <code>env</code>/<code>build_args</code> lower to valueless <code>-e KEY</code> / <code>--build-arg KEY</code>. Added <code>ssh_exec.check</code> (idempotency probe; makes <code>read</code> report Present/Absent). <code>docker rmi</code> is <code>rmi -f</code>.</li>
+<li><code>providers/system.md</code>: documented <code>system_swap</code>, <code>system_user</code>, <code>caddy_route</code> (and removed the false “no <code>system_user</code> kind” note); added <code>system_package.names</code>, <code>system_service.unit</code>/<code>unit_sha256</code> (with <code>systemctl restart</code> and bounce-on-apply behavior), <code>system_dir.exclude</code>.</li>
+<li><code>providers/index.md</code>: kind→provider and <code>read</code> tables now list all 17 shipped kinds (added <code>system_env_file</code>, <code>system_swap</code>, <code>system_user</code>, <code>caddy_route</code>); <code>do_droplet</code> observed shape fixed to <code>ssh_host</code> + <code>token</code>.</li>
+<li><code>providers/digitalocean.md</code>: <code>do_droplet</code> read shape emits <code>ssh_host</code> and carries <code>token</code>.</li>
+<li><code>language/hosts.md</code>: <code>user</code>/<code>port</code>/<code>identity_file</code>/<code>jump_host</code>/<code>swap</code> are wired, not reserved. <code>language/vars.md</code>: documented <code>from_dir_sha</code> + <code>exclude</code> and fixed precedence/error text. <code>language/secrets.md</code>: <code>from_file</code> trims all trailing CR/LF; added the <code>("system_service","unit")</code> forbidden pair (also <code>references.md</code>, <code>interpolation.md</code>). <code>language/namespaces.md</code>: reworded the “rejected” table to match non-enforced behavior.</li>
+<li><code>git.md</code>: full-SHA detection accepts uppercase hex. <code>architecture.md</code>: eight crates; state-file example carries <code>addr.host</code>.</li>
+</ul>
+<h2 id="2026-06-24--docker_container-env_file"><a class="header" href="#2026-06-24--docker_container-env_file">2026-06-24 — docker_container <code>env_file</code></a></h2>
+<ul>
+<li><code>providers/docker.md</code>: documented the new <code>docker_container.env_file</code> attribute (string or list of strings → one <code>--env-file</code> per path). Added the attr-table row, an <code>env_file</code> subsection covering precedence (emitted before <code>-e</code>, so <code>env</code> overrides a same-named key from the file), the multi-file list form, validation errors, and a <code>system_env_file</code>-consuming example that keeps the secret out of <code>docker_container.env</code>.</li>
+<li><code>tutorials/inject-secret-into-container.md</code>: added a “One secret, several env vars” section showing the <code>system_env_file</code> + <code>env_file</code> pattern as the alternative to inline <code>env</code> + <code>secret.X.value</code>.</li>
+<li><code>providers/system.md</code>: documented the <code>system_env_file</code> kind (renders an <code>env</code> map → <code>KEY=VALUE</code> host file; secret values stream via stdin, sha-only in state). Attr table (<code>path</code>, <code>env</code>, <code>mode</code>/<code>owner</code>/<code>group</code> with <code>0600</code> secret-grade default), rendering format, state/plan-diff sha behavior, apply-log key-count-only, drift, delete. Cross-links from <code>docker.md</code> and the tutorial now resolve to the <code>#system_env_file</code> anchor.</li>
+</ul>
+<h2 id="2026-06-11--cross-resource-refs-1"><a class="header" href="#2026-06-11--cross-resource-refs-1">2026-06-11 — cross-resource refs (#1)</a></h2>
+<ul>
+<li>Documented the new <code>&lt;kind&gt;.&lt;name&gt;.&lt;attr&gt;</code> ref form (3+ segments, nested state-attr walk, bare or <code>${...}</code>, resource bodies only). New <code>language/references.md</code> § Resource references covers: resolution from the <strong>state file</strong> at load time (same-host <code>host|kind.name</code> key, then hostless fallback; values stay typed; scalars only), deferral when the producer isn’t in state (<code>deferred (ref pending: ...)</code> plan section, transitive <code>deferred (depends on a deferred resource)</code>, phantom-Delete suppression), apply’s bounded converge round + the still-unresolved warning, the implicit <code>depends_on</code> injection (merged/deduped; one-time <code>~ depends_on: null -&gt; [...]</code> Update on pre-existing consumers; flows into state for delete order), the last-applied staleness trade (same as <code>from_resource</code>), and the full error set verified verbatim against the binary (undeclared target lists built-in roots and catches typo’d roots; missing attr lists available + <code>-r</code> hint; non-scalar; secret-marker attr; ref in <code>host</code> attr → <code>from_resource</code> hint; refs rejected in host/secret/var/provider/namespace bodies; self-reference). Root table + “why only these roots” rewritten as “where each root resolves from” (declarations vs state). <code>cli.md</code> gains a <code>plan</code> § Deferred resources (all three section shapes) and an <code>apply</code> § The converge round. <code>language/interpolation.md</code> adds the new root; <code>language/overview.md</code> notes the pass-0 label pre-scan and state-attr resolution in pass 5; <code>language/hosts.md</code> states the division of labor (resources ref state directly; hosts use <code>from_resource</code>); <code>providers/docker.md</code> documents <code>docker_image.X.image_id</code> / <code>.id</code> as referenceable with the rebuild-cascades-consumer pattern; <code>providers/digitalocean.md</code> reworded — <code>do_droplet.web.ip_address</code> IS now referenceable by resources, the host handoff stays <code>from_resource</code>. <code>introduction.md</code> moves cross-resource refs from “does not work yet” to “what works today” (cross-host refs remain inexpressible). Shipping alongside: a planner fix the docs pass surfaced — <code>depends_on</code> resolution (topo sort, cascade, delete order, executor) gains the same hostless fallback as ref resolution (<code>dep_key_candidates</code>), so a host-bound consumer referencing a hostless producer (<code>ssh_exec</code> → <code>do_droplet.web.ip_address</code>) plans cleanly instead of erroring <code>not declared in any config</code>; verified against the real binary with the droplet in state.</li>
+</ul>
+<h2 id="2026-06-11--apply-locking-2"><a class="header" href="#2026-06-11--apply-locking-2">2026-06-11 — apply locking (#2)</a></h2>
+<ul>
+<li><code>apply</code> and <code>destroy</code> now hold an exclusive OS file lock (<code>File::try_lock</code> on <code>&lt;state&gt;.lock</code>) for the whole invocation; a concurrent run against the same state file errors immediately, naming the holder (pid + age where the platform allows reading it — Windows’ mandatory lock blocks that, and the error degrades to a generic live-holder line). Killed processes release the lock automatically — no stale-lock cleanup exists or is needed. Namespace mode locks <code>_shared.json</code> as well. <code>plan</code> stays lock-free. Documented in <code>cli.md</code> § Locking. Verified with two concurrent real-binary applies.</li>
+</ul>
+<h2 id="2026-06-11--first-apply-reliability-8"><a class="header" href="#2026-06-11--first-apply-reliability-8">2026-06-11 — first-apply reliability (#8)</a></h2>
+<ul>
+<li><code>do_droplet</code> create gains a fourth readiness gate: after sshd answers, <code>cloud-init status --wait</code> over ssh (new <code>cloud_init_timeout_secs</code> attr, default 180, 0 disables, echoed into state). sshd is up while first-boot cloud-init still drives apt; bootstrapping into that window loses the dpkg lock race. Exit 0/2 = done; anything else (including no cloud-init on the image) warns and continues — same never-orphan-the-droplet policy as the other gates. Documented in <code>providers/digitalocean.md</code> (create flow + attr table).</li>
+<li>system provider: every apt invocation now carries <code>-o DPkg::Lock::Timeout=300</code> — concurrent apt (parallel apply, unattended-upgrades) queues instead of failing instantly. Documented in <code>providers/system.md</code>.</li>
+<li><code>tutorials/zero-to-deployed.md</code>: the explicit <code>wait-cloud-init</code> workaround resource is gone — the provider gate covers it; the apt-serialization and ufw-last <code>depends_on</code> edges stay (a raw <code>get.docker.com</code> run still can’t lock-wait).</li>
+<li>Encoding fix: the v0.1.1 URL sweep mojibake’d em dashes/arrows in <code>README.md</code>, <code>introduction.md</code>, and the zero-to-deployed tutorial (PowerShell 5.1 ANSI read of BOM-less UTF-8); restored.</li>
+</ul>
+<h2 id="2026-06-11--v011-distribution-model"><a class="header" href="#2026-06-11--v011-distribution-model">2026-06-11 — v0.1.1: distribution model</a></h2>
+<ul>
+<li>Source stays private; binaries publish to the public <a href="https://github.com/kbach-dev/stratum-releases">stratum-releases</a> repo (cargo-dist <code>github-releases-repo</code> + a cross-repo token). Installer URLs in the README, introduction, and zero-to-deployed tutorial now point there. v0.1.1 is the first release with <code>stratum destroy</code> in the shipped binaries.</li>
+</ul>
+<h2 id="2026-06-11--destroy--live-validated-tutorial"><a class="header" href="#2026-06-11--destroy--live-validated-tutorial">2026-06-11 — destroy + live-validated tutorial</a></h2>
+<ul>
+<li>New <code>stratum destroy</code> command (<code>cli.md</code>): delete everything in state in reverse dependency order, no config surgery. Preview without <code>-y</code> (exit 0); execution requires <code>-y</code> <strong>and</strong> <code>--allow-destroy</code>. <code>-c</code> stays required for secret-marker resolution (<code>do_droplet</code> deletes authenticate with the token). Refuses <code>-n</code> (shared <code>_stratum_*</code> resources belong to the host, not one namespace). Executor fix that ships with it: Delete steps are chained sequentially in plan order — they carry no <code>desired</code> attrs, so the parallel dispatcher previously saw no edges between them and could race a droplet delete against the ssh deletes of resources on it.</li>
+<li><code>tutorials/zero-to-deployed.md</code> rewritten from a live end-to-end run (real droplet, real teardown). Two bugs the run surfaced, now baked into the config as load-bearing <code>depends_on</code> edges with explanations: (1) a fresh droplet answers ssh while first-boot cloud-init still holds the apt lock — bootstrap gates on <code>cloud-init status --wait</code>; (2) <code>ufw --force enable</code> flushes conntrack and kills any concurrently-open ssh session — it runs strictly last. Teardown section now uses <code>destroy</code>. Apply transcript is captured from the real run.</li>
+<li>docker provider: <code>delete</code> now prints <code>[docker] DELETE container/network ...</code> trace lines (it was the only provider silent on delete).</li>
+</ul>
+<h2 id="2026-06-11--v010"><a class="header" href="#2026-06-11--v010">2026-06-11 — v0.1.0</a></h2>
+<ul>
+<li>First tagged release. Prebuilt binaries for Linux (x86_64/aarch64), macOS (x86_64/aarch64), and Windows via cargo-dist, with shell and PowerShell installers attached to the GitHub release.</li>
+<li>New front-door tutorial <code>tutorials/zero-to-deployed.md</code>: empty DO account → provisioned droplet → ufw + docker + running container, one config and one <code>apply</code>, built on state-backed hosts (<code>host { from_resource = "do_droplet.X" }</code>). Plan output verified against the real binary (1 create + 7 deferred behind the pending host). <code>introduction.md</code> gains an Install section and points at the tutorial; <code>providers/digitalocean.md</code>’s two-apply IP-handoff section now leads with <code>from_resource</code> and keeps the manual flow as the fallback.</li>
+</ul>
+<h2 id="2026-06-10"><a class="header" href="#2026-06-10">2026-06-10</a></h2>
+<ul>
+<li>Documented the new <code>digitalocean</code> provider. New page <code>providers/digitalocean.md</code> covers the <code>do_droplet</code> kind end to end: required attrs (<code>token</code> via <code>secret</code> ref, <code>region</code> / <code>size</code> / <code>image</code> / <code>ssh_keys</code> — keys must already be imported into the DO account, v1 manages none), optionals (<code>droplet_name</code>, <code>tags</code>, <code>ssh_ready_timeout_secs</code> default 120 / 0-disables), the create flow (active+IPv4 poll up to 240s, sshd gate so downstream <code>ssh_exec</code> / <code>system_*</code> don’t race cloud-init, 429 backoff), the two-apply IP handoff (computed <code>ip_address</code> / <code>host</code> = <code>root@&lt;ip&gt;</code> in state, printed at apply, hand-pasted into a <code>host</code> block — resource-state refs aren’t in the language), rename-only update with destroy-first errors on <code>region</code> / <code>size</code> / <code>image</code> / <code>ssh_keys</code>, delete via the API (404 converges; keep the <code>secret</code> block until destroyed — markers resolve at apply), and drift (<code>read</code> 404 → <code>Absent</code>; <code>unreadable</code> on <code>plan --refresh</code> since raw state holds a token marker, real reads via <code>apply --check-after</code>). Documented two verified footguns: failed creates orphan the droplet from state (re-apply provisions a second box), and the loader-required <code>host</code> attr produces a perpetual cosmetic Update and must never be changed (re-keying = Create+Delete). Updated <code>providers/index.md</code> (kind + drift tables; fixed the routing description — <code>Registry::for_kind</code> scans <code>kinds()</code> lists, it does not split on <code>_</code>), <code>introduction.md</code> (five providers, scope line, what-works/what-doesn’t), <code>architecture.md</code> (seven crates; <code>ResourceAddr</code> now has <code>host</code> and <code>&lt;host&gt;|&lt;kind&gt;.&lt;name&gt;</code> keys — page was stale), and a pointer in <code>tutorials/bootstrap-droplet.md</code>. All plan outputs captured from the real binary against simulated state. SUMMARY.md adds <code>providers/digitalocean.md</code>.</li>
+</ul>
+<h2 id="2026-05-28"><a class="header" href="#2026-05-28">2026-05-28</a></h2>
+<ul>
+<li>Documented the <code>var</code> block. New page <code>language/vars.md</code> covers the manifest-only leaf block (<code>from_env</code> / <code>from_git_sha</code> / <code>short</code> / <code>default</code>), the env→git-SHA→default resolution precedence with fall-through, the <code>${var.X}</code> reference, the <code>from_git_sha</code> committed-HEAD-only rule and the commit-and-push contract, the var-vs-secret distinction, and the error table (<code>BadVarBody</code>, <code>VarUnresolved</code>, <code>RefInVarBlock</code>, <code>UnknownVar</code>, <code>DuplicateVar</code>) — all verified against the binary. Leads with the motivating use case: a SHA-derived image tag that recreates a <code>docker_container</code> through the normal plan diff instead of <code>:latest</code> + <code>-r</code>. Added a <code>--refresh and rebuilt images</code> subsection to <code>providers/docker.md</code> documenting the tag-vs-<code>image_id</code> drift check (secondary safety net) and a <code>pull = false</code> cross-link to vars. Added <code>var</code> as a top-level block and a fifth evaluation pass in <code>language/overview.md</code>; added <code>var</code> as a ref root + a var-references section + updated the error table and the “why only these roots” section in <code>language/references.md</code>; added <code>var.&lt;name&gt;</code> to the allowed-<code>${...}</code>-refs list and a SHA-tag example in <code>language/interpolation.md</code>. Refreshed <code>introduction.md</code> “what works” and the language-pages list. SUMMARY.md adds <code>language/vars.md</code> after Secrets.</li>
+</ul>
+<h2 id="2026-05-27"><a class="header" href="#2026-05-27">2026-05-27</a></h2>
+<ul>
+<li>Documented the <code>namespace</code> block shipment. New page <code>language/namespaces.md</code> covers the manifest-only <code>namespace "&lt;n&gt;" { configs = [...] state = "..." }</code> syntax, allowed top-level blocks (manifest vs per-namespace), shared-vs-scoped host/secret/provider visibility, the cross-namespace <code>depends_on</code> limitation, and the cross-namespace port + container-name collision check. New tutorial <code>tutorials/namespaces.md</code> walks through writing a manifest with two namespaces sharing a host, observing the split state (<code>.stratum/&lt;n&gt;.json</code> + <code>.stratum/_shared.json</code>), provoking a port collision, and migrating from bundle mode. Updated <code>cli.md</code> for the new global <code>-n</code> / <code>--namespace</code> and <code>--manifest</code> flags, including the <code>-n</code> + <code>-c</code> mutual-exclusion, the <code>-s</code> override rule, the split-state file pair, and the cross-namespace conflict check. Updated <code>architecture.md</code> with new sections: manifest discovery, cross-namespace validator, split state (<code>save_split</code> / <code>load_merged</code> semantics), implicit per-host <code>_stratum_*</code> resource catalog, and renumbered the plan/apply flow to thread namespace mode through it. Updated <code>language/overview.md</code> for the new top-level block and the four-pass evaluator. Updated <code>language/multi-config.md</code> to point at namespaces as the alternative for multi-slice deployments and generalized “one state per droplet” to “one state per host.” Refreshed <code>introduction.md</code> “what works” with namespaces. Site-specific names (<code>vortex</code>, <code>portal</code>, the real droplet IP, <code>sotheara-say/*</code>, <code>*.nip.io</code>, <code>deployd</code> as a deployed app) were swept from <code>cli.md</code>, <code>tutorials/{bootstrap-droplet,book-serve,inject-secret-into-container}.md</code>, <code>providers/{system,docker,git}.md</code>, <code>language/{secrets,types,interpolation,resources}.md</code>, and the introduction — replaced with generic <code>web</code> / <code>api</code> / <code>db</code> / <code>app</code> / <code>host.primary.addr</code> / RFC 5737 documentation IPs (<code>192.0.2.10</code>) / <code>example.com</code>.</li>
+</ul>
+<h2 id="2026-05-26"><a class="header" href="#2026-05-26">2026-05-26</a></h2>
+<ul>
+<li>Documented the multi-feature shipment (8 gaps closed across config, core, docker, system, and a new git provider). New page <code>language/interpolation.md</code> covers <code>${...}</code> string interpolation: grammar, scalar coercion, <code>\${</code> escape, the honesty guard still applying through templates. New page <code>providers/git.md</code> covers the <code>git_repo</code> kind: branch / tag / SHA dispatch, recreate-on-url-change, <code>commit_sha</code> drift, depth handling. Extended <code>providers/system.md</code> with <code>system_secret_file</code> (whole-file secret kind, <code>sha256</code>-only state, stricter default mode 0400, secret ref directly in <code>content</code>). Extended <code>providers/docker.md</code> with <code>docker_image</code> (build-on-host producer kind, <code>DOCKER_BUILDKIT=1</code>, <code>image_id</code> in state) and four new <code>docker_container</code> attrs: <code>depends_on</code> (planner topo sort + cycle / unknown-ref detection), <code>healthcheck</code> (map lowered to <code>--health-*</code> flags + post-apply readiness wait up to 60s), <code>memory</code> / <code>memory_swap</code> (passthrough to <code>docker run</code>), and list-form <code>command</code> (argv-style with shell-escaping). Updated <code>providers/ssh.md</code> for the new <code>ssh_exec.env</code> map (sorted, shell-quoted, supports secret refs). Updated <code>cli.md</code> for the new global <code>--env-file</code> flag with auto-<code>./.env</code> load (12-factor: process env wins, first-set wins among files) and the new <code>stratum status</code> subcommand (per-host uptime + free + df + docker stats table). Updated <code>architecture.md</code> with planner-side validators (port-conflict, <code>depends_on</code> topo sort), the <code>normalize_for_plan</code> / <code>SECRET_CONTENT_TO_SHA</code> plaintext-leak fix, plan-level <code>redact_plan</code> walk (drops marker-vs-plaintext spurious drift), the post-apply readiness wait, and rewrote the delete-ordering section for forward-topo with reverse-iteration fallback. Refreshed <code>introduction.md</code> “what works” (now four providers; <code>${...}</code> interpolation, <code>--env-file</code>, <code>status</code>, <code>git_repo</code>, <code>docker_image</code>, <code>system_secret_file</code>, <code>depends_on</code>, <code>healthcheck</code>, planner validators all listed). Extended <code>tutorials/inject-secret-into-container.md</code> with the connection-string-via-<code>${...}</code> pattern and the whole-file-secret-via-<code>system_secret_file</code> pattern. SUMMARY.md adds <code>language/interpolation.md</code> and <code>providers/git.md</code>.</li>
+</ul>
+<h2 id="2026-05-24-latest"><a class="header" href="#2026-05-24-latest">2026-05-24 (latest)</a></h2>
+<ul>
+<li>Documented four shipped features. Added <code>language/secrets.md</code> (full reference for <code>secret</code> blocks: sources, refs, redaction map, marker shape, sensitive/short-value rules, the honesty guard, <code>--allow-unresolved-secrets</code>). Added <code>language/multi-config.md</code> (one-state-per-host rule, cross-file refs, duplicate hard errors, pointer to <code>state merge</code>). Added <code>tutorials/inject-secret-into-container.md</code> (env-var-on-<code>docker_container</code> pattern with rotation; inline code blocks — listings infra not yet present). Rewrote the destruction-guard section in <code>cli.md</code> around the wrong-state-file deletion footgun, updated the error template to include <code>loaded configs</code> + state path. Added <code>state merge</code> to <code>cli.md</code>. Added <code>--allow-unresolved-secrets</code> to <code>plan</code> flag table. Documented <code>docker_container.pull = false</code> in <code>providers/docker.md</code> with the locally-built-image use case. Documented <code>system_dir</code> empty-dir mode (no <code>source_dir</code>) in <code>providers/system.md</code> and made <code>source_dir</code> optional in the attribute table; updated <code>language/types.md</code> to match. Added <code>secret</code> as a top-level block in <code>language/overview.md</code> and added <code>secret</code> as a ref root in <code>language/references.md</code>. Updated <code>tutorials/book-serve.md</code> to teach one-state-per-host via multi-<code>-c</code>, not one-state-per-config. Refreshed <code>introduction.md</code> “what works” with all four features. Fixed <code>traefik:v3.1</code> -&gt; <code>traefik:v2.11</code> in <code>architecture.md</code> state-file example and added a secret-marker subsection.</li>
+</ul>
+<h2 id="2026-05-24-later"><a class="header" href="#2026-05-24-later">2026-05-24 (later)</a></h2>
+<ul>
+<li>Documented <code>system_dir</code> kind (tar+gz upload, manifest sha tracking, <code>delete_extra</code>, 200-file <code>read</code> cap) under <code>providers/system.md</code>. Added <code>source_dir</code> semantics to <code>language/types.md</code>. Added <code>tutorials/book-serve.md</code> walking through the canonical “second app behind Traefik” pattern, including the one-state-file-per-host rule. Documented <code>apply --allow-destroy</code> and the destruction-guard rationale on <code>cli.md</code>; updated the bootstrap teardown step to use it. Refreshed introduction “what works” with <code>system_dir</code> and the destroy guard.</li>
+</ul>
+<h2 id="2026-05-24"><a class="header" href="#2026-05-24">2026-05-24</a></h2>
+<ul>
+<li>Scope pivot to ansible-replacement: coolify provider deleted, app-deployment work moved out of scope. <code>--live</code> flag dropped (<code>apply -y</code> now executes). New <code>system</code> provider documented (<code>system_package</code>, <code>system_service</code>, <code>system_file</code>, <code>system_ufw_rule</code>). Drift detection shipped (<code>stratum plan --refresh</code>, post-apply self-check, <code>Observed</code>/<code>Drift</code> types, one-sided <code>diff_observed</code>). <code>content_file</code> attribute on <code>system_file</code> documented under language reference. Replaced <code>tutorials/slice-1-hello.md</code> with <code>tutorials/bootstrap-droplet.md</code>. Architecture page got a drift section and a delete-ordering note.</li>
+</ul>
+<h2 id="2026-05-24-earlier"><a class="header" href="#2026-05-24-earlier">2026-05-24 (earlier)</a></h2>
+<ul>
+<li>Backfilled the book from current source: introduction, language reference (overview / hosts / resources / references / types), provider pages (coolify / ssh / docker), CLI reference, architecture, and the Slice 1 tutorial. Doc agent did the writing; source under <code>crates/</code> is the source of truth.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="tutorials/box-capabilities.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="tutorials/box-capabilities.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

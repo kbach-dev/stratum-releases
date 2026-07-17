@@ -1,0 +1,598 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Architecture - stratum</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Tiny declarative IaC tool, written from scratch in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-990bb639.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-1b75d191.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stratum</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum/edit/main/book/src/architecture.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
+<p>stratum is a Cargo workspace of eight crates (core, config, cli, and five providers). The flow is config → desired resources → diff against prior state → plan → apply via providers → new state → optional post-apply drift check (<code>--check-after</code>).</p>
+<h2 id="workspace-layout"><a class="header" href="#workspace-layout">Workspace layout</a></h2>
+<pre><code>crates/
+  core/                   stratum-core
+  config/                 stratum-config
+  cli/                    stratum-cli (the `stratum` binary)
+  providers/
+    ssh/                  stratum-provider-ssh
+    docker/               stratum-provider-docker
+    system/               stratum-provider-system
+    git/                  stratum-provider-git
+    digitalocean/         stratum-provider-digitalocean
+</code></pre>
+<p><code>core</code> has no provider dependencies. <code>config</code> depends on <code>core</code> only for its <code>DesiredResource</code> / <code>ResourceAddr</code> types. Providers depend on <code>core</code> for the trait. The CLI wires everything together.</p>
+<h2 id="core-types"><a class="header" href="#core-types">Core types</a></h2>
+<p>All types live in <code>crates/core/src/lib.rs</code>.</p>
+<h3 id="resourceaddr"><a class="header" href="#resourceaddr"><code>ResourceAddr</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct ResourceAddr { kind: String, name: String, host: String }
+<span class="boring">}</span></code></pre>
+<p>Renders as <code>&lt;host&gt;/&lt;kind&gt;.&lt;name&gt;</code> (or <code>&lt;kind&gt;.&lt;name&gt;</code> when <code>host</code> is empty). The state-map key is <code>addr.key()</code> — <code>&lt;host&gt;|&lt;kind&gt;.&lt;name&gt;</code> — so the same <code>kind.name</code> can exist on multiple hosts, and changing a resource’s <code>host</code> attribute re-keys it (the planner then sees a Create for the new key plus a Delete for the old one).</p>
+<h3 id="resourcestate"><a class="header" href="#resourcestate"><code>ResourceState</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct ResourceState {
+    addr: ResourceAddr,
+    provider: String,
+    attrs: serde_json::Value,
+}
+<span class="boring">}</span></code></pre>
+<p>One per tracked resource. <code>attrs</code> is whatever the provider returned from its last <code>create</code> / <code>update</code>.</p>
+<h3 id="state"><a class="header" href="#state"><code>State</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct State {
+    version: u32,                              // file format version, default 1
+    resources: BTreeMap&lt;String, ResourceState&gt;, // keyed by addr.key()
+}
+<span class="boring">}</span></code></pre>
+<p>On-disk JSON, loaded with <code>State::load(path)</code> and saved with <code>State::save(path)</code>. Default path is <code>.stratum/state.json</code>. A missing file is treated as an empty state. The parent directory is created on save.</p>
+<h3 id="action-and-fieldchange"><a class="header" href="#action-and-fieldchange"><code>Action</code> and <code>FieldChange</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Action {
+    NoOp,
+    Create,
+    Update { changes: Vec&lt;FieldChange&gt; },
+    Replace { changes: Vec&lt;FieldChange&gt; },  // destroy-then-recreate (force_new field + --replace)
+    Delete,
+}
+
+struct FieldChange { field: String, from: Value, to: Value }
+<span class="boring">}</span></code></pre>
+<p><code>Action::symbol()</code> returns the two-character prefix used in plan output (<code>  </code>, <code> +</code>, <code> ~</code>, <code> ±</code>, <code> -</code>). <code>Replace</code> is emitted when an Update would change a create-time-immutable (<code>force_new</code>) field and the operator opted in with <a href="cli.html#apply"><code>--replace</code></a>; the executor runs the provider’s <code>delete</code> then <code>create</code>. Its <code>changes</code> carry the force_new diffs for display.</p>
+<h3 id="observed-and-drift"><a class="header" href="#observed-and-drift"><code>Observed</code> and <code>Drift</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Observed {
+    Present(Value),       // resource exists; attrs normalized to state shape
+    Absent,               // confirmed gone on the host
+    Unknown(String),      // provider can't tell (carries a reason)
+}
+
+struct Drift {
+    changes: Vec&lt;FieldChange&gt;,
+    missing: bool,               // state says exists but observed == Absent
+    unreadable: Option&lt;String&gt;,  // observed == Unknown OR read returned Err
+}
+<span class="boring">}</span></code></pre>
+<p>Drift is per-resource, populated by <code>refresh_plan</code>. <code>Drift::is_clean()</code> is true when all three fields are empty/false/none.</p>
+<h3 id="plannedresource-and-plan"><a class="header" href="#plannedresource-and-plan"><code>PlannedResource</code> and <code>Plan</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct PlannedResource {
+    addr: ResourceAddr,
+    provider: String,
+    desired: Value,
+    prior: Value,
+    action: Action,
+    drift: Option&lt;Drift&gt;,     // None unless refresh_plan was called
+}
+
+struct Plan { steps: Vec&lt;PlannedResource&gt; }
+<span class="boring">}</span></code></pre>
+<p><code>Plan::summary()</code> returns a <code>PlanSummary { create, update, replace, delete, noop, drifted, missing, unreadable }</code>. <code>Plan::was_refreshed()</code> is true iff any step has a <code>Some(drift)</code>.</p>
+<h3 id="desiredresource"><a class="header" href="#desiredresource"><code>DesiredResource</code></a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct DesiredResource {
+    addr: ResourceAddr,
+    provider: String,
+    attrs: Value,
+}
+<span class="boring">}</span></code></pre>
+<p>The output of the config evaluator and the input to <code>build_plan</code>.</p>
+<h2 id="plan--apply-flow"><a class="header" href="#plan--apply-flow">Plan / apply flow</a></h2>
+<ol>
+<li><strong>Resolve sources.</strong> If <code>-n NAME</code> is set, the CLI loads the manifest, extracts the named <a href="language/namespaces.html">namespace</a>, and resolves the config list to <code>[manifest, ...namespace.configs]</code> and the state path to <code>.stratum/&lt;name&gt;.json</code> (or the namespace’s explicit <code>state =</code>). Otherwise the configs and state path come straight from <code>-c</code> / <code>-s</code>. See <a href="#manifest-discovery-namespace-mode">Manifest discovery</a>.</li>
+<li><strong>Parse config.</strong> <code>stratum_config::load_files(paths)</code> (or <code>load_file</code> for a single path) runs lex → parse on each file, tags each block with its source path, concatenates into one <code>Document</code>, and runs a multi-pass extract: hosts → secrets → namespaces → providers + resources. The result is an <code>Extracted { hosts, providers, resources, secrets, namespaces, redaction_map }</code>. Any <code>system_file</code> with <code>content_file</code> is inlined during this step — see <a href="language/types.html#content_file-on-system_file"><code>content_file</code></a>. Duplicate hosts/providers/secrets/resources/namespaces across files are hard errors that name both paths.</li>
+<li><strong>Cross-namespace check.</strong> In namespace mode only, re-load every sibling namespace’s configs and check the current namespace’s <code>docker_container</code> resources for port and container-name collisions. See <a href="#cross-namespace-validator">Cross-namespace validator</a>.</li>
+<li><strong>Load state.</strong> In bundle mode, <code>State::load(state_path)</code>. In namespace mode, <code>State::load_merged(state_path, _shared.json)</code> — see <a href="#split-state-namespace-mode">Split state</a>. Missing file → default empty state.</li>
+<li><strong>Build plan.</strong> <code>build_plan(extracted.resources, &amp;state) -&gt; Result&lt;Plan&gt;</code>:
+<ul>
+<li>Run two planner-side validators before classification: a <a href="#port-conflict-validator">port-conflict check</a> on every <code>docker_container.ports</code>, and a <a href="#depends_on-topo-sort"><code>depends_on</code> topo sort</a> that orders create / update steps and rejects cycles / unknown refs.</li>
+<li>For each desired resource (in topo order): lookup prior by addr key. For kinds in <code>SECRET_CONTENT_TO_SHA</code>, normalize desired before diffing (see <a href="#secret-content-normalization-on-plan">Secret-content normalization on plan</a>). Run <code>diff_observed(prior.attrs, normalize_for_plan(kind, desired.attrs))</code>. No diff → <code>NoOp</code>. Otherwise <code>Create</code> (no prior) or <code>Update { changes }</code>.</li>
+<li>For each prior resource not in desired → <code>Delete</code>, in <a href="#delete-ordering">forward topo order over state-resident <code>depends_on</code> edges</a>.</li>
+</ul>
+</li>
+<li><strong>Optional refresh.</strong> With <code>plan --refresh</code>, run <code>refresh_plan(&amp;mut plan, &amp;registry)</code> to annotate every non-create step with observed drift.</li>
+<li><strong>Print plan.</strong> Symbol per resource, fields-changed lines for updates, drift annotations if refreshed, summary at the end.</li>
+<li><strong>Confirmation gate.</strong> Without <code>-y</code>, exit here. <code>apply</code> without <code>-y</code> is identical to <code>plan</code> plus the “Apply? Re-run with -y to execute” line.</li>
+<li><strong>Build registry.</strong> Instantiate all providers. (No shipped provider reads its <code>provider { ... }</code> block today.)</li>
+<li><strong>Execute.</strong> For each plan step (in topo order), look up the provider by kind prefix and call <code>create</code> / <code>update</code> / <code>delete</code>. After every <code>docker_container</code> create or update, run the <a href="#post-apply-readiness-wait">post-apply readiness wait</a> before moving to the next step. Update state with the returned attrs (or remove the entry on delete).</li>
+<li><strong>Save state.</strong> In bundle mode, <code>state.save(state_path)</code>. In namespace mode, <code>state.save_split(state_path, _shared.json)</code> — <code>_stratum_*</code> addresses route to the shared file, everything else to the namespace’s file.</li>
+<li><strong>Post-apply self-check (opt-in, <code>--check-after</code>).</strong> Only when <code>apply --check-after</code> was passed: reload the config, rebuild the plan against the new state, run <code>refresh_plan</code> again, and print one summary line: <code>post-apply drift: clean</code> or <code>post-apply drift: N differ, M missing, K unreadable — run 'stratum plan --refresh' to see details</code>. Off by default — it costs one ssh round-trip per resource.</li>
+</ol>
+<h2 id="the-provider-trait"><a class="header" href="#the-provider-trait">The <code>Provider</code> trait</a></h2>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+trait Provider: Send + Sync {
+    fn name(&amp;self) -&gt; &amp;str;
+    fn kinds(&amp;self) -&gt; &amp;[&amp;'static str];
+    fn configure(&amp;mut self, _attrs: &amp;Value) -&gt; Result&lt;()&gt; { Ok(()) }
+    async fn create(&amp;self, kind: &amp;str, name: &amp;str, attrs: &amp;Value) -&gt; Result&lt;Value&gt;;
+    async fn update(&amp;self, kind: &amp;str, name: &amp;str, prior: &amp;Value, attrs: &amp;Value) -&gt; Result&lt;Value&gt;;
+    async fn delete(&amp;self, kind: &amp;str, name: &amp;str, prior: &amp;Value) -&gt; Result&lt;()&gt;;
+    async fn read(&amp;self, _kind: &amp;str, _name: &amp;str, _prior: &amp;Value) -&gt; Result&lt;Observed&gt; {
+        Ok(Observed::Unknown("provider does not implement read".into()))
+    }
+}
+<span class="boring">}</span></code></pre>
+<ul>
+<li><code>name()</code> is the lookup key in the registry.</li>
+<li><code>kinds()</code> lists every kind the provider owns. The registry’s <code>for_kind</code> scans providers and returns the first match.</li>
+<li><code>configure</code> is called once at apply time, with the <code>provider "&lt;name&gt;" { ... }</code> body. Default impl ignores it. No shipped provider implements it today.</li>
+<li><code>create</code>, <code>update</code>, <code>delete</code> return the new <code>attrs</code> to record in state (or <code>()</code> for delete). The returned value is what the next plan will diff against.</li>
+<li><code>read</code> must be <strong>non-destructive</strong> — it’s a query, not a side effect. Default impl returns <code>Unknown</code>. Implementations should normalize the returned <code>Value</code> to the same shape as state attrs.</li>
+</ul>
+<h2 id="the-diff-algorithm"><a class="header" href="#the-diff-algorithm">The diff algorithm</a></h2>
+<p>There are two diff functions in <code>core</code>. They serve different purposes.</p>
+<h3 id="diff-symmetric-used-by-actionupdate-legacy-path"><a class="header" href="#diff-symmetric-used-by-actionupdate-legacy-path"><code>diff</code> (symmetric, used by <code>Action::Update</code> legacy path)</a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn diff(prior: &amp;Value, desired: &amp;Value) -&gt; Vec&lt;FieldChange&gt;
+<span class="boring">}</span></code></pre>
+<p>A recursive walk over JSON values:</p>
+<ul>
+<li>If <code>prior == desired</code> exactly, return no changes.</li>
+<li>If both are JSON objects, walk their union of keys (sorted, deduplicated). For each key, recurse with the dotted path <code>&lt;prefix&gt;.&lt;key&gt;</code>.</li>
+<li>Otherwise, emit a single <code>FieldChange { field: &lt;path&gt;, from: prior, to: desired }</code>. The <code>field</code> is <code>"&lt;root&gt;"</code> when the diff lives at the document root.</li>
+</ul>
+<h3 id="diff_observed-one-sided-used-by-build_plan-and-refresh_plan"><a class="header" href="#diff_observed-one-sided-used-by-build_plan-and-refresh_plan"><code>diff_observed</code> (one-sided, used by <code>build_plan</code> and <code>refresh_plan</code>)</a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn diff_observed(prior: &amp;Value, observed: &amp;Value) -&gt; Vec&lt;FieldChange&gt;
+<span class="boring">}</span></code></pre>
+<p>Used both by <code>build_plan</code> (comparing state-stored prior against desired config) and by <code>refresh_plan</code> (comparing state against live observation). Rules differ from <code>diff</code>:</p>
+<ul>
+<li><strong>State-only fields are ignored.</strong> Only keys present in <code>observed</code> are walked. A field that’s in <code>prior</code> but not in <code>observed</code> does not generate drift. This is what lets providers store extra fields (<code>container_id</code>, <code>sha256</code>, etc.) without polluting plans.</li>
+<li><strong>Missing key vs empty container = no drift.</strong> If <code>prior</code> has no key <code>k</code> but <code>observed</code> has <code>k: {}</code> or <code>k: []</code>, that’s not drift. Same for <code>prior: null</code> vs <code>observed: {}</code> / <code>[]</code>.</li>
+<li><strong>String arrays are compared as sets.</strong> <code>["a", "b"]</code> and <code>["b", "a"]</code> are equal. Non-string arrays are compared by order.</li>
+<li><strong>Added keys in observed → flagged.</strong> A key in <code>observed</code> but not in <code>prior</code> shows up as <code>from: null, to: &lt;value&gt;</code>.</li>
+</ul>
+<p>The provider’s <code>read</code> implementation is responsible for trimming the observed value to a shape that mirrors state, so noise doesn’t leak through. For example, <code>docker_container</code> strips <code>com.docker.*</code> labels and intersects with the state’s label key set.</p>
+<h2 id="drift-detection"><a class="header" href="#drift-detection">Drift detection</a></h2>
+<p><code>refresh_plan(&amp;mut plan, &amp;registry)</code> annotates each plan step with observed drift from live reality.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn refresh_plan(plan: &amp;mut Plan, registry: &amp;Registry);
+<span class="boring">}</span></code></pre>
+<p>Rules:</p>
+<ul>
+<li><strong><code>Action::Create</code> is skipped</strong> — there’s no prior state to read.</li>
+<li><strong>Sequential per resource.</strong> SSH round-trips are I/O-bound but ~10 resources doesn’t justify parallelism yet.</li>
+<li><strong>Per-resource errors are caught</strong>, not propagated. They become <code>Drift::unreadable = Some("read failed: ...")</code>. <code>refresh_plan</code> itself never returns <code>Err</code>.</li>
+<li>The provider’s <code>read</code> is called with <code>(kind, name, &amp;step.prior)</code>. The returned <code>Observed</code> is mapped:
+<ul>
+<li><code>Present(observed)</code> → <code>drift.changes = diff_observed(&amp;step.prior, &amp;observed)</code></li>
+<li><code>Absent</code> → <code>drift.missing = true</code></li>
+<li><code>Unknown(reason)</code> → <code>drift.unreadable = Some(reason)</code></li>
+</ul>
+</li>
+</ul>
+<p><code>PlanSummary</code> counts:</p>
+<ul>
+<li><strong>drifted</strong> — count of steps where <code>drift.changes</code> is non-empty.</li>
+<li><strong>missing</strong> — count of steps where <code>drift.missing == true</code> <strong>and</strong> the action is not <code>Delete</code>. (A <code>Delete</code> step whose resource is already gone is annotated <code>(already gone on host; delete will noop)</code> instead — that’s not drift.)</li>
+<li><strong>unreadable</strong> — count of steps where <code>drift.unreadable.is_some()</code>.</li>
+</ul>
+<h2 id="planner-side-validators"><a class="header" href="#planner-side-validators">Planner-side validators</a></h2>
+<h3 id="port-conflict-validator"><a class="header" href="#port-conflict-validator">Port-conflict validator</a></h3>
+<p>Before classifying steps, <code>build_plan</code> walks every <code>docker_container.ports</code> value across the desired set and checks for <code>(host, ip, host_port)</code> collisions. Two resources binding the same port on the same host is a hard error at plan time, naming both. A <code>0.0.0.0:N</code> bind symmetrically collides with <code>127.0.0.1:N</code> — the wildcard bind subsumes the loopback one.</p>
+<p>Random ports (<code>"5432"</code> — docker picks the host port) are skipped silently. Port ranges (<code>"8000-8010:8000-8010"</code>) get a warning but are not validated. Unrecognized port shapes are skipped to keep the validator forward-compatible.</p>
+<h3 id="depends_on-topo-sort"><a class="header" href="#depends_on-topo-sort"><code>depends_on</code> topo sort</a></h3>
+<p>The planner runs a stable Kahn’s-algorithm topo sort over the <code>docker_container.depends_on</code> edges (see <a href="providers/docker.html#depends_on-and-the-post-apply-wait"><code>depends_on</code></a>). Properties:</p>
+<ul>
+<li><strong>Stable.</strong> Resources without edges keep their input (file) order. Where ties exist, a <code>BTreeSet</code> ready-set picks them in lexicographic addr order.</li>
+<li><strong>Implicit <code>_stratum_*</code> resources stay at the front.</strong> They carry no edges and have <code>in_degree = 0</code>, so they land first.</li>
+<li><strong>Cycles</strong> are a hard error citing the cycle path.</li>
+<li><strong>Unknown references</strong> are hard errors citing both the source and the missing target.</li>
+</ul>
+<p>The topo order applies to <code>Create</code> and <code>Update</code> steps; <code>Delete</code> order is computed separately.</p>
+<h2 id="secret-content-normalization-on-plan"><a class="header" href="#secret-content-normalization-on-plan">Secret-content normalization on plan</a></h2>
+<p>For kinds where a <code>content</code> field carries a secret value, state stores only <code>sha256</code> (the plaintext is unrecoverable from state) but desired carries the full plaintext at plan time. A naive <code>diff_observed(prior, desired)</code> would emit <code>content: null -&gt; "&lt;plaintext&gt;"</code> on every plan, leaking the value into CLI output.</p>
+<p><code>build_plan</code> normalizes desired before diffing. The kinds that opt into this live in a const <code>SECRET_CONTENT_TO_SHA: &amp;[(&amp;str, &amp;str)]</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>kind</th><th>content field</th></tr>
+</thead>
+<tbody>
+<tr><td><code>system_secret_file</code></td><td><code>content</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>For each entry, <code>normalize_for_plan(kind, attrs)</code> clones <code>attrs</code>, removes the named field, and inserts <code>sha256: &lt;hex&gt;</code> derived from its UTF-8 bytes. Diff then compares sha against sha — exactly the same shape state holds. Plaintext never reaches the diff.</p>
+<p>This is the inverse half of the kind’s own apply-time <code>unchanged</code> check (which compares the same sha against prior state to decide whether to re-upload). The two together guarantee that a plaintext secret never appears in plan output, in state, or in apply logs.</p>
+<h2 id="plan-level-secret-redaction"><a class="header" href="#plan-level-secret-redaction">Plan-level secret redaction</a></h2>
+<p>After <code>build_plan</code> returns and after <code>refresh_plan</code> runs, the CLI calls <code>Extracted::redact_plan(&amp;mut plan)</code> once before printing. This walk does two things:</p>
+<ol>
+<li><strong>Apply substring redaction</strong> to every step’s <code>desired</code>, <code>prior</code>, and per-<code>FieldChange</code> <code>from</code> / <code>to</code>. A leaf string containing a known secret plaintext (introduced via <a href="language/interpolation.html"><code>${...}</code> interpolation</a>) gets each occurrence replaced with the inline <code>&lt;secret:NAME:sha256:HEX&gt;</code> marker. Exact-match leaves are replaced with the object marker, same as everywhere else.</li>
+<li><strong>Drop redaction-cancelled changes.</strong> When state holds the inline substring marker and observed returns plaintext, both sides collapse to the same marker after the walk. Any <code>FieldChange</code> where <code>from == to</code> post-redaction is dropped. If an <code>Action::Update</code>’s changes list becomes empty, the step is downgraded to <code>Action::NoOp</code> — drift that was only a substring-marker-vs-plaintext difference disappears entirely.</li>
+</ol>
+<p>This is what stops <code>plan --refresh</code> from emitting spurious updates on every secret-bearing interpolated field. See <a href="language/secrets.html#substring-redaction">Secrets: substring redaction</a>.</p>
+<h2 id="post-apply-readiness-wait"><a class="header" href="#post-apply-readiness-wait">Post-apply readiness wait</a></h2>
+<p>After every successful <code>docker_container</code> create or update, the planner pauses before moving on to the next step (which may be a dependent declared via <code>depends_on</code>). The wait lives in the CLI in <code>post_apply_wait</code>:</p>
+<ul>
+<li>If <code>desired.healthcheck</code> is present, poll <code>docker inspect --format '{{.State.Health.Status}}' &lt;name&gt;</code> once a second, up to 60 polls. Terminal statuses are <code>healthy</code> (proceed), <code>unhealthy</code> (fail the apply), or empty / <code>none</code> on the first poll (no health check at the docker level — proceed). <code>starting</code> and other interim values keep polling.</li>
+<li>Otherwise, sleep 500ms. This is cosmetic — docker often needs a beat to wire networks and volumes before something else pokes the container.</li>
+</ul>
+<p>Non-<code>docker_container</code> steps return immediately. The provider’s own <code>create</code> / <code>update</code> is synchronous: <code>git_repo</code> clones return when done, <code>system_secret_file</code> returns when the SSH upload completes.</p>
+<p>The poll loop itself is in <code>core</code> (<code>poll_container_health</code>), separated from SSH plumbing so it’s unit-testable with a mocked inspector.</p>
+<h2 id="delete-ordering"><a class="header" href="#delete-ordering">Delete ordering</a></h2>
+<p><code>build_plan</code> emits delete steps in <strong>forward topo order over state-resident <code>depends_on</code> edges</strong>. For two resources <code>X</code> and <code>Y</code> where <code>X depends_on Y</code> at runtime, <code>X</code> is torn down before <code>Y</code> — the dependent goes first so the dependency is still serving while it shuts down.</p>
+<p>Resources without recorded <code>depends_on</code> edges fall through with <code>in_degree = 0</code> and end up before any edged resources, in reverse-iteration order of the state <code>BTreeMap</code> (which preserves the prior file-order-independent behavior). This keeps the heuristic close to “leaves before roots” for hand-written configs even when no <code>depends_on</code> is declared.</p>
+<p><code>depends_on</code> is recorded in state at create / update time and survives across apply runs, so a delete computed against state still knows the edges the resource was declared with — even when the resource is no longer in config.</p>
+<h2 id="implicit-per-host-resources"><a class="header" href="#implicit-per-host-resources">Implicit per-host resources</a></h2>
+<p>For every <code>host</code> block in the merged document, <code>extract</code> injects three implicit resources before any user-declared ones, addressed under the <code>_stratum_</code> prefix:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>addr</th><th>kind</th><th>purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ssh_exec._stratum_swap_&lt;host&gt;</code></td><td><code>ssh_exec</code></td><td>Creates a 4 GB <code>/swapfile</code>, enables it, persists in fstab.</td></tr>
+<tr><td><code>system_file._stratum_sshd_oom_&lt;host&gt;</code></td><td><code>system_file</code></td><td>Drops <code>/etc/systemd/system/ssh.service.d/oom.conf</code> with <code>OOMScoreAdjust=-1000</code>.</td></tr>
+<tr><td><code>ssh_exec._stratum_sshd_reload_&lt;host&gt;</code></td><td><code>ssh_exec</code></td><td><code>systemctl daemon-reload &amp;&amp; systemctl restart ssh</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The first two exist so that under memory pressure the kernel does not kill <code>sshd</code> — which would lock the operator out of recovery. The third applies the drop-in. They are stable across versions and live at the front of the desired list (in_degree 0), so they apply before any user resource on the host.</p>
+<p>In <a href="#split-state-namespace-mode">namespace mode</a> they are routed to <code>_shared.json</code> so multiple namespaces sharing a host don’t each try to recreate them. In bundle mode they share the single state file with everything else.</p>
+<p>The <code>_stratum_</code> prefix is reserved. User-declared resources should not use it.</p>
+<h2 id="manifest-discovery-namespace-mode"><a class="header" href="#manifest-discovery-namespace-mode">Manifest discovery (namespace mode)</a></h2>
+<p>When <code>-n NAME</code> is set, the CLI resolves the config + state paths as follows. See <a href="language/namespaces.html">Namespaces</a> for the syntax.</p>
+<ol>
+<li><strong>Locate the manifest.</strong> If <code>--manifest PATH</code> was passed, that path is used. Otherwise the CLI requires <code>./stratum.strat</code> to exist; if it doesn’t, the command errors.</li>
+<li><strong>Load the manifest.</strong> Runs <code>stratum_config::load_file(manifest)</code>, producing an <code>Extracted</code> with one or more <code>namespace</code> declarations.</li>
+<li><strong>Look up the namespace.</strong> If the named namespace isn’t in the manifest, error with the list of known namespaces.</li>
+<li><strong>Resolve configs.</strong> The merged list is <code>[manifest, ...ns.configs]</code>. The manifest is always first so its top-level <code>host</code> / <code>secret</code> / <code>provider</code> blocks are visible to every per-namespace file. Each <code>configs</code> entry is absolutized at parse time against the manifest’s directory.</li>
+<li><strong>Resolve state.</strong> Priority order: explicit <code>-s</code> on the command line, then the namespace’s body-level <code>state =</code>, then <code>.stratum/&lt;name&gt;.json</code>.</li>
+</ol>
+<p>Passing <code>-c</code> together with <code>-n</code> is a hard error — the namespace’s <code>configs = [...]</code> is the config list, and a <code>-c</code> override would silently shadow it. Bundle mode (no <code>-n</code>) is unchanged by namespace support.</p>
+<h2 id="cross-namespace-validator"><a class="header" href="#cross-namespace-validator">Cross-namespace validator</a></h2>
+<p>Namespace mode’s <code>plan</code> and <code>apply</code> run a sibling-collision check before classification. The check exists because <code>build_plan</code> operates inside one namespace’s view of the world — it has no visibility into what other namespaces declare — so two namespaces could each plan a <code>docker_container</code> binding the same <code>(host, host_port)</code> and only discover the conflict at apply time, when one fails over a port already taken by the other.</p>
+<p>The check, in <code>validate_cross_namespace</code>:</p>
+<ol>
+<li>Re-loads the manifest (cheap; it has no resources).</li>
+<li>For each <strong>sibling</strong> namespace (every one except the current), loads its configs with <code>LoadOptions::allow_unresolved_secrets = true</code> so a missing env var in some unrelated namespace doesn’t block planning the current one.</li>
+<li>Walks every <code>docker_container</code> in every sibling, collecting:
+<ul>
+<li><strong>Port claims.</strong> Each <code>ports</code> entry is parsed for the host-port half of <code>H:C</code> or <code>IP:H:C</code>. Ranges (<code>8000-8010:...</code>) and bare-port shapes (where docker picks the host port) are skipped.</li>
+<li><strong>Name claims.</strong> The container’s <code>name</code> attribute, falling back to the resource’s label.</li>
+</ul>
+</li>
+<li>Checks every <code>docker_container</code> in the <strong>current</strong> namespace against the collected claims, erroring on the first <code>(host, port)</code> or <code>(host, name)</code> collision and naming both the offending current-namespace address and the sibling that owns the claim.</li>
+</ol>
+<p>The validator is skipped entirely in bundle mode. Within a single namespace, the existing planner-side <a href="#port-conflict-validator">port-conflict validator</a> catches collisions within the same desired set. The cross-namespace validator is strictly the inter-namespace layer above it.</p>
+<p>The sibling loader uses <code>allow_unresolved_secrets = true</code> defensively — it’s only collecting addresses, ports, and names, none of which depend on secret plaintext. If a sibling load fails for any other reason, the error is logged and that sibling is skipped (the plan still proceeds), so a broken sibling doesn’t gate apply of an unrelated namespace.</p>
+<h2 id="split-state-namespace-mode"><a class="header" href="#split-state-namespace-mode">Split state (namespace mode)</a></h2>
+<p>In namespace mode the state on disk is two files instead of one:</p>
+<pre><code>.stratum/
+  &lt;name&gt;.json        # user-declared resources for namespace `&lt;name&gt;`
+  _shared.json       # implicit per-host _stratum_* resources
+</code></pre>
+<p><code>State::save_split(ns_path, shared_path)</code> walks <code>self.resources</code> and routes each entry by addr name: anything starting with <code>_stratum_</code> goes to <code>_shared.json</code>, everything else to <code>&lt;name&gt;.json</code>. Both files are written every save (with parent dirs created), even when one side is empty — that keeps the next load predictable.</p>
+<p><code>State::load_merged(ns_path, shared_path)</code> is the inverse. It loads both files and unions their <code>resources</code> maps, with the namespace’s entry winning any <code>addr.key()</code> collision (the more recently touched of the two, since the active scope just ran). Missing files become empty state (matches <code>load</code>).</p>
+<p>Bundle mode keeps using the single-file <code>State::load(path)</code> and <code>State::save(path)</code>. The CLI picks the right pair via the <code>-n</code> flag — <code>load_state</code> / <code>save_state</code> in <code>crates/cli/src/main.rs</code> switch on whether a shared path is set.</p>
+<p>The split is what lets two namespaces targeting the same host co-exist without each trying to own the per-host tuning resources. First namespace applies: <code>_stratum_swap_*</code>, <code>_stratum_sshd_oom_*</code>, <code>_stratum_sshd_reload_*</code> land in <code>_shared.json</code>. Second namespace plans: <code>load_merged</code> pulls them back from the shared file into its working state, so the new plan sees them as no-op. Without the split, the second apply would see them missing from its state file and recreate them, churning the swap file and restarting sshd on every cross-namespace apply.</p>
+<h2 id="state-file-shape"><a class="header" href="#state-file-shape">State file shape</a></h2>
+<pre><code class="language-json">{
+  "version": 1,
+  "resources": {
+    "root@192.0.2.10|docker_container.traefik": {
+      "addr": { "kind": "docker_container", "name": "traefik", "host": "root@192.0.2.10" },
+      "provider": "docker",
+      "attrs": {
+        "host": "root@192.0.2.10",
+        "image": "traefik:v2.11",
+        "container_id": "abc123...",
+        "...": "..."
+      }
+    },
+    "root@192.0.2.10|system_package.docker": { "...": "..." }
+  }
+}
+</code></pre>
+<p>Resources are keyed by <code>addr.key()</code> — <code>&lt;host&gt;|&lt;kind&gt;.&lt;name&gt;</code> — in a <code>BTreeMap</code>, so the on-disk order is deterministic (lexicographic). The file is overwritten in full on every successful apply.</p>
+<h3 id="secret-markers-in-state"><a class="header" href="#secret-markers-in-state">Secret markers in state</a></h3>
+<p>When a resource attr resolves from a <a href="language/secrets.html">secret</a> ref, the provider receives plaintext but state stores a redaction marker:</p>
+<pre><code class="language-json">{
+  "env": {
+    "POSTGRES_PASSWORD": {
+      "__secret": "pg_password",
+      "__secret_sha256": "sha256:f7c3bc1d808e04..."
+    }
+  }
+}
+</code></pre>
+<p>The marker is written by <code>Extracted::redact_into</code>, called between every provider return and <code>state.upsert</code>. <code>diff</code> and <code>diff_observed</code> are marker-aware (see <code>core::secret_compare</code>): a marker compares equal to plaintext when the plaintext’s hash matches the marker’s <code>__secret_sha256</code>, and a marker-vs-marker compare uses only the hashes. This is what keeps <code>--refresh</code> from showing perpetual drift on secret-bearing fields. The CLI’s <code>render</code> function prints markers as <code>&lt;secret:NAME sha:abc123&gt;</code> — six hex chars, enough to spot a rotation, not enough to attack offline.</p>
+<h2 id="state-addresses"><a class="header" href="#state-addresses">State addresses</a></h2>
+<p>A resource’s <strong>state address</strong> is its <strong>post-expansion <code>&lt;kind&gt;.&lt;name&gt;</code></strong> — the identity the planner matches on to decide Create vs. Update vs. Delete. “Post-expansion” is the contract that matters when you use <code>module</code>s: template expansion prefixes every resource declared inside a <code>module "&lt;alias&gt;"</code> with <code>&lt;alias&gt;_</code>, so a <code>docker_container "web"</code> inside <code>module "app"</code> has the address <code>docker_container.app_web</code>, not <code>docker_container.web</code>. The prefix is part of the address, not cosmetic — the state key (<code>&lt;host&gt;|&lt;kind&gt;.&lt;name&gt;</code>) is derived from it.</p>
+<p>This makes address identity <strong>structural</strong>. Anything that changes a resource’s post-expansion name changes its address, and the planner treats an address it has never seen as a brand-new resource:</p>
+<ul>
+<li>Moving a resource into a <code>module</code> (name gains the <code>&lt;alias&gt;_</code> prefix).</li>
+<li>Moving it back out (name loses the prefix).</li>
+<li>Renaming the resource, its module alias, or renaming the resource’s <code>host</code> (which re-keys it — see <a href="#resourceaddr"><code>ResourceAddr</code></a>).</li>
+</ul>
+<p>Because the old address is now absent from config and the new one is absent from state, the next <code>plan</code> shows a <strong>Delete of the old + a Create of the new</strong> — i.e. it would destroy and recreate a live resource purely because of a refactor that changed no real infrastructure. There is no automatic name-tracking; state is keyed by address, and the address moved.</p>
+<p>The operator escape hatch is <a href="cli.html#state-mv"><code>stratum state mv &lt;FROM&gt; &lt;TO&gt;</code></a>: it renames the address inside the state file (and rewrites any <code>depends_on</code> edges that pointed at it) without touching a host, so the live resource is tracked under its new address and the next plan collapses to a no-op. <code>mv</code> is address-only — it never re-types a resource and never changes what a provider does on a host.</p>
+<h3 id="template-shipped-moved-metadata"><a class="header" href="#template-shipped-moved-metadata">Template-shipped <code>moved</code> metadata</a></h3>
+<p>For the <strong>template-author refactor</strong> — a template that renames one of its own internal resources — the durable fix is for the template to <strong>ship the rename itself</strong> so a consumer’s next <code>apply</code> migrates automatically, with no <code>state mv</code> step. A <code>moved</code> block records the rename inside the template body:</p>
+<pre><code class="language-strat">template "app" {
+  moved { from = "docker_container.old" to = "docker_container.new" }
+
+  resource "docker_container" "new" {
+    host  = module.base.host
+    image = "app:2"
+  }
+}
+</code></pre>
+<p><code>from</code> and <code>to</code> are <strong>internal</strong>, pre-prefix <code>&lt;kind&gt;.&lt;name&gt;</code> addresses (string literals only — no refs or expressions). On expansion under <code>module "&lt;alias&gt;"</code>, each move is namespaced per instantiation exactly like the resources are: <code>moved docker_container.old -&gt; docker_container.new</code> in <code>module "shop"</code> becomes <code>docker_container.shop_old -&gt; docker_container.shop_new</code>. Two instantiations of the same template each get their own namespaced move.</p>
+<p>At <strong>plan</strong> and <strong>apply</strong>, before the planner runs, stratum resolves each move against state per host:</p>
+<ul>
+<li>state holds <code>from</code> but not <code>to</code> → the move is <strong>pending</strong>: state is re-keyed from <code>from</code> to <code>to</code> (and any <code>depends_on</code> edge that resolved to <code>from</code> is rewritten), so the diff collapses to the true change instead of a destroy + create.</li>
+<li>state holds <strong>both</strong> <code>from</code> and <code>to</code> → a <strong>hard error</strong> naming both addresses: the migration is ambiguous, and you must resolve it by hand (<code>stratum state rm</code> the stale one, or <code>stratum state mv</code> to reconcile).</li>
+<li>state holds neither / only <code>to</code> → <strong>no-op</strong> (already migrated, or never applied under the old name).</li>
+</ul>
+<p><code>plan</code> applies pending moves to the in-memory state only — it never writes state to disk — and prints them as an explicit <code>moved (state only): &lt;from&gt; -&gt; &lt;to&gt;</code> section so the rest of the plan reads as the real diff. <code>apply -y</code> persists the moves <strong>first</strong>, under the state lock, before it plans or executes anything, so a crash mid-apply leaves state already migrated rather than half-renamed. <code>destroy</code> honors moves the same way <code>plan</code> does — it deletes the tracked resource under its migrated address.</p>
+<p><strong>Chains</strong> compose. When a template evolves <code>a → b → c</code> across versions, it ships both hops in declaration order:</p>
+<pre><code class="language-strat">moved { from = "docker_container.a" to = "docker_container.b" }
+moved { from = "docker_container.b" to = "docker_container.c" }
+</code></pre>
+<p>Applied in order, a consumer whose state still holds <code>a</code> (never upgraded past v1) is migrated <code>a → b → c</code> in one apply, landing on the current address. Only the terminal <code>to</code> (<code>c</code>) must name a resource the template still defines; intermediate targets (<code>b</code>) exist only as the <code>from</code> of a later move.</p>
+<p><code>moved</code> is <strong>template-only</strong> — it migrates a template’s own internal renames. A <code>moved</code> block at config scope is an error (config-scope renames are what <code>state mv</code> is for). Load-time validation also rejects: a missing or extra attribute, a non-literal value, a <code>from</code>/<code>to</code> kind mismatch, <code>from == to</code>, a <code>to</code> that names neither a body resource nor a later move’s <code>from</code>, a <code>from</code> that still exists in the body (that’s a rename that didn’t happen), and a duplicate <code>from</code> within one template.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="cli.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="tutorials/zero-to-deployed.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="cli.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="tutorials/zero-to-deployed.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

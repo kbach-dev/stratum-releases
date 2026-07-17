@@ -1,0 +1,580 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>docker - stratum</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Tiny declarative IaC tool, written from scratch in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-990bb639.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-1b75d191.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stratum</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum/edit/main/book/src/providers/docker.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="docker"><a class="header" href="#docker">docker</a></h1>
+<p>Drives the <code>docker</code> CLI on a remote host over SSH. All operations are shell commands sent through <code>ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new</code> — there is no Docker API client.</p>
+<p>The provider takes no configuration block.</p>
+<h2 id="update-strategy"><a class="header" href="#update-strategy">Update strategy</a></h2>
+<p><code>docker_container</code> updates are <strong>recreate</strong>: <code>docker rm -f &lt;name&gt;</code> followed by <code>docker pull &lt;image&gt;</code> and <code>docker run</code>. There is no in-place update. Any change to any attribute triggers a recreate. Networks are reconciled by name; the create path is idempotent (<code>docker network inspect ... || docker network create ...</code>), so re-applying without changes is a no-op.</p>
+<p><strong>Create adopts.</strong> A create step (the resource isn’t in state) first inspects the host: if a container or network of the same name already exists — one that predates stratum management — stratum <strong>adopts</strong> it instead of colliding on the name or recreating it. See <a href="#adopt-on-create">Adopt on create</a> below. This is create-path only; <strong>update stays recreate</strong>.</p>
+<p><code>docker_image</code> is a <strong>producer</strong> kind: it runs <code>docker build</code> on the host and records the resulting <code>image_id</code>. Drift on <code>build_args</code> / <code>context</code> / <code>dockerfile</code> / <code>target</code> triggers a rebuild. Drift on <code>tag</code> itself recreates (the new tag won’t share an image ID with the old one). See <a href="#docker_image"><code>docker_image</code></a> below.</p>
+<h2 id="kinds"><a class="header" href="#kinds">Kinds</a></h2>
+<h3 id="docker_network"><a class="header" href="#docker_network"><code>docker_network</code></a></h3>
+<p>Ensures a user-defined network exists on the host.</p>
+<pre><code class="language-strat">resource "docker_network" "edge" {
+  host   = host.primary.addr
+  name   = "stratum-edge"
+  subnet = "172.18.0.0/16"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>name</code></td><td>no</td><td>string</td><td>resource name</td><td>Docker network name. Falls back to the resource label.</td></tr>
+<tr><td><code>driver</code></td><td>no</td><td>string</td><td><code>bridge</code></td><td>Network driver passed to <code>--driver</code>.</td></tr>
+<tr><td><code>subnet</code></td><td>no</td><td>string</td><td>daemon-chosen</td><td>Fixed CIDR passed to <code>--subnet</code>, e.g. <code>172.18.0.0/16</code>. Pins the network to an exact subnet so a rebuild reproduces the CIDR that host firewall rules / reverse-proxy dials depend on.</td></tr>
+</tbody>
+</table>
+</div>
+<p>On <strong>create</strong>, if a network of this name already exists, stratum inspects it: a matching <code>driver</code> is <strong>adopted</strong> (no change); a differing <code>driver</code> is a hard error (see <a href="#adopt-on-create">Adopt on create</a>). An absent network is created with <code>docker network create --driver &lt;driver&gt; [--subnet &lt;subnet&gt;] &lt;name&gt;</code>. <strong>Update</strong> routes through the same adopt-or-create path (a subnet can’t change in place, so there is nothing to update in-place), making a repeat apply safe.</p>
+<p><strong>Subnet is immutable.</strong> A docker network’s subnet cannot be changed in place. When a <code>subnet</code> is declared:</p>
+<ul>
+<li>network absent → created with <code>--subnet</code>.</li>
+<li>network present and the declared subnet <strong>equals</strong> the live one → adopted as a <strong>no-op</strong> (this is what happens when you add <code>subnet = "172.18.0.0/16"</code> to an already-live <code>stratum-edge</code>).</li>
+<li>network present and the declared subnet <strong>differs</strong> from the live one → <strong>hard error</strong>. stratum will <strong>not</strong> destroy the live network to recreate it (that would drop every attached container). Reconcile manually: <code>docker network rm &lt;name&gt;</code> after detaching its containers, then re-apply — or edit the config so <code>subnet</code> matches the live value.</li>
+</ul>
+<p>Delete runs <code>docker network rm &lt;name&gt;</code>.</p>
+<p><strong>Drift detection:</strong> <code>read</code> runs <code>docker network inspect &lt;name&gt; --format '{{json .}}'</code>. Returns <code>Absent</code> on <code>No such network</code>, otherwise <code>Present { host, name, driver }</code> (plus <code>subnet</code> from <code>.IPAM.Config</code> <strong>only when state tracks a declared subnet</strong>, so a network managed without a subnet never false-drifts). The inspect output is parsed for <code>Name</code>, <code>Driver</code>, and IPAM subnet.</p>
+<h3 id="docker_container"><a class="header" href="#docker_container"><code>docker_container</code></a></h3>
+<p>A long-running container.</p>
+<pre><code class="language-strat">resource "docker_container" "traefik" {
+  host    = host.primary.addr
+  name    = "traefik"
+  image   = "traefik:v3.1"
+  restart = "unless-stopped"
+  env = {
+    NODE_ENV = "production"
+  }
+  ports    = ["80:80", "443:443"]
+  volumes  = ["/var/run/docker.sock:/var/run/docker.sock:ro"]
+  networks = ["stratum-edge"]
+  labels = {
+    "traefik.enable" = "true"
+  }
+  command = "--api.dashboard=true"
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target.</td></tr>
+<tr><td><code>image</code></td><td>yes</td><td>string</td><td>—</td><td>Image reference. Pulled before run unless <code>pull = false</code>.</td></tr>
+<tr><td><code>name</code></td><td>no</td><td>string</td><td>resource name</td><td>Container name (<code>--name</code>). Falls back to the resource label.</td></tr>
+<tr><td><code>restart</code></td><td>no</td><td>string</td><td><code>unless-stopped</code></td><td>Passed to <code>--restart</code>.</td></tr>
+<tr><td><code>pull</code></td><td>no</td><td>bool</td><td><code>true</code></td><td>If <code>false</code>, skip the <code>docker pull</code> step. Use for locally-built images that aren’t in any registry (see <a href="#pull--false-locally-built-images"><code>pull = false</code></a> below).</td></tr>
+<tr><td><code>env</code></td><td>no</td><td>map</td><td>none</td><td>Each entry becomes a <strong>valueless</strong> <code>-e KEY</code> flag; the value is streamed over the SSH connection’s stdin and sourced into the daemon launcher’s environment, so docker reads it without it ever reaching the remote argv. Non-string values are JSON-stringified. A value that resolves from <code>secret.&lt;name&gt;.value</code> flows through as a normal env var; state stores only a redaction marker. See <a href="../language/secrets.html">Secrets</a>.</td></tr>
+<tr><td><code>env_file</code></td><td>no</td><td>string | list of string</td><td>none</td><td>Each path becomes <code>--env-file &lt;path&gt;</code>, pointing at a host-side <code>KEY=VALUE</code> file. Emitted before the <code>-e</code> flags, so an <code>env</code> entry overrides a value of the same key from the file. See <a href="#env_file-host-env-files"><code>env_file</code></a> below.</td></tr>
+<tr><td><code>ports</code></td><td>no</td><td>list of string</td><td>none</td><td>Each string becomes <code>-p &lt;spec&gt;</code>. Use the standard <code>host:container[/proto]</code>.</td></tr>
+<tr><td><code>volumes</code></td><td>no</td><td>list of string</td><td>none</td><td>Each string becomes <code>-v &lt;spec&gt;</code>.</td></tr>
+<tr><td><code>labels</code></td><td>no</td><td>map</td><td>none</td><td>Each entry becomes <code>-l KEY=VALUE</code>. Dotted keys (Traefik) must be quoted.</td></tr>
+<tr><td><code>networks</code></td><td>no</td><td>list of string</td><td>none</td><td>Each string becomes <code>--network &lt;name&gt;</code>.</td></tr>
+<tr><td><code>command</code></td><td>no</td><td>string | list of string</td><td>none</td><td>Appended after the image. String form is split on whitespace; list form preserves each element as one argv token (see <a href="#command-string-or-argv-list"><code>command</code></a>).</td></tr>
+<tr><td><code>memory</code></td><td>no</td><td>string</td><td>none</td><td>Hard memory limit, passed to <code>--memory</code>. Same syntax as docker (<code>256m</code>, <code>1g</code>).</td></tr>
+<tr><td><code>memory_swap</code></td><td>no</td><td>string</td><td>none</td><td>Total memory + swap limit, passed to <code>--memory-swap</code>. See docker’s docs for the swap-disable / swap-unlimited shorthands.</td></tr>
+<tr><td><code>healthcheck</code></td><td>no</td><td>map</td><td>none</td><td>Lowered to <code>--health-*</code> flags on <code>docker run</code>. See <a href="#healthcheck"><code>healthcheck</code></a> below.</td></tr>
+<tr><td><code>depends_on</code></td><td>no</td><td>list of string</td><td>none</td><td>Resource addresses (<code>&lt;kind&gt;.&lt;name&gt;</code>) this container depends on. The planner topo-sorts before applying. See <a href="#depends_on-and-the-post-apply-wait"><code>depends_on</code></a> below.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The constructed command is:</p>
+<pre><code>docker pull &lt;image&gt; &gt;/dev/null; docker run -d --name &lt;name&gt; --restart &lt;restart&gt; [...flags...] &lt;image&gt; [&lt;command tokens&gt;]
+</code></pre>
+<p>On update it becomes:</p>
+<pre><code>docker rm -f &lt;name&gt; &gt;/dev/null 2&gt;&amp;1 || true; docker pull &lt;image&gt; &gt;/dev/null; docker run -d ...
+</code></pre>
+<p>When <code>env</code> is set, the whole command is wrapped so the values arrive over stdin and are sourced before <code>docker run</code>:</p>
+<pre><code>set -a; . /dev/stdin; set +a; docker pull ...; docker run -d ... -e KEY ... &lt;image&gt;
+</code></pre>
+<p>The <code>-e KEY</code> flags are valueless, so docker reads each <code>KEY</code> from the now-populated environment. The <code>K=value</code> payload travels on stdin only — never an argv — keeping secret values out of the remote process table.</p>
+<p>Stored state preserves the input attrs verbatim and adds <code>container_id</code> (the last line of <code>docker run</code>’s stdout, which is the container ID).</p>
+<p>Delete runs <code>docker rm -f &lt;name&gt;</code>.</p>
+<h4 id="adopt-on-create"><a class="header" href="#adopt-on-create">Adopt on create</a></h4>
+<p>A <strong>create</strong> step means the container isn’t in stratum’s state — but it may already be running on the host, created by hand before stratum managed the box (the motivating case is a hand-run Caddy reverse proxy). Recreating it (<code>docker rm -f</code> + <code>docker run</code>) would be an outage, so instead stratum <strong>adopts</strong> it: <code>docker inspect &lt;name&gt;</code> runs first, and</p>
+<ul>
+<li><strong>not found</strong> → create exactly as normal (<code>docker pull</code> + <code>docker run</code>);</li>
+<li><strong>found, every declared attr matches the live container</strong> → <strong>ADOPT</strong>: mutate nothing, record the live container’s id into state, and the next plan is a no-op. Log line: <code>[docker] ADOPT existing container &lt;name&gt; on &lt;host&gt; — no change</code>;</li>
+<li><strong>found, a declared attr conflicts</strong> → <strong>hard error</strong> naming each differing attr (declared vs live). Stratum never <code>rm -f</code>s on the adopt path — that would be the very outage this feature avoids.</li>
+</ul>
+<p>Only <strong>declared</strong> attrs are checked, each as a subset/equality against the live container, so undeclared live details (image-baked env, the default <code>bridge</code> network, <code>com.docker.*</code> and other daemon/image labels, extra published ports) never block adoption — mirroring how stratum diffs attrs generally.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>declared attr</th><th>live source (<code>docker inspect</code>)</th><th>match rule</th></tr>
+</thead>
+<tbody>
+<tr><td><code>image</code></td><td><code>.Config.Image</code></td><td>exact string equality (see the caveat below)</td></tr>
+<tr><td><code>restart</code></td><td><code>.HostConfig.RestartPolicy.Name</code></td><td>equality; an omitted <code>restart</code> uses the effective default <code>unless-stopped</code></td></tr>
+<tr><td><code>networks</code></td><td><code>.NetworkSettings.Networks</code> keys</td><td>every declared network must be attached (subset)</td></tr>
+<tr><td><code>labels</code></td><td><code>.Config.Labels</code></td><td>every declared label key present with an equal value (subset)</td></tr>
+<tr><td><code>env</code></td><td><code>.Config.Env</code> (<code>["K=V"]</code>)</td><td>every declared <code>KEY</code> present with an equal value (subset). Values are <strong>never</strong> printed in a mismatch — an env value may be a secret</td></tr>
+<tr><td><code>ports</code></td><td><code>.HostConfig.PortBindings</code></td><td>every declared publish spec bound (subset). <code>h:c</code>, <code>ip:h:c</code>, and <code>/proto</code> forms are parsed; a host-port-less <code>c</code> only needs the container port published</td></tr>
+<tr><td><code>volumes</code></td><td><code>.Mounts</code> (<code>Destination</code> + <code>Source</code>/<code>Name</code>)</td><td>every declared <code>src:dst</code> bind or named volume mounted (subset). A <code>:ro</code>/<code>:rw</code> mode suffix is not gated; an anonymous volume (<code>/data</code>, no <code>:dst</code>) can’t be matched and is skipped</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong><code>image</code> caveat.</strong> The comparison is a literal string match of the declared reference against <code>.Config.Image</code>. Docker normalizes some references (an implicit <code>:latest</code>, a <code>docker.io/library/</code> registry prefix, a <code>@sha256:</code> digest pin), so a declared <code>nginx</code> may not string-equal a live <code>nginx:latest</code>. Declare the image the same way it appears in <code>docker inspect</code> to adopt cleanly.</p>
+<p><strong>Attrs adopted on trust (not gated).</strong> These declared attrs are <em>not</em> verified against the live container, because they either aren’t observable from <code>docker inspect</code> or can’t be compared reliably. On adoption they’re recorded in state as declared and take effect only when the container is next <strong>recreated</strong> (a change to a gated attr, or <code>apply -r</code>):</p>
+<ul>
+<li><code>pull</code> — a behavioral flag, not a container property.</li>
+<li><code>env_file</code> — the file path isn’t recorded in inspect; its variables are folded into <code>.Config.Env</code>, so a declared <code>env</code> still covers the resulting values.</li>
+<li><code>memory</code> / <code>memory_swap</code> — present as raw bytes (<code>.HostConfig.Memory</code>), but unit and sentinel normalization (<code>256m</code> vs <code>268435456</code>; swap <code>-1</code> / <code>2×memory</code>) make equality fragile, and a false mismatch would wrongly block adoption.</li>
+<li><code>command</code> — <code>.Config.Cmd</code> interleaves with the image’s <code>ENTRYPOINT</code>/<code>CMD</code>, so a declared command can’t be compared reliably.</li>
+<li><code>healthcheck</code> — <code>docker inspect</code> normalizes durations to nanoseconds; comparing against <code>5s</code>-style strings is fragile.</li>
+</ul>
+<p>On a conflict the error lists each differing attr and the options — edit the <code>.strat</code> to match, remove the live object by hand (<code>docker rm -f &lt;name&gt;</code>) and re-apply, or force a replace with <code>apply -r &lt;kind&gt;.&lt;name&gt;</code>:</p>
+<pre><code>cannot adopt existing docker container `caddy` on root@192.0.2.10: it differs from the declared config:
+  - image: declared `caddy:2.8` != live `caddy:2.7`
+  - restart: declared `unless-stopped` != live `always`
+Options: edit the .strat so the declared attrs match the live object; or remove the live object
+manually (`docker rm -f caddy`) and re-apply to recreate it; or force a replace with
+`apply -r &lt;kind&gt;.&lt;name&gt;` (recreate = downtime for a container).
+</code></pre>
+<p>Adopt is create-path only. Once the container is in state, an actual attribute change plans as a normal recreate <code>Update</code>. Mirrors the <a href="cloudflare.html"><code>cloudflare_dns_record</code></a> create-is-upsert / adopt-by-id idempotency.</p>
+<h4 id="pull--false-locally-built-images"><a class="header" href="#pull--false-locally-built-images"><code>pull = false</code>: locally-built images</a></h4>
+<p>When <code>pull = false</code>, the <code>docker pull &lt;image&gt; &gt;/dev/null;</code> prefix is dropped from both the create and the recreate command. Use it when the image is built directly on the host (a sibling <code>ssh_exec</code> runs <code>docker build -t myapp:dev ...</code>) so there is no registry to pull from. With the default <code>pull = true</code>, <code>docker pull myapp:dev</code> errors and the create/update fails.</p>
+<p><code>docker run</code> itself still errors loudly if the image isn’t present on the host, so a typo in <code>image</code> is caught at apply time — there’s no silent fallback to a stale image.</p>
+<p>For a locally-built image, prefer an immutable SHA-derived tag over <code>:latest</code> so rebuilds recreate the container through the normal plan diff. See <a href="../language/vars.html#the-problem-it-solves-mutable-tags-defeat-the-diff">Vars</a>.</p>
+<pre><code class="language-strat">resource "ssh_exec" "build-app" {
+  host    = host.primary.addr
+  command = "cd /srv/repos/app &amp;&amp; docker build -t app:dev -f Dockerfile ."
+}
+
+resource "docker_container" "app" {
+  host  = host.primary.addr
+  image = "app:dev"
+  pull  = false
+  # ...
+}
+</code></pre>
+<h4 id="command-string-or-argv-list"><a class="header" href="#command-string-or-argv-list"><code>command</code>: string or argv list</a></h4>
+<pre><code class="language-strat"># String form — split on whitespace at apply time.
+command = "node server.js --port 4000"
+
+# List form — each element is one argv token. Spaces inside an element are
+# preserved (the third element below is a single shell line).
+command = ["sh", "-c", "redis-server --requirepass ${secret.redis_pw.value}"]
+</code></pre>
+<p>Use the list form when an argument contains whitespace, embedded quotes, or other shell metacharacters. Each list element is shell-escaped independently when the run command crosses the SSH boundary, so spaces inside one element do not split it into two arguments.</p>
+<p>A non-string, non-list value (a number, a bool, a map) errors at apply time.</p>
+<h4 id="env_file-host-env-files"><a class="header" href="#env_file-host-env-files"><code>env_file</code>: host env files</a></h4>
+<pre><code class="language-strat"># Single file.
+env_file = "/etc/app/app.env"
+
+# Multiple files — one --env-file per path, in order.
+env_file = ["/etc/app/base.env", "/etc/app/secrets.env"]
+</code></pre>
+<p>A string lowers to one <code>--env-file &lt;path&gt;</code>; a list lowers to one <code>--env-file &lt;path&gt;</code> per element, in list order. Each path is a host-side <code>KEY=VALUE</code> file read by the docker daemon when the container starts.</p>
+<p>The <code>--env-file</code> flags are emitted <strong>before</strong> the <code>-e</code> flags from <code>env</code>. Docker applies a later <code>-e</code> over an earlier <code>--env-file</code>, so an <code>env</code> entry overrides a key of the same name coming from the file:</p>
+<pre><code class="language-strat">resource "docker_container" "api" {
+  host     = host.primary.addr
+  image    = "api:dev"
+  env_file = "/etc/app/app.env"   # sets PORT=80
+  env = {
+    PORT = "8080"                 # wins — overrides PORT from the file
+  }
+}
+</code></pre>
+<p>The primary use is consuming a host env file written by <a href="system.html#system_env_file"><code>system_env_file</code></a>: the secret value lives only in that file (state stores its sha256, never the plaintext), and the container references the path. This keeps the secret out of <code>docker_container.env</code> — see <a href="#consume-a-host-env-file-written-by-system_env_file">Consume a host env file</a> below.</p>
+<p>A non-string list element, or a non-string/non-list value (a number, a bool, a map), errors at apply time:</p>
+<pre><code>`&lt;name&gt;` env_file list elements must be strings
+`&lt;name&gt;` env_file must be a string or list of strings
+</code></pre>
+<p><code>env_file</code> records the path(s) in state, not the file contents. The daemon reads the file fresh on each <code>docker run</code>, so editing the file on the host changes the container only on the next recreate — stratum doesn’t watch the file’s contents through this attribute. When the file is managed by a <code>system_env_file</code> resource, wire a <a href="#depends_on-and-the-post-apply-wait"><code>depends_on</code></a> edge so a rotation of the file recreates the consumer.</p>
+<h5 id="consume-a-host-env-file-written-by-system_env_file"><a class="header" href="#consume-a-host-env-file-written-by-system_env_file">Consume a host env file (written by <code>system_env_file</code>)</a></h5>
+<p>The secret-bearing alternative to putting <code>secret.&lt;name&gt;.value</code> directly in <code>env</code>: write the secret to a host file once with <code>system_env_file</code>, then point the container at that path with <code>env_file</code>. The plaintext lives only in the file; both the file’s state and the container’s state hold a sha / path, never the value.</p>
+<pre><code class="language-strat">host "primary" {
+  addr = "root@192.0.2.10"
+}
+
+secret "pg_password" {
+  from_env = "PG_PASSWORD"
+}
+
+resource "system_env_file" "db-env" {
+  host = host.primary.addr
+  path = "/etc/app/db.env"
+  mode = "0600"
+  env = {
+    POSTGRES_PASSWORD = secret.pg_password.value
+    POSTGRES_USER     = "postgres"
+    POSTGRES_DB       = "app"
+  }
+}
+
+resource "docker_container" "db" {
+  host       = host.primary.addr
+  name       = "db"
+  image      = "postgres:16-alpine"
+  env_file   = "/etc/app/db.env"
+  depends_on = ["system_env_file.db-env"]
+}
+</code></pre>
+<p>The secret is declared once, in the <code>system_env_file</code> <code>env</code> map. The container never repeats it — it reads <code>/etc/app/db.env</code> at start. The <code>depends_on</code> edge orders the file before the container and recreates the container when the file’s sha changes (a rotated password). Contrast with the inline <a href="../tutorials/inject-secret-into-container.html"><code>env</code> + <code>secret.X.value</code> pattern</a>, which is fine for one container but duplicates the value if several containers need the same secret.</p>
+<h4 id="healthcheck"><a class="header" href="#healthcheck"><code>healthcheck</code></a></h4>
+<p>A map lowered to <code>--health-*</code> flags on <code>docker run</code>. <code>test</code> is the only required field; everything else has a docker-side default or is sensible to omit.</p>
+<pre><code class="language-strat">resource "docker_container" "cache" {
+  host  = host.primary.addr
+  image = "redis:7-alpine"
+  healthcheck = {
+    test         = "redis-cli ping | grep -q PONG"
+    interval     = "5s"
+    retries      = 5
+    timeout      = "3s"
+    start_period = "10s"
+  }
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>field</th><th>required</th><th>type</th><th>lowering</th><th>default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>test</code></td><td>yes</td><td>string</td><td><code>--health-cmd &lt;value&gt;</code></td><td>—</td></tr>
+<tr><td><code>interval</code></td><td>no</td><td>string</td><td><code>--health-interval &lt;v&gt;</code></td><td>docker default (30s)</td></tr>
+<tr><td><code>retries</code></td><td>no</td><td>number</td><td><code>--health-retries &lt;v&gt;</code></td><td>docker default (3)</td></tr>
+<tr><td><code>timeout</code></td><td>no</td><td>string</td><td><code>--health-timeout &lt;v&gt;</code></td><td><code>30s</code></td></tr>
+<tr><td><code>start_period</code></td><td>no</td><td>string</td><td><code>--health-start-period &lt;v&gt;</code></td><td><code>0s</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Declaring <code>healthcheck</code> opts the container into the <a href="#depends_on-and-the-post-apply-wait">post-apply readiness wait</a>: apply will not move on to dependent steps until <code>docker inspect --format '{{.State.Health.Status}}'</code> reports <code>healthy</code>, with a 60s budget.</p>
+<p>A <code>healthcheck</code> map without a <code>test</code> field is a hard error at apply time:</p>
+<pre><code>`&lt;name&gt;` healthcheck missing required field `test`
+</code></pre>
+<h4 id="depends_on-and-the-post-apply-wait"><a class="header" href="#depends_on-and-the-post-apply-wait"><code>depends_on</code> and the post-apply wait</a></h4>
+<pre><code class="language-strat">resource "docker_container" "api" {
+  host       = host.primary.addr
+  image      = "api:dev"
+  depends_on = ["docker_container.db", "docker_container.cache"]
+}
+</code></pre>
+<p>Each entry must be a <code>&lt;kind&gt;.&lt;name&gt;</code> resource address. A <a href="../language/references.html#resource-references">resource reference</a> in the body (<code>docker_image.api.image_id</code>) injects the same edge implicitly — declared and injected entries are merged and deduped. The planner uses these edges in three places:</p>
+<ol>
+<li><strong>Topo sort of create / update steps.</strong> <code>api</code> is reordered after both of its dependencies, regardless of file order. The sort is stable: resources with no edges keep their relative input order, and implicit <code>_stratum_*</code> resources (per-host swap, sshd OOM tuning) fall through with <code>in_degree = 0</code> and stay at the front.</li>
+<li><strong>Cycle detection.</strong> A cycle is a hard error at plan time, with the cycle path in the message.</li>
+<li><strong>Forward-topo delete order.</strong> When <code>api</code> and <code>db</code> are both removed from config, <code>api</code> is deleted first (forward topo over the state-resident edges) — the dependent goes down before its dependency.</li>
+</ol>
+<p>A missing reference is a hard error at plan time, naming both addresses:</p>
+<pre><code>depends_on edge: `docker_container.api` references unknown resource `docker_container.db`
+</code></pre>
+<p><code>depends_on</code> edges only resolve within a single namespace. If a producer and consumer end up in different <a href="../language/namespaces.html">namespaces</a>, duplicate the producer into the consumer’s namespace — see <a href="../tutorials/namespaces.html#step-6-cross-namespace-depends_on-doesnt-work--duplicate-instead">Cross-namespace <code>depends_on</code></a>.</p>
+<p><strong>Post-apply readiness wait.</strong> After every successful <code>docker_container</code> create or update, the planner pauses before moving on:</p>
+<ul>
+<li>If <code>healthcheck</code> is declared, it polls <code>docker inspect --format '{{.State.Health.Status}}' &lt;name&gt;</code> once a second for up to 60s, waiting for <code>healthy</code>. A status of <code>unhealthy</code> or a timeout fails the apply with a named error. An empty status (no healthcheck configured at the docker level) is treated as ready immediately.</li>
+<li>Otherwise, a cosmetic 500ms pause gives docker time to wire networks and volumes before the next step pokes the container.</li>
+</ul>
+<p>This wait is what makes <code>depends_on</code> actually useful — a dependent container starts against a healthy dependency, not just a running one.</p>
+<p><strong>Drift detection:</strong> <code>read</code> runs <code>docker inspect &lt;name&gt; --format '{{json .}}'</code>. Returns <code>Absent</code> on <code>No such object</code> / <code>No such container</code>, otherwise <code>Present</code>. The parsed shape is <code>{ host, name, image, restart, labels, networks, container_id }</code>.</p>
+<p>Two normalization rules in <code>parse_container_inspect</code> keep observed labels from being noisy:</p>
+<ul>
+<li>All <code>com.docker.*</code> labels (compose metadata, etc.) are dropped.</li>
+<li>Remaining labels are intersected with the state’s label key set, so image-baked <code>LABEL</code>s and daemon-injected labels don’t surface as drift.</li>
+</ul>
+<p>Networks come from <code>NetworkSettings.Networks</code>, sorted lexicographically. (<code>diff_observed</code> treats string arrays as sets, so order changes don’t drift either.)</p>
+<h4 id="--refresh-and-rebuilt-images"><a class="header" href="#--refresh-and-rebuilt-images"><code>--refresh</code> and rebuilt images</a></h4>
+<p>A running container keeps the image SHA it started with even after the image tag is re-pointed by a rebuild, so comparing the container’s own <code>.Image</code> against the tag tells you nothing. To catch a rebuilt-but-unchanged-tag image as drift, <code>read</code> resolves what the <strong>tag</strong> currently points to (<code>docker images --no-trunc --format '{{.ID}}' &lt;image&gt;</code>) and compares it against the <code>image_id</code> stratum recorded at the last apply. A mismatch surfaces as an <code>image_id</code> change under <a href="../cli.html#plan"><code>plan --refresh</code></a>.</p>
+<p>This only runs when prior state already tracks an <code>image_id</code> (so legacy state doesn’t drift spuriously) and the tag still resolves on the host. It is the secondary safety net for the mutable-<code>:latest</code> case. The primary recommended pattern is an immutable SHA-derived tag built with a <a href="../language/vars.html"><code>var</code></a>: the tag changes with the source commit, so the container’s <code>image</code> attr changes and the ordinary plan diff recreates it without any <code>--refresh</code>.</p>
+<h3 id="docker_image"><a class="header" href="#docker_image"><code>docker_image</code></a></h3>
+<p>Builds an image on a remote host from a context directory. Producer kind: state captures the resulting <code>image_id</code> so drift can be detected when the image is rebuilt or removed underneath stratum.</p>
+<pre><code class="language-strat">resource "docker_image" "api" {
+  host       = host.primary.addr
+  context    = "/srv/repos/api"
+  dockerfile = "Dockerfile"
+  target     = "runner"
+  tag        = "api:dev"
+  pull_base  = true
+  build_args = {
+    NODE_ENV = "production"
+    API_URL  = "https://api.example.com"
+  }
+}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>attr</th><th>required</th><th>type</th><th>default</th><th>description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>host</code></td><td>yes</td><td>string</td><td>—</td><td>SSH target. The build runs on this host’s docker daemon.</td></tr>
+<tr><td><code>tag</code></td><td>yes</td><td>string</td><td>—</td><td>Image tag (<code>-t</code>) and the lookup key for <code>read</code>.</td></tr>
+<tr><td><code>context</code></td><td>yes</td><td>string</td><td>—</td><td>Absolute path on the host containing the Dockerfile and build context. Stratum <code>cd</code>s into it before <code>docker build</code>.</td></tr>
+<tr><td><code>dockerfile</code></td><td>no</td><td>string</td><td><code>Dockerfile</code></td><td>Dockerfile filename, passed to <code>-f</code>.</td></tr>
+<tr><td><code>target</code></td><td>no</td><td>string</td><td>none</td><td>Multi-stage build target, passed to <code>--target</code>.</td></tr>
+<tr><td><code>build_args</code></td><td>no</td><td>map</td><td>none</td><td>Each entry becomes a <strong>valueless</strong> <code>--build-arg KEY</code> flag; the value is streamed over the SSH connection’s stdin and sourced into the build launcher’s environment, so docker reads it without the value reaching the remote argv. Keys are sorted alphabetically for deterministic command output.</td></tr>
+<tr><td><code>pull_base</code></td><td>no</td><td>bool</td><td><code>false</code></td><td>If true, passes <code>--pull</code> so docker re-pulls the base image instead of reusing a cached one.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The build line is:</p>
+<pre><code>cd &lt;context&gt; &amp;&amp; DOCKER_BUILDKIT=1 docker build [--target T] [--build-arg K ...] [--pull] -t &lt;tag&gt; -f &lt;dockerfile&gt; .
+</code></pre>
+<p>The <code>--build-arg K</code> flags are valueless; when <code>build_args</code> is set the command is wrapped (<code>set -a; . /dev/stdin; set +a; cd &lt;context&gt; &amp;&amp; ...</code>) and the <code>K=value</code> payload is sourced from stdin, so a secret build arg never lands in the remote argv. <code>DOCKER_BUILDKIT=1</code> is always set. The host must have the buildx plugin available (<code>docker buildx</code>).</p>
+<p>After a successful build, stratum runs <code>docker images --no-trunc --format '{{.ID}}' &lt;tag&gt;</code> and records the full image ID as both <code>image_id</code> and <code>id</code> in state. Both are referenceable by other resources via a <a href="../language/references.html#resource-references">resource reference</a> — <code>docker_image.api.image_id</code> in a consumer’s body resolves to the last-built ID from state and injects a <code>depends_on</code> edge on the consumer, so a rebuild cascades a consumer re-run through the normal plan diff:</p>
+<pre><code class="language-strat">resource "docker_container" "api" {
+  host  = host.primary.addr
+  image = "api:dev"
+  pull  = false
+  env = {
+    # Changes whenever the image is rebuilt -&gt; container recreates.
+    IMAGE_ID = docker_image.api.image_id
+  }
+}
+</code></pre>
+<p>On the very first plan the consumer is deferred (<code>deferred (ref pending: docker_image.api.image_id ...)</code>) until the image exists in state; <code>apply</code> builds the image and converges the container in the same invocation.</p>
+<p><strong>Update strategy.</strong> <code>docker_image</code> does not have a separate update path — both create and update run the same build. The desired-vs-prior diff drives whether the build runs at all: a change to any of <code>context</code>, <code>dockerfile</code>, <code>target</code>, <code>build_args</code>, <code>pull_base</code>, or <code>tag</code> produces an <code>Update</code> step that re-runs <code>docker build</code>. A drift-detected change to <code>image_id</code> (image deleted or rebuilt out of band) also re-runs the build.</p>
+<p><strong>Drift detection:</strong> <code>read</code> runs <code>docker images --no-trunc --format '{{.ID}}' &lt;tag&gt;</code>. Empty output → <code>Absent</code>. Otherwise <code>Present { host, tag, image_id, id, ...prior fields }</code>. The build-time fields (<code>context</code>, <code>dockerfile</code>, <code>target</code>, <code>build_args</code>, <code>pull_base</code>) are echoed forward from prior state — docker doesn’t preserve them post-build, and re-querying them is impossible. Drift on those is detected at plan time via desired-vs-prior diff, not by <code>read</code>.</p>
+<p><strong>Delete</strong> runs <code>docker rmi -f &lt;tag&gt;</code> best-effort (force removal, so a tagged image is dropped even when other tags still reference the underlying layers).</p>
+<h2 id="apply-behavior"><a class="header" href="#apply-behavior">Apply behavior</a></h2>
+<p>Trace lines per resource:</p>
+<pre><code>[docker] NETWORK `stratum-edge` on root@192.0.2.10 (create)
+[docker] ADOPT existing network `stratum-edge` on root@192.0.2.10 — no change
+[docker] IMAGE `api:dev` on root@192.0.2.10 (context=/srv/repos/api)
+[docker] CONTAINER `traefik` on root@192.0.2.10 (create)
+[docker] ADOPT existing container `traefik` on root@192.0.2.10 — no change
+[docker] CONTAINER `traefik` on root@192.0.2.10 (recreate)
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../providers/ssh.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../providers/git.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../providers/ssh.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../providers/git.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

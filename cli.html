@@ -1,0 +1,878 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CLI - stratum</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Tiny declarative IaC tool, written from scratch in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-990bb639.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-1b75d191.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stratum</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/kbach-dev/stratum/edit/main/book/src/cli.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="cli"><a class="header" href="#cli">CLI</a></h1>
+<p>Single binary: <code>stratum</code>. All commands operate against one or more config files (default <code>stratum.strat</code>) and a state file (default <code>.stratum/state.json</code>).</p>
+<pre><code>stratum &lt;COMMAND&gt;
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>command</th><th>purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#plan"><code>plan</code></a></td><td>Print the diff between config and state.</td></tr>
+<tr><td><a href="#apply"><code>apply</code></a></td><td>Execute the plan and save state.</td></tr>
+<tr><td><a href="#up"><code>up</code></a></td><td>Apply every declared app/namespace, in declaration order.</td></tr>
+<tr><td><a href="#destroy"><code>destroy</code></a></td><td>Delete every resource tracked in state.</td></tr>
+<tr><td><a href="#install"><code>install</code></a></td><td>Fetch an app’s bricks, scaffold, and pin the lockfile.</td></tr>
+<tr><td><a href="#update"><code>update</code></a></td><td>Re-fetch an installed app at a new ref and re-pin.</td></tr>
+<tr><td><a href="#status"><code>status</code></a></td><td>Print per-host resource usage and per-container stats.</td></tr>
+<tr><td><a href="#state-list"><code>state list</code></a></td><td>List resources currently tracked in state.</td></tr>
+<tr><td><a href="#state-show"><code>state show</code></a></td><td>Print one resource’s full state as JSON.</td></tr>
+<tr><td><a href="#state-rm"><code>state rm</code></a></td><td>Drop resource(s) from state without touching any host.</td></tr>
+<tr><td><a href="#state-mv"><code>state mv</code></a></td><td>Rename a resource’s address in state (refactor rescue).</td></tr>
+<tr><td><a href="#state-merge"><code>state merge</code></a></td><td>Merge two or more state files into one.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="global-flags"><a class="header" href="#global-flags">Global flags</a></h2>
+<p>These flags work on any subcommand (<code>clap</code>’s <code>global = true</code>).</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--env-file &lt;ENV_FILES&gt;</code> <em>(repeatable)</em></td><td>Load env vars from file before resolving <code>secret { from_env }</code> refs. Process env wins on conflict (12-factor). If unset, auto-load <code>.env</code> from cwd if it exists. Repeat the flag to layer multiple files (later flags do NOT override earlier — first one to set a var wins, after process env)</td><td></td></tr>
+<tr><td><code>--namespace, -n &lt;NAMESPACE&gt;</code></td><td>Operate within a named namespace declared in <code>stratum.strat</code>. Resolves <code>-c</code> from the namespace’s <code>configs = [...]</code> and <code>-s</code> to <code>.stratum/&lt;name&gt;.json</code> (or the namespace’s explicit <code>state =</code>). Top-level host/provider/secret blocks in <code>stratum.strat</code> are shared across all namespaces</td><td></td></tr>
+<tr><td><code>--manifest &lt;MANIFEST&gt;</code></td><td>Path to the namespace manifest. Default: <code>./stratum.strat</code> if it exists. Only required when <code>-n NAME</code> is passed and the default isn’t present</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>See <a href="#env-file-and-env-auto-load"><code>--env-file</code> and <code>.env</code> auto-load</a> and <a href="#namespace-mode--n-and---manifest">Namespace mode</a> below.</p>
+<h3 id="namespace-mode--n-and---manifest"><a class="header" href="#namespace-mode--n-and---manifest">Namespace mode (<code>-n</code> and <code>--manifest</code>)</a></h3>
+<p>A <a href="language/namespaces.html">namespace</a> is a deployable slice declared in a top-level manifest. When <code>-n NAME</code> is set, the CLI:</p>
+<ol>
+<li>Locates the manifest. If <code>--manifest PATH</code> is set, that path is used. Otherwise <code>./stratum.strat</code> is required to exist; if it doesn’t, the command errors out (<code>requires a manifest, but ./stratum.strat does not exist</code>).</li>
+<li>Loads the manifest and looks up the named namespace. If it isn’t declared, the error names every known namespace from the manifest.</li>
+<li>Resolves <code>-c</code> from the namespace’s <code>configs = [...]</code>. The manifest itself is always the first file in the merged set, so its <code>host</code> / <code>secret</code> / <code>provider</code> blocks are visible to every per-namespace config.</li>
+<li>Resolves <code>-s</code> to (in priority order) the explicit <code>-s</code> on the command line, the namespace’s body-level <code>state = "..."</code>, or <code>.stratum/&lt;name&gt;.json</code>.</li>
+</ol>
+<pre><code class="language-bash">stratum -n infra plan                          # uses ./stratum.strat, configs from `namespace "infra"`
+stratum -n app   apply -y                      # state at .stratum/app.json
+stratum --manifest deploy/manifest.strat -n web apply -y
+</code></pre>
+<p><code>-n</code> and <code>-c</code> are <strong>mutually exclusive</strong>. Passing both errors out — the namespace’s <code>configs = [...]</code> is the config list, and a <code>-c</code> override would silently shadow the manifest’s intent. Drop the <code>-n</code> to operate in bundle mode, or remove the <code>-c</code> to let the namespace pick.</p>
+<p><code>-s</code> is <strong>not</strong> mutually exclusive with <code>-n</code>. The CLI default is <code>.stratum/state.json</code>; the namespace’s default is <code>.stratum/&lt;name&gt;.json</code>. If you want to point a namespace’s apply at a custom state file (typically during migration from bundle mode), pass <code>-s</code> explicitly and it wins.</p>
+<h4 id="split-state"><a class="header" href="#split-state">Split state</a></h4>
+<p>In namespace mode, state writes to two files instead of one:</p>
+<ul>
+<li><code>&lt;state_path&gt;</code> (e.g. <code>.stratum/&lt;name&gt;.json</code>) — every user-declared resource.</li>
+<li><code>&lt;state_path's directory&gt;/_shared.json</code> — every implicit per-host <code>_stratum_*</code> resource (auto-injected swap, sshd OOM tuning, sshd reload).</li>
+</ul>
+<p>The shared file is what lets multiple namespaces target the same host without each one trying to recreate the tuning resources. The first namespace’s apply creates them; subsequent namespaces see them as no-op. See <a href="architecture.html#split-state-namespace-mode">Architecture: split state</a> for the merge rules.</p>
+<h4 id="cross-namespace-conflict-checks"><a class="header" href="#cross-namespace-conflict-checks">Cross-namespace conflict checks</a></h4>
+<p>Before classification, <code>plan</code> and <code>apply</code> in namespace mode re-load every <strong>sibling</strong> namespace’s configs (with unresolved secrets tolerated) and walk every <code>docker_container</code> they declare. Two collision classes are caught:</p>
+<ul>
+<li><strong>Host port</strong> — two namespaces declare a <code>docker_container</code> binding the same <code>(host, host_port)</code>. The check parses <code>H:C</code> and <code>IP:H:C</code> shapes; ranges and bare-port-random forms are skipped.</li>
+<li><strong>Container name</strong> — two namespaces declare a <code>docker_container</code> with the same <code>(host, name)</code>. The default for <code>name</code> is the resource’s label.</li>
+</ul>
+<p>Both error messages name the offending resource and the sibling that already claims the port or name:</p>
+<pre><code>cross-namespace port conflict on host `root@192.0.2.10`:
+  - app::docker_container.web  (current) wants 80
+  - infra::docker_container.traefik  (sibling) already claims it
+</code></pre>
+<p>The check runs at plan time and is skipped entirely in bundle mode (no <code>-n</code>).</p>
+<h3 id="--env-file-and-env-auto-load"><a class="header" href="#--env-file-and-env-auto-load"><code>--env-file</code> and <code>.env</code> auto-load</a></h3>
+<p><code>secret { from_env = "X" }</code> reads <code>std::env::var("X")</code> at config-load time. To avoid having to <code>export X=...</code> (and to keep credentials out of shell history), stratum can load env files before resolving secrets.</p>
+<pre><code class="language-bash">stratum --env-file .env.prod plan -c bootstrap.strat
+stratum --env-file base.env --env-file overrides.env apply -y
+</code></pre>
+<p>Rules:</p>
+<ul>
+<li><strong>Auto-load.</strong> If <code>--env-file</code> is not passed at all, stratum auto-loads <code>./.env</code> if it exists. Auto-load is silent on miss — no error if there’s no <code>.env</code>.</li>
+<li><strong>Explicit list.</strong> If <code>--env-file</code> is passed one or more times, only those files are loaded. The auto-<code>.env</code> is <strong>not</strong> consulted. Every listed path must exist and parse, or the command errors before doing any work.</li>
+<li><strong>Process env wins.</strong> A variable already set in the process environment is <strong>never</strong> overwritten by a file. This is the 12-factor rule — <code>FOO=x stratum apply</code> keeps <code>FOO=x</code> regardless of what <code>.env</code> says.</li>
+<li><strong>First-set wins among files.</strong> When <code>--env-file a --env-file b</code> is passed, <code>a</code> is parsed first; a variable set in <code>a</code> is not overwritten by <code>b</code>. The CLI prints <code>[env] loaded &lt;path&gt;</code> to stderr for every file successfully loaded.</li>
+</ul>
+<p>Useful with <code>secret { from_env = ... }</code>:</p>
+<pre><code># .env
+PG_PASSWORD=correcthorsebatterystaple
+GH_PAT=ghp_...
+</code></pre>
+<pre><code class="language-strat">secret "pg_password" { from_env = "PG_PASSWORD" }
+secret "gh_pat"      { from_env = "GH_PAT" }
+</code></pre>
+<p>The <code>.env</code> file is not committed (add it to <code>.gitignore</code>). For team workflows, check in a <code>.env.example</code> with placeholder values instead.</p>
+<h2 id="plan"><a class="header" href="#plan"><code>plan</code></a></h2>
+<p>Print what would change if applied. Read-only — never writes state. By default never contacts a host either; pass <code>--refresh</code> to query live state.</p>
+<pre><code class="language-bash">stratum plan
+stratum plan --refresh
+stratum plan -c infra.strat -c app.strat -s .stratum/host.json
+stratum plan --allow-unresolved-secrets
+stratum -n app plan                                    # namespace mode
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--config, -c &lt;CONFIGS&gt;</code> <em>(repeatable)</em></td><td>Config file(s). Repeat <code>-c</code> to merge multiple <code>.strat</code> files into one plan against a single shared state. Default: <code>stratum.strat</code></td><td><code>stratum.strat</code></td></tr>
+<tr><td><code>--state, -s &lt;STATE&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>--refresh</code></td><td>Query live hosts via Provider::read and annotate drift between state and reality</td><td></td></tr>
+<tr><td><code>--allow-unresolved-secrets</code></td><td>Plan-only: if a <code>secret</code> block’s source is missing (env var unset, file unreadable), substitute a <code>&lt;unresolved-secret:NAME&gt;</code> placeholder instead of failing. Useful for reviewing someone else’s config without their env. Apply refuses plans containing placeholders</td><td></td></tr>
+<tr><td><code>--replace, -r &lt;ADDR&gt;</code> <em>(repeatable)</em></td><td>Force re-apply of <code>&lt;kind&gt;.&lt;name&gt;</code> even when its attrs match state. Repeatable. Useful for “I just pushed source for this container, recreate it” — the planner emits an Update with a synthetic <code>&lt;replace&gt;</code> field, and the depends_on cascade lights up downstream resources</td><td></td></tr>
+<tr><td><code>--target, -t &lt;ADDR&gt;</code> <em>(repeatable)</em></td><td>Restrict the plan to <code>&lt;kind&gt;.&lt;name&gt;</code> plus its <code>depends_on</code> closure (the resources it needs), dropping everything else. Repeatable. Mirrors Terraform <code>-target</code>; useful once configs grow past a screen</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>See also: <a href="language/multi-config.html">Multi-file configs</a> (repeatable <code>-c</code>) and <a href="language/secrets.html#allow-unresolved-secrets">Secrets: <code>--allow-unresolved-secrets</code></a>.</p>
+<p>Output is a list of resources prefixed with an action symbol:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>symbol</th><th>action</th></tr>
+</thead>
+<tbody>
+<tr><td><code>  </code></td><td>no change</td></tr>
+<tr><td><code> +</code></td><td>create</td></tr>
+<tr><td><code> ~</code></td><td>update (with field-by-field diff)</td></tr>
+<tr><td><code> ±</code></td><td>replace (destroy then recreate)</td></tr>
+<tr><td><code> -</code></td><td>delete</td></tr>
+</tbody>
+</table>
+</div>
+<p>Followed by a summary line: <code>N create, N update, N replace, N delete, N no-op</code>.</p>
+<h3 id="deferred-resources"><a class="header" href="#deferred-resources">Deferred resources</a></h3>
+<p>After the summary, <code>plan</code> prints one section per deferral cause. A resource is <strong>deferred</strong> — excluded from the plan entirely, not keyed, not diffed — when something it needs can only come from a state entry that doesn’t exist yet:</p>
+<pre><code>deferred (host pending: web &lt;- do_droplet.web): 6 resources — apply provisions the source first, then converges automatically
+</code></pre>
+<p>A <a href="language/hosts.html#state-backed-hosts-from_resource">state-backed host</a> whose source resource isn’t in state.</p>
+<pre><code>deferred (ref pending: docker_image.api.image_id — producer not yet in state): 1 resource
+  - root@192.0.2.10/docker_container.api  (waiting on docker_image.api)
+  apply creates the producer first, then converges automatically
+</code></pre>
+<p>A <a href="language/references.html#resource-references">cross-resource ref</a> whose producer isn’t in state, grouped by ref path with the consumers listed.</p>
+<pre><code>deferred (depends on a deferred resource): 1 resource
+  - root@192.0.2.10/ssh_exec.post
+</code></pre>
+<p>Transitive deferral: the resource’s <code>depends_on</code> (declared or injected by a ref) targets something deferred above, so it can’t run this round either.</p>
+<p>Deferred resources that are already in state are <strong>not</strong> planned as Deletes — they’re still declared, just not plannable this round. <code>plan</code> never loops; it shows round one plus these sections. <code>apply</code> resolves them — see below.</p>
+<h3 id="secret-rendering"><a class="header" href="#secret-rendering">Secret rendering</a></h3>
+<p>A leaf value that is a secret marker (in either prior or desired) prints as <code>&lt;secret:NAME sha:abc123&gt;</code>, where <code>abc123</code> is the first six hex chars of the SHA-256 of the plaintext. Enough to spot a rotation; not enough to attack offline. See <a href="language/secrets.html">Secrets</a>.</p>
+<pre><code> ~ docker_container.stratum-postgres
+      ~ env.POSTGRES_PASSWORD: &lt;secret:pg_password sha:f7c3bc&gt; -&gt; &lt;secret:pg_password sha:9a1e44&gt;
+</code></pre>
+<h3 id="--refresh-live-drift-detection"><a class="header" href="#--refresh-live-drift-detection"><code>--refresh</code>: live drift detection</a></h3>
+<p>When <code>--refresh</code> is set, stratum calls each provider’s <code>read</code> method for every step that has prior state (i.e. not <code>Create</code>), compares the result against what’s recorded, and prints per-resource annotations:</p>
+<pre><code>   docker_container.traefik
+      ! DRIFT: image: state="traefik:v2.11" observed="traefik:v3.0"
+   system_service.docker
+      ! DRIFT: resource missing on host (state says exists)
+</code></pre>
+<p>A footer line summarizes:</p>
+<pre><code>drift: clean
+</code></pre>
+<p>Or, when there’s drift:</p>
+<pre><code>drift: 2 differ, 1 missing, 4 unreadable
+</code></pre>
+<ul>
+<li><strong>differ</strong> — <code>read</code> returned data that doesn’t match state on at least one field.</li>
+<li><strong>missing</strong> — <code>read</code> returned <code>Absent</code> (the resource is gone on the host but still in state).</li>
+<li><strong>unreadable</strong> — the provider returned <code>Observed::Unknown</code> (no <code>read</code> impl, or <code>read</code> errored). For <code>system_ufw_rule</code> and <code>ssh_exec</code>, this is always the case by design.</li>
+</ul>
+<p>Drift detection is one-sided: fields that exist in state but not in the observed data are ignored (providers don’t surface every field). It is also marker-aware — a state-side secret marker is hashed against an observed plaintext, so secret-bearing fields don’t perpetually drift on every refresh. See <a href="architecture.html#drift-detection">Architecture: drift detection</a> and <a href="language/secrets.html#drift-detection">Secrets: drift detection</a>.</p>
+<p><code>Create</code> steps are skipped during refresh — there’s no prior state to compare.</p>
+<h2 id="apply"><a class="header" href="#apply"><code>apply</code></a></h2>
+<p>Compute the plan, print it, and — if confirmed with <code>-y</code> — execute side effects against remote hosts.</p>
+<pre><code class="language-bash">stratum apply -y
+stratum apply -y -c infra.strat -c app.strat -s .stratum/host.json
+stratum apply -y --allow-destroy
+stratum -n app apply -y                                # namespace mode
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--config, -c &lt;CONFIGS&gt;</code> <em>(repeatable)</em></td><td>Config file(s). Repeat <code>-c</code> to merge multiple <code>.strat</code> files into one plan against a single shared state. Default: <code>stratum.strat</code></td><td><code>stratum.strat</code></td></tr>
+<tr><td><code>--state, -s &lt;STATE&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>--yes, -y</code></td><td>Skip confirmation. Required to actually execute side effects</td><td></td></tr>
+<tr><td><code>--allow-destroy</code></td><td>Permit destructive Delete actions in the plan. Required when any resource in state is absent from config — without this flag, stratum refuses to run a plan that would remove resources</td><td></td></tr>
+<tr><td><code>--replace, -r &lt;ADDR&gt;</code> <em>(repeatable)</em></td><td>Force re-apply of <code>&lt;kind&gt;.&lt;name&gt;</code> even when its attrs match state. Repeatable. Cascades through <code>depends_on</code> so a single <code>-r</code> on a producer (e.g. <code>ssh_exec.deployd-pull</code>) recreates every dependent</td><td></td></tr>
+<tr><td><code>--check-after</code></td><td>After apply, refresh every resource’s observed state from the remote host and report any drift. Costs one ssh round-trip per resource — typically the bulk of total apply latency. Opt in when you actually want to verify reality matches state; skip when iterating quickly. Default: off</td><td></td></tr>
+<tr><td><code>--max-parallel &lt;MAX_PARALLEL&gt;</code></td><td>Maximum number of resources to apply concurrently. Independent steps (no <code>depends_on</code> edge between them) run in parallel across this many tokio tasks; chained steps still serialize. Capped under sshd’s default <code>MaxStartups</code> (10:30:60) to avoid silent connection drops. Set 1 to fall back to the old serial behavior</td><td><code>4</code></td></tr>
+<tr><td><code>--target, -t &lt;ADDR&gt;</code> <em>(repeatable)</em></td><td>Restrict the apply to <code>&lt;kind&gt;.&lt;name&gt;</code> plus its <code>depends_on</code> closure, dropping everything else (including unrelated Deletes). Repeatable. The destroy guard still applies to any Deletes that remain</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>See also: <a href="language/multi-config.html">Multi-file configs</a>, <a href="#allow-destroy-the-destruction-guard"><code>--allow-destroy</code></a>, and <a href="#post-apply-self-check-check-after">Post-apply self-check</a> below. <code>--replace</code> is also the opt-in for changing a create-time-immutable (<code>force_new</code>) field: it promotes the refused Update to a Replace (destroy then recreate).</p>
+<p><code>apply</code> refuses to run a plan containing any <code>&lt;unresolved-secret:NAME&gt;</code> placeholder — those only appear via <code>plan --allow-unresolved-secrets</code>, and they’re a plan-only construct. Resolve the secret’s source and retry.</p>
+<p>Confirmation gate: without <code>-y</code>, apply prints the plan and stops with <code>Apply? Re-run with -y to execute against remote hosts.</code> There is no interactive prompt — re-run with <code>-y</code> to proceed.</p>
+<p>When <code>-y</code> is set, you’ll see this banner before the work starts:</p>
+<pre><code>!! Applying: side effects WILL execute on remote hosts.
+</code></pre>
+<p>State is written to <code>--state</code> after every successful apply.</p>
+<h3 id="the-converge-round"><a class="header" href="#the-converge-round">The converge round</a></h3>
+<p>When round one left anything <a href="#deferred-resources">deferred</a> — a pending <a href="language/hosts.html#state-backed-hosts-from_resource">state-backed host</a> or a pending <a href="language/references.html#resource-references">cross-resource ref</a> — and the missing piece landed in state during the round (the droplet was provisioned, the image was built with the referenced attr present), apply runs <strong>one</strong> more round in the same invocation:</p>
+<pre><code>— converge: pending host(s)/ref(s) now in state; planning deferred resources —
+</code></pre>
+<p>The loop is bounded to that single extra round by design; chains of boxes provisioning boxes are out of scope. A ref that still doesn’t resolve after the producer had its chance (the provider never wrote the attr, or the producer failed) is surfaced rather than silently skipped:</p>
+<pre><code>[apply] warning: `root@192.0.2.10/docker_container.api` is still deferred — `docker_image.api.image_id` did not resolve; producer `docker_image.api` is not in state with that attr
+</code></pre>
+<h3 id="locking"><a class="header" href="#locking">Locking</a></h3>
+<p><code>apply</code> and <a href="#destroy"><code>destroy</code></a> hold an <strong>exclusive lock on the state file</strong> for the whole invocation (both apply rounds, in state-backed-host mode). A second invocation against the same state file refuses immediately:</p>
+<pre><code>Error: another stratum apply/destroy is already running against this state file
+
+state file: .stratum/state.json
+  held by: apply (pid 31337, started 12s ago)
+</code></pre>
+<p>The lock is the OS file lock on <code>&lt;state&gt;.lock</code>, not the file’s existence — a killed process releases it automatically, so there are no stale locks to delete. The <code>.lock</code> file on disk is inert holder metadata. On Windows the OS lock is mandatory, which blocks the conflicting process from reading that metadata; the error degrades to a generic live-holder line there. In namespace mode the shared <code>_shared.json</code> is locked too, so two namespaces sharing a host can’t interleave writes to the implicit <code>_stratum_*</code> resources. <code>plan</code> takes no lock — it only reads.</p>
+<h3 id="post-apply-self-check---check-after"><a class="header" href="#post-apply-self-check---check-after">Post-apply self-check (<code>--check-after</code>)</a></h3>
+<p>The post-apply self-check is <strong>opt-in</strong>: pass <code>--check-after</code>. When set, after a successful apply stratum re-loads the config, rebuilds the plan against the freshly updated state, and runs <code>refresh_plan</code> against the live host. The result is one summary line:</p>
+<pre><code>post-apply drift: clean
+</code></pre>
+<p>Or, when something is off:</p>
+<pre><code>post-apply drift: 1 differ, 4 unreadable — run 'stratum plan --refresh' to see details
+</code></pre>
+<p>This catches resources that “applied successfully” according to the provider but don’t actually match reality (rare, but possible — e.g. a systemd service that exits zero from <code>restart</code> but immediately crashes). Unreadable counts are expected when your config includes <code>system_ufw_rule</code> or <code>ssh_exec</code> (without a <code>check</code>) resources; both return <code>Unknown</code> from <code>read</code> by design.</p>
+<p>The check costs one ssh round-trip per resource — typically the bulk of total apply latency — which is why it’s off by default. Skip it when iterating quickly; turn it on when you want to verify reality matches state. Without <code>--check-after</code>, apply finishes as soon as the side effects complete.</p>
+<p>If the plan was a no-op (<code>Nothing to do.</code>), no apply runs and no post-apply check happens.</p>
+<h3 id="--allow-destroy-the-destruction-guard"><a class="header" href="#--allow-destroy-the-destruction-guard"><code>--allow-destroy</code>: the destruction guard</a></h3>
+<p>This flag exists because of a failure shape that’s easy to hit by accident. Apply a config against a state file that holds resources the config doesn’t declare — by forgetting a <code>-c</code>, by pointing <code>-s</code> at the wrong file, by reusing a bundle state for one slice of a larger deployment — and <code>build_plan</code> will emit a <code>Delete</code> step for every resource in state but not in config. Without a guard, apply executes those deletes, and a single mis-typed command tears down the whole host: containers, networks, services, packages, ufw rules, in roughly the order <code>BTreeMap</code> iteration of <code>&lt;kind&gt;.&lt;name&gt;</code> produces.</p>
+<p>The fix is two-part. The structural fix depends on how you organize configs: one state file per host with <a href="language/multi-config.html">multi-file configs</a>, or one state file per <a href="language/namespaces.html">namespace</a>. The tactical fix is the destruction guard: if a plan contains any <code>Delete</code> step, apply refuses to run unless <code>--allow-destroy</code> is set.</p>
+<pre><code>refusing to apply: plan would delete 9 resources not in config:
+  - system_ufw_rule.allow-ssh
+  - system_service.ufw
+  - system_service.docker
+  - system_package.ufw
+  - system_file.traefik-config
+  - docker_network.edge
+  - docker_container.traefik
+  - ...
+
+loaded configs: app.strat
+state file: .stratum/host.json
+
+If this is intended, re-run with --allow-destroy. If not, you may be applying against the wrong state file (-s), or have forgotten a -c flag.
+</code></pre>
+<p>The check fires when <code>PlanSummary.delete &gt; 0</code> — the list is every step with <code>Action::Delete</code>. The error names:</p>
+<ul>
+<li>the resources slated for deletion,</li>
+<li>the loaded config files (so a missing <code>-c</code> is visually obvious),</li>
+<li>the state file path (so a wrong <code>-s</code> is too),</li>
+<li>three likely causes.</li>
+</ul>
+<p>The guard runs <strong>before</strong> the <code>-y</code> confirmation gate, so you’ll hit the same bail with or without <code>-y</code>.</p>
+<p>When to pass <code>--allow-destroy</code>:</p>
+<ul>
+<li>You really did remove a resource from config and want it gone on the host.</li>
+<li>You’re tearing down a whole config (commented out resources, intend a full sweep).</li>
+</ul>
+<p>When <strong>not</strong> to pass it: any time the delete list surprises you. Re-check <code>-s</code> and your <code>-c</code> set.</p>
+<h2 id="up"><a class="header" href="#up"><code>up</code></a></h2>
+<p>Converge the whole box in one command: iterate <strong>every <a href="language/apps.html"><code>app</code></a> and <a href="language/namespaces.html"><code>namespace</code></a> declared in the root manifest</strong>, in <strong>declaration order</strong>, and run the normal per-namespace apply for each. This is the operator UX an <a href="language/apps.html">app</a>-based box is built around:</p>
+<pre><code class="language-bash">git clone &lt;your-operator-repo&gt; mybox &amp;&amp; cd mybox
+cp .env.example .env          # fill values (see `stratum env-example`)
+stratum up -y
+</code></pre>
+<pre><code class="language-bash">stratum up --plan             # read-only plans for every unit, no applies
+stratum up                    # same plans + one confirmation hint, no applies
+stratum up -y                 # apply everything, in order
+stratum up -y --allow-destroy # pass the destruction guard through to each apply
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--plan</code></td><td>Plan-only: run a read-only plan for every declared unit (no applies, no state writes) and exit. Same output as running <code>up</code> without <code>-y</code>, minus the confirmation hint</td><td></td></tr>
+<tr><td><code>--yes, -y</code></td><td>Skip confirmation. Required to actually execute side effects — without it, <code>up</code> only prints each unit’s plan</td><td></td></tr>
+<tr><td><code>--allow-destroy</code></td><td>Permit destructive Delete actions in any unit’s plan (passed through to each apply). Same guard as <code>apply --allow-destroy</code></td><td></td></tr>
+<tr><td><code>--allow-unresolved-secrets</code></td><td>Plan-only: substitute <code>&lt;unresolved-secret:NAME&gt;</code> placeholders for missing secret sources instead of failing (same as <code>plan --allow-unresolved-secrets</code>). Rejected with <code>-y</code> — apply refuses placeholder plans</td><td></td></tr>
+<tr><td><code>--max-parallel &lt;MAX_PARALLEL&gt;</code></td><td>Maximum number of resources to apply concurrently WITHIN each unit (passed through to each apply). Units themselves always run sequentially, in declaration order</td><td><code>4</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Semantics:</p>
+<ul>
+<li><strong>Declaration order is the dependency order.</strong> There is no cross-namespace dependency graph — <code>up</code> runs units top-to-bottom exactly as written in the manifest. Put producers (shared infra) before consumers.</li>
+<li><strong>Apps auto-fetch.</strong> A declared <code>app</code> pinned in <code>.stratum/apps.lock</code> but missing from the local cache (fresh clone, CI) is fetched at its pinned rev before anything is planned. An app that was never installed errors with the <code>stratum install</code> hint.</li>
+<li><strong>Input contracts validate up front.</strong> Before the first plan or apply, every unit’s <a href="language/namespaces.html#declared-inputs-the-input-contract"><code>input</code> contract</a> is checked against the environment, and every problem across every unit is aggregated into <strong>one</strong> error (secret names, never values). A shared var missing for several units is listed once, naming each requirer. Plain namespaces without <code>input</code> blocks are unaffected no-ops.</li>
+<li><strong>Confirmation is once, up front.</strong> Without <code>-y</code>, <code>up</code> prints each unit’s read-only plan and stops with a single <code>Re-run \</code>stratum up -y`<code>hint — the same non-interactive gate</code>apply<code>uses, but confirmed once for the whole run rather than per unit.</code>–plan<code>produces the same read-only output with no hint (explicit plan-only intent; also the mode where</code>–allow-unresolved-secrets` is accepted).</li>
+<li><strong>Fail fast.</strong> The first failing unit stops the run — later units are not attempted (they may depend on the failed one). The summary names each bucket:</li>
+</ul>
+<pre><code>up summary: 1 applied · 1 failed · 2 not attempted
+  applied: infra
+  failed: steward — ssh: connect to host 192.0.2.10 port 22: Connection timed out
+  not attempted: vortex, baitong
+</code></pre>
+<p>Units that applied before the failure keep their saved state — re-running <code>stratum up -y</code> after fixing the problem re-plans them as no-ops and resumes from the failed unit.</p>
+<p>Each unit runs with the full <a href="#namespace-mode--n-and---manifest">namespace-mode wiring</a>: split state (<code>.stratum/&lt;name&gt;.json</code> + <code>_shared.json</code>), the per-unit state lock, and the <a href="#cross-namespace-conflict-checks">cross-namespace conflict checks</a>. <code>--max-parallel</code> bounds concurrency <em>within</em> each unit; units themselves always run sequentially. <code>up</code> takes no <code>-n</code> (it iterates all units by definition) — use <code>stratum -n NAME apply</code> for a single one.</p>
+<h2 id="destroy"><a class="header" href="#destroy"><code>destroy</code></a></h2>
+<p>Delete <strong>every resource tracked in state</strong>, in reverse dependency order — without editing the config. The alternative (deleting the resource blocks from config and running <code>apply -y --allow-destroy</code>) expresses a temporary intent by permanently mutating the config file; <code>destroy</code> says it directly.</p>
+<pre><code class="language-bash">stratum destroy                          # preview: the full delete list, exit 0
+stratum destroy -y --allow-destroy      # execute
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--config, -c &lt;CONFIGS&gt;</code> <em>(repeatable)</em></td><td>Config file(s). Same shape as plan/apply; used for secret resolution and the provider registry — desired resources are ignored, the delete set comes from state</td><td><code>stratum.strat</code></td></tr>
+<tr><td><code>--state, -s &lt;STATE&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>--yes, -y</code></td><td>Skip confirmation. Required to actually execute side effects</td><td></td></tr>
+<tr><td><code>--allow-destroy</code></td><td>Acknowledge the destruction. Required in addition to <code>-y</code>: this command’s only job is irreversible (droplets and their disks included), so it keeps the same explicit gate as <code>apply --allow-destroy</code></td><td></td></tr>
+<tr><td><code>--max-parallel &lt;MAX_PARALLEL&gt;</code></td><td>Maximum concurrent steps. Deletes are chained sequentially by the executor regardless, so this only matters if a future plan mixes actions</td><td><code>4</code></td></tr>
+<tr><td><code>--skip-unreachable</code></td><td>For a doomed host that’s already unreachable: pre-probe each SSH host and DROP the deletes for any that don’t answer (they die with the host), instead of letting their ssh timeouts block the run and strand the <code>do_droplet</code> delete — which only needs the DO API. The skipped resources are removed from state too</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>The plan is the existing planner with an <strong>empty desired set</strong>: every state-resident resource becomes a Delete, ordered reverse-topo over the <code>depends_on</code> edges recorded in state. The executor runs deletes one at a time in that order — a droplet delete never races the ssh deletes of resources living on it.</p>
+<p><strong>Why <code>-c</code> is still required:</strong> deletes authenticate with values that state holds only as redaction markers. A <a href="providers/digitalocean.html"><code>do_droplet</code></a> delete needs the real API token, which resolves back through the config’s <code>secret</code> block. Keep secrets declared until after the destroy.</p>
+<p><strong>Partial failure:</strong> like apply, state is saved on both success and error paths. If a delete fails mid-run, the already-deleted resources are gone from state and the survivors remain — the next <code>destroy</code> resumes with what’s left.</p>
+<p><strong>Namespaces:</strong> <code>stratum -n NAME destroy</code> tears down one namespace’s own resources. Implicit per-host <code>_stratum_*</code> resources (swap, sshd-OOM tuning) live in the shared <code>_shared.json</code> and are shared with sibling namespaces — so a namespace destroy deletes a shared resource <strong>only when no sibling namespace still has resources on that host</strong>. Any that are kept are reported (<code>kept N shared per-host resource(s)…</code>). A single-namespace manifest therefore tears down completely, exactly like the old “empty the configs and <code>apply --allow-destroy</code>” workaround, minus the ceremony.</p>
+<h2 id="status"><a class="header" href="#status"><code>status</code></a></h2>
+<p>Snapshot per-host resource usage. For each unique host declared in the loaded configs, stratum ssh’s the host and prints uptime + free memory + root-disk usage + per-container CPU/RAM/IO from <code>docker stats --no-stream</code>. One section per host.</p>
+<pre><code class="language-bash">stratum status
+stratum status -c infra.strat -c app.strat -s .stratum/host.json
+stratum status --host root@192.0.2.10
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--config, -c &lt;CONFIGS&gt;</code> <em>(repeatable)</em></td><td>Config file(s). Same shape as plan/apply. Used to enumerate hosts. Omit when probing a single addr via <code>--host</code></td><td></td></tr>
+<tr><td><code>--host &lt;HOST&gt;</code></td><td>Host filter or raw addr. With <code>-c</code>: match against <code>host.&lt;name&gt;</code> / addr from configs. Without <code>-c</code>: treated as a raw ssh addr (<code>user@host</code> or <code>host</code>)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>The state file is <strong>not</strong> consulted — <code>status</code> doesn’t read or write state. It only needs <code>host</code> block declarations.</p>
+<p>Output shape:</p>
+<pre><code>=== root@192.0.2.10 ===
+  up:   17:48:12 up 3 days,  4:21,  1 user
+  load: 0.42, 0.31, 0.19
+  mem:  Mem:  1.9Gi  1.3Gi  85Mi  19Mi  559Mi  625Mi
+  swap: Swap: 4.0Gi  500K   4.0Gi
+  disk: /dev/vda1  79G  18G  61G  23% /
+
+  CONTAINER                   CPU%      MEM USAGE / LIMIT    MEM%              NET I/O            BLOCK I/O
+  traefik                     0.18%     34.2MiB / 1.9GiB     1.78%      1.2MB / 4.5MB       0B / 12.3kB
+  web                         0.04%     12.1MiB / 1.9GiB     0.62%      245kB / 89kB        0B / 0B
+  db                          0.21%     112MiB / 256MiB      43.75%     332kB / 412kB       2.4MB / 1.8MB
+  cache                       0.08%     8.4MiB / 64MiB       13.13%     189kB / 167kB       0B / 0B
+</code></pre>
+<p>The probe is a single composite shell snippet (one ssh round-trip per host) with sentinel headers (<code>===UPTIME===</code>, <code>===STATS===</code>) to keep parsing simple. <code>docker stats --no-stream</code> is one snapshot, not the streaming default. If docker is absent or there are no running containers, the section prints <code>(no docker stats available)</code> and moves on.</p>
+<p>Errors:</p>
+<ul>
+<li>A <code>host</code> block with no <code>addr</code> is skipped with a <code>[status] skipping host</code> warning.</li>
+<li>An SSH failure on one host is logged with <code>[status] &lt;addr&gt;: failed: &lt;reason&gt;</code> but does not stop the loop — remaining hosts are still queried.</li>
+<li><code>--host</code> filtering with no match is a hard error: <code>no host matched filter `&lt;arg&gt;` </code>.</li>
+</ul>
+<p><code>status</code> is a between-applies diagnostic — not a replacement for a real monitoring stack. The headline use case is spotting RAM/CPU pressure (a container creeping toward its <code>memory</code> limit, a host swap-thrashing) without leaving stratum’s CLI.</p>
+<h2 id="graph"><a class="header" href="#graph"><code>graph</code></a></h2>
+<p>Emit the config’s dependency graph to stdout, as a Mermaid flowchart (default), Graphviz DOT, or structured JSON. Read-only and purely config-side: no SSH, no network, no state mutation.</p>
+<pre><code class="language-bash">stratum graph                                  # mermaid, default config
+stratum graph -c infra.strat -c app.strat      # merged multi-file graph
+stratum -n vortex graph                        # namespace mode, like plan
+stratum graph --format dot | dot -Tsvg &gt; g.svg # render with graphviz
+stratum graph --format json | jq '.edges'      # machine-readable {nodes, edges}
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--config, -c &lt;CONFIGS&gt;</code> <em>(repeatable)</em></td><td>Config file(s). Repeat <code>-c</code> to merge multiple <code>.strat</code> files, same shape as <code>plan</code>. Default: <code>stratum.strat</code></td><td><code>stratum.strat</code></td></tr>
+<tr><td><code>--state, -s &lt;STATE&gt;</code></td><td>Path to the JSON state file. Read-only here: it resolves <code>from_resource</code> host addrs and cross-resource refs so the graph matches what <code>plan</code> sees. A missing file is fine — fresh configs still graph, with pending hosts/refs shown as declared</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>--format &lt;FORMAT&gt;</code></td><td>Output format</td><td><code>mermaid</code></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Hosts are containers</strong>: each host renders as a subgraph (mermaid) / cluster (DOT) holding the resources placed on it — which box a resource lives on is shown by containment, not arrow fan-out. Resources are labelled <code>kind.name</code>; template-instantiated resources appear exactly as <code>plan</code> sees them, post-expansion (<code>system_dir.base_workspace</code>). Secrets (hexagons) sit outside the containers, and a declared-but-unreferenced secret stays out of the graph. Hostless resources (<code>do_droplet</code>, …) stay top-level.</p>
+<p><strong>Edges</strong> come from the same machinery the planner orders steps with — no separate reference scanner to drift out of sync:</p>
+<ul>
+<li><strong>solid</strong> — <code>depends_on</code> ordering, both explicit and the implicit edges injected for cross-resource references (<code>docker_image.app.image_id</code>), plus <code>host { from_resource = "do_droplet.box" }</code> (droplet points at the host container it becomes);</li>
+<li><strong>dashed</strong> — secret usage (which resources a secret’s value flows into).</li>
+</ul>
+<p>The state file is read (never written) so <code>from_resource</code> host addrs and cross-resource refs resolve the way <code>plan</code> resolves them. Both are optional: with no state, pending hosts/refs still graph as declared — nothing is deferred or hidden. Missing secret sources never block graphing (the loader’s <code>allow-unresolved-secrets</code> path is always on here; the graph only needs secret <em>names</em>).</p>
+<p>Mermaid output pastes straight into a GitHub comment/README <code>```mermaid</code> fence or the mdbook; DOT pipes through <code>dot -Tsvg</code>. JSON (<code>--format json</code>) is the lossless, machine-readable view the diagram formats are generated from — an object with <code>nodes</code> (each <code>id</code>/<code>label</code>/<code>category</code>, host nodes carrying a <code>members</code> array for the resources placed on them) and <code>edges</code> (<code>from</code>/<code>to</code>/<code>kind</code>, where kind is <code>depends_on</code> or <code>secret</code>) — deterministically ordered so it diffs cleanly, and ready to pipe to <code>jq</code> or feed other tooling.</p>
+<p>A bare <code>template "..."</code> file declares no resources until instantiated, so graphing one alone is an error with a hint — add a <code>module</code> block or graph the config that instantiates it.</p>
+<h2 id="env-example"><a class="header" href="#env-example"><code>env-example</code></a></h2>
+<p>Emit a <code>.env.example</code> skeleton for declared <a href="language/namespaces.html#declared-inputs-the-input-contract"><code>input</code> blocks</a>.</p>
+<pre><code class="language-bash">stratum -n steward env-example              # one namespace's/app's inputs
+stratum env-example                         # aggregate: every declared app/namespace
+stratum env-example -o .env.example         # write a file (--force to overwrite)
+</code></pre>
+<p>With <code>-n &lt;name&gt;</code>, each of that namespace’s inputs becomes a <code># required</code> comment (annotated <code>, secret</code> and/or <code>, file (path)</code>) followed by <code>NAME=</code>, in declaration order. A namespace with no <code>input</code> blocks prints nothing and exits 0.</p>
+<p>Without <code>-n</code>, the contract of <strong>every app and namespace declared in the root manifest</strong> is aggregated (the <a href="#up"><code>up</code></a> companion — one <code>.env</code> for the whole box). Units are walked in declaration order; a shared input declared by several units (<code>SERVER_IP</code>, say) is emitted <strong>once</strong>, its comment naming every requirer; annotations are the union across declarers (secret/file if <em>any</em> declarer says so). Apps are resolved through the lockfile + cache exactly as <code>up</code> resolves them, so their fetched contracts are included:</p>
+<pre><code># required — steward, vortex
+SERVER_IP=
+# required, secret — steward
+CLAUDE_CODE_OAUTH_TOKEN=
+# required, secret — vortex
+BOT_TOKEN=
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--out, -o &lt;OUT&gt;</code></td><td>Write the generated example to this file instead of stdout. Refuses to clobber an existing file unless <code>--force</code> is also passed</td><td></td></tr>
+<tr><td><code>--force</code></td><td>Overwrite the <code>--out</code> file if it already exists</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>The same declarations drive <strong>up-front validation</strong>: in namespace mode, <code>plan</code> / <code>apply</code> / <code>destroy</code> check the process environment (after <code>--env-file</code> / <code>.env</code> is layered in) against the contract before doing anything, and aggregate every missing var and missing file into one error. <a href="#up"><code>up</code></a> runs the same check for <strong>every declared unit at once</strong> — one aggregated error across the whole manifest, before the first plan or apply. See <a href="language/namespaces.html#up-front-validation">Declared inputs</a> for the error shape.</p>
+<h2 id="install"><a class="header" href="#install"><code>install</code></a></h2>
+<p>Install an <a href="language/apps.html">app</a>: fetch its config bricks from git into the project-local cache (<code>.stratum/apps/&lt;app&gt;/&lt;rev&gt;/</code>), scaffold the operator directory, and pin the resolved rev in <code>.stratum/apps.lock</code>.</p>
+<pre><code class="language-bash">stratum install steward --git https://github.com/kbach-dev/steward --ref v1.4.0
+stratum install steward --git https://github.com/kbach-dev/steward   # default branch HEAD
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>&lt;APP&gt;</code> <em>(required)</em></td><td>Local name for the app. Also the namespace <code>-n &lt;app&gt;</code> resolves to, and the cache subdir under <code>.stratum/apps/</code></td><td></td></tr>
+<tr><td><code>--git &lt;URL&gt;</code> <em>(required)</em></td><td>Git URL of the app repo to fetch its bricks from</td><td></td></tr>
+<tr><td><code>--ref &lt;REF&gt;</code></td><td>Tag, branch, or full commit sha to install. Default: the remote’s default-branch HEAD, pinned to a concrete sha (never left floating)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>What it does, in order:</p>
+<ol>
+<li><strong>Resolve</strong> <code>--ref</code> to a concrete <code>rev</code>. A tag/branch is looked up on the remote; a full sha is taken as-is; an omitted <code>--ref</code> resolves the remote’s default-branch HEAD and pins <em>that</em> sha (never a floating ref).</li>
+<li><strong>Fetch</strong> the repo at <code>rev</code> into <code>.stratum/apps/&lt;app&gt;/&lt;rev&gt;/</code>.</li>
+<li><strong>Read</strong> the fetched <code>stratum.strat</code>’s <code>namespace</code> config list + <a href="language/namespaces.html#declared-inputs-the-input-contract">input contract</a>.</li>
+<li><strong>Scaffold</strong> the current directory — idempotently, <strong>never clobbering an existing file</strong>:
+<ul>
+<li><code>stratum.strat</code> with the <code>app "&lt;name&gt;" { git, ref }</code> block,</li>
+<li><code>.env.example</code> generated from the input contract,</li>
+<li><code>.stratum/apps/</code> and <code>.env</code> added to <code>.gitignore</code> if absent.</li>
+</ul>
+</li>
+<li><strong>Pin</strong> <code>&lt;app&gt;</code> in <code>.stratum/apps.lock</code>.</li>
+</ol>
+<p>Then it prints a next-steps footer:</p>
+<pre><code>installed app `steward` (v1.4.0 @ 9c1adeadbeef)
+  1. fill in inputs:   $EDITOR .env   (see .env.example)
+  2. deploy:           stratum -n steward apply
+</code></pre>
+<p>Re-running <code>install</code> is safe: an existing <code>stratum.strat</code> / <code>.env.example</code> is left untouched with a note, the cache is reused if already present, and the lockfile pin is refreshed. See <a href="language/apps.html">Apps</a> for the block, lockfile, and cache layout.</p>
+<h2 id="update"><a class="header" href="#update"><code>update</code></a></h2>
+<p>Update an installed app to a new ref: re-fetch the bricks into the cache and re-pin <code>.stratum/apps.lock</code>. <strong>Does not apply</strong> — run <code>stratum -n &lt;app&gt; apply</code> afterward to roll the box forward via the normal plan diff.</p>
+<pre><code class="language-bash">stratum update steward --ref v1.5.0
+stratum update steward                 # re-resolve the currently pinned ref
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>&lt;APP&gt;</code> <em>(required)</em></td><td>Name of an already-installed app (must be in <code>.stratum/apps.lock</code>)</td><td></td></tr>
+<tr><td><code>--ref &lt;REF&gt;</code></td><td>New tag, branch, or full sha. Default: re-resolve the currently pinned ref (a branch moves to its latest tip; a tag stays put)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>With no <code>--ref</code>, the currently-pinned ref’s label is re-resolved: a branch moves to its latest tip, a tag stays put (so a tag pin never silently jumps). If the rev is unchanged, <code>update</code> reports <code>already up to date</code> and does nothing. Otherwise it fetches the new rev, re-pins, and prints the delta:</p>
+<pre><code>updated app `steward`:
+  ref: v1.4.0 -&gt; v1.5.0
+  rev: 9c1adeadbeef -&gt; 3f0012ab77aa
+  old cache kept: .stratum/apps/steward/9c1adeadbeef
+
+run `stratum -n steward apply` to roll the box forward.
+</code></pre>
+<p>Old cache directories are left in place. The app must already be in the lockfile — <code>update</code> on an uninstalled app errors and points you at <code>install</code>.</p>
+<h2 id="ssh"><a class="header" href="#ssh"><code>ssh</code></a></h2>
+<p>Open an interactive shell on a managed host — or run a one-off command — without reconstructing the ssh invocation by hand. stratum already knows the connection details, so <code>stratum ssh &lt;host&gt;</code> reuses them:</p>
+<pre><code class="language-bash">stratum ssh box                     # interactive shell
+stratum ssh box -- systemctl status caddy   # run a command and exit
+stratum ssh -c infra.strat web      # host declared in a specific config
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--config, -c &lt;CONFIGS&gt;</code> <em>(repeatable)</em></td><td>Config file declaring the host. Repeat <code>-c</code> for multiple (single value each, so the positional <host> stays unambiguous). Default: <code>stratum.strat</code></host></td><td><code>stratum.strat</code></td></tr>
+<tr><td><code>--state, -s &lt;STATE&gt;</code></td><td>State file, used to resolve <code>from_resource</code> host addresses</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>&lt;HOST&gt;</code> <em>(required)</em></td><td>The <code>host</code> block name to connect to (or a raw <code>user@addr</code> when it matches no declared host)</td><td></td></tr>
+<tr><td><code>&lt;COMMAND&gt;</code> <em>(repeatable)</em></td><td>Optional command to run instead of an interactive shell. Everything after <code>--</code> is passed verbatim: <code>stratum ssh box -- systemctl status</code></td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p><code>&lt;HOST&gt;</code> is a <code>host</code> block name. stratum resolves it exactly as <code>apply</code> does — including a <code>from_resource</code> host, whose address is read from <strong>state</strong> (so <code>stratum ssh</code> works against a box provisioned by <code>do_droplet</code> without you ever typing its IP). The session reuses the host’s <code>identity_file</code>, <code>port</code>, <code>jump_host</code>, and any pinned <a href="language/hosts.html#host_key"><code>host_key</code></a> — a pinned host is verified with <code>StrictHostKeyChecking=yes</code>, same as automation. If <code>&lt;HOST&gt;</code> matches no declared block it’s treated as a raw <code>user@addr</code>.</p>
+<p>Differences from the automation path:</p>
+<ul>
+<li><strong>No <code>BatchMode</code></strong> — an interactive session may legitimately need to answer a prompt, so this command allows it (automation keeps <code>BatchMode=yes</code> to fail fast instead of hanging).</li>
+<li><strong>A TTY is allocated</strong> (<code>ssh -t</code>) for the shell case; a one-off <code>-- &lt;cmd&gt;</code> runs without one.</li>
+<li>stratum <code>exec</code>s ssh and <strong>exits with ssh’s exit code</strong>, so <code>stratum ssh box -- &lt;cmd&gt;</code> is scriptable.</li>
+</ul>
+<p>This pairs with <a href="language/hosts.html#host_key">host-key pinning</a> and (once built) ephemeral deploy keys: when the key stratum connects with lives under <code>~/.stratum/</code>, <code>stratum ssh</code> is the way a human reuses it without knowing the path.</p>
+<h2 id="state-list"><a class="header" href="#state-list"><code>state list</code></a></h2>
+<p>List every resource currently in state.</p>
+<pre><code class="language-bash">stratum state list
+stratum state list --path infra-state.json
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--path, -p &lt;PATH&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Output is one line per resource: <code>&lt;kind&gt;.&lt;name&gt;  [&lt;provider&gt;]</code>. Empty state prints <code>(empty state)</code>.</p>
+<h2 id="state-show"><a class="header" href="#state-show"><code>state show</code></a></h2>
+<p>Print the full JSON for a single resource.</p>
+<pre><code class="language-bash">stratum state show docker_container.traefik
+stratum state show ssh_exec.uptime --path infra-state.json
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>&lt;ADDR&gt;</code> <em>(required)</em></td><td>Resource address, <code>&lt;kind&gt;.&lt;name&gt;</code> (split on the first <code>.</code>)</td><td></td></tr>
+<tr><td><code>--path, -p &lt;PATH&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Prints the pretty-printed <code>ResourceState</code> JSON, or <code>not found</code> if the address is not in state.</p>
+<h2 id="state-rm"><a class="header" href="#state-rm"><code>state rm</code></a></h2>
+<p>Drop resource(s) from a state file <strong>without touching any remote host</strong>. A recovery tool: use it when a resource was deleted out-of-band (a droplet destroyed by hand) or a teardown wedged on a dead host and state must be corrected so the next plan is sane. This edits state only — it never runs a provider <code>delete</code>.</p>
+<pre><code class="language-bash">stratum state rm docker_container.traefik              # preview one resource
+stratum state rm docker_container.traefik -y           # remove it
+stratum state rm --host root@192.0.2.10 -y             # forget every resource on a gone host
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>&lt;ADDR&gt;</code></td><td><code>&lt;kind&gt;.&lt;name&gt;</code> or <code>&lt;host&gt;/&lt;kind&gt;.&lt;name&gt;</code>. Omit when using <code>--host</code></td><td></td></tr>
+<tr><td><code>--host &lt;HOST&gt;</code></td><td>Forget EVERY resource whose host addr equals this (e.g. <code>root@1.2.3.4</code>) — for recovering from a host that no longer exists</td><td></td></tr>
+<tr><td><code>--path, -p &lt;PATH&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>--yes, -y</code></td><td>Actually remove. Without it, prints what would be removed and exits (mirrors apply/destroy: side effects need an explicit <code>-y</code>)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>Without <code>-y</code> it prints the would-remove list and a reminder that state-only edits don’t delete anything on a host:</p>
+<pre><code>Would remove 2 resources from .stratum/state.json:
+  root@192.0.2.10/docker_container.traefik
+  root@192.0.2.10/docker_network.edge
+
+This edits state only — it does NOT delete anything on a host.
+Re-run with -y to remove.
+</code></pre>
+<p>With <code>-y</code> it removes them and prints <code>removed N resources from &lt;path&gt;</code>. No match prints <code>no matching resources in &lt;path&gt;</code>.</p>
+<h2 id="state-mv"><a class="header" href="#state-mv"><code>state mv</code></a></h2>
+<p>Rename a resource’s <strong>address</strong> in state <strong>without touching any host</strong>. A resource’s state address is its post-expansion <code>&lt;kind&gt;.&lt;name&gt;</code> (see <a href="architecture.html#state-addresses">State addresses</a>). Refactor a resource into or out of a <code>module</code> and template expansion prefixes its name with <code>&lt;alias&gt;_</code> — the address changes, so the next <code>plan</code> sees the old address gone and the new one absent and wants to <strong>destroy the live resource and create a fresh one</strong>. <code>state mv</code> renames the address in place so the same live resource is tracked under its new name and the plan collapses to a no-op.</p>
+<pre><code class="language-bash"># You moved `docker_container.web` into `module "app"`, so its address is
+# now `docker_container.app_web`. Plan wants delete web + create app_web.
+stratum state mv docker_container.web docker_container.app_web        # preview
+stratum state mv docker_container.web docker_container.app_web -y     # rename
+</code></pre>
+<p>Both addresses are <code>&lt;kind&gt;.&lt;name&gt;</code> (or <code>&lt;host&gt;/&lt;kind&gt;.&lt;name&gt;</code> to disambiguate a name that exists on more than one host). The <strong>kind must be identical</strong> on both sides — <code>mv</code> is a rename, not a retype — and it stays on the same host. <code>depends_on</code> edges elsewhere in state that pointed at the old address are rewritten to the new one in the same operation.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>&lt;FROM&gt;</code> <em>(required)</em></td><td>Current address, <code>&lt;kind&gt;.&lt;name&gt;</code> or <code>&lt;host&gt;/&lt;kind&gt;.&lt;name&gt;</code></td><td></td></tr>
+<tr><td><code>&lt;TO&gt;</code> <em>(required)</em></td><td>New address, <code>&lt;kind&gt;.&lt;name&gt;</code> or <code>&lt;host&gt;/&lt;kind&gt;.&lt;name&gt;</code></td><td></td></tr>
+<tr><td><code>--path, -p &lt;PATH&gt;</code></td><td>Path to the JSON state file</td><td><code>.stratum/state.json</code></td></tr>
+<tr><td><code>--yes, -y</code></td><td>Actually rename. Without it, prints what would change and exits (mirrors apply/destroy: side effects need an explicit <code>-y</code>)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>Without <code>-y</code> it previews the rename (and how many <code>depends_on</code> references it would rewrite) and reminds you it’s a state-only edit:</p>
+<pre><code>Would rename in .stratum/state.json:
+  root@192.0.2.10/docker_container.web  -&gt;  root@192.0.2.10/docker_container.app_web
+  (1 depends_on reference will be updated)
+
+This edits state only — it does NOT touch any host.
+Re-run with -y to rename.
+</code></pre>
+<p>With <code>-y</code> it renames and prints <code>renamed &lt;from&gt; -&gt; &lt;to&gt; in &lt;path&gt;</code> (with a trailing <code>(N depends_on references updated)</code> when any edges moved). Failure modes:</p>
+<ul>
+<li><code>FROM</code> isn’t in state → <code>FROM ... not found in state</code>.</li>
+<li><code>FROM</code> is a bare <code>&lt;kind&gt;.&lt;name&gt;</code> that exists on several hosts → <code>ambiguous ... disambiguate with &lt;host&gt;/&lt;kind&gt;.&lt;name&gt;</code>.</li>
+<li><code>TO</code> already exists → <code>TO ... already exists in &lt;path&gt; — pick an address that isn't taken</code>.</li>
+<li>The two kinds differ → <code>kind mismatch: ... mv renames within a kind, it can't change kind</code>.</li>
+</ul>
+<blockquote>
+<p>Renaming after the fact is the escape hatch. The planned durable fix is for a template to <strong>ship the rename</strong> as <code>moved</code> metadata so expansion migrates the address automatically — tracked in <a href="https://github.com/kbach-dev/stratum/issues/177">#177</a>.</p>
+</blockquote>
+<h2 id="state-merge"><a class="header" href="#state-merge"><code>state merge</code></a></h2>
+<p>Merge two or more state files into one. Used to consolidate per-config state files (e.g. <code>.stratum/infra.json</code>, <code>.stratum/app.json</code>) into one state per host.</p>
+<pre><code class="language-bash">stratum state merge \
+  -o .stratum/host.json \
+  .stratum/infra.json \
+  .stratum/app.json
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--out, -o &lt;OUT&gt;</code> <em>(required)</em></td><td>Output state file path. Must not already exist</td><td></td></tr>
+<tr><td><code>&lt;INPUTS&gt;</code> <em>(repeatable, required)</em></td><td>Source state files (need at least two)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>On success:</p>
+<pre><code>merged 2 state files into .stratum/host.json (13 resources)
+</code></pre>
+<p>Failure modes:</p>
+<ul>
+<li>The output path already exists → <code>refusing to overwrite existing state file ...</code>.</li>
+<li>Any <code>&lt;kind&gt;.&lt;name&gt;</code> key appears in more than one input → <code>key ... present in both X and Y — refusing to merge</code>. There is no last-writer-wins. Resolve the collision (rename one resource, or remove it from one state) and retry.</li>
+</ul>
+<p>After merge, verify by running <code>stratum plan</code> against the consolidated state with the full <code>-c</code> set — a non-zero diff means something is off and the old per-config files should not be deleted yet.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="providers/cloudflare.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="providers/cloudflare.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
